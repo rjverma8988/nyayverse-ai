@@ -288,9 +288,8 @@ window.sendMessage = async function () {
 
     loading.textContent = data.reply || "कोई जवाब नहीं मिला।";
 
-  } catch (error) {
-    loading.textContent =
-      "माफ कीजिए, अभी जवाब नहीं मिल पाया। कृपया दोबारा कोशिश करें।";
+  } } catch (error) {
+    loading.textContent = "Error: " + error.message;
     console.error(error);
   } finally {
     button.disabled = false;
