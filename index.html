@@ -4,44 +4,315 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NYAYVERSE AI</title>
+<title>NYAYVERSE AI | India's AI Knowledge Platform</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#071326;color:white;font-family:Arial,sans-serif}
-header{text-align:center;padding:28px 12px;border-bottom:1px solid #c9a44e}
-header h1{color:#e5bd68;font-size:30px}
-header p{color:#bdc9dc}
-main{max-width:850px;margin:auto;padding:20px}
-.hero{text-align:center;padding:35px 5px}
-.hero h2{font-size:28px}
-.hero p{color:#c5d1e2;line-height:1.6}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.card{background:#112442;border:1px solid #294568;border-radius:14px;padding:22px 10px;text-align:center}
-.card h3{color:#e5bd68}
-.card p{color:#c5d1e2;font-size:14px}
-footer{text-align:center;padding:30px;color:#9eafc5}
-@media(max-width:420px){.grid{grid-template-columns:1fr}}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #071326;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 7%;
+  border-bottom: 1px solid rgba(212,175,55,.3);
+  background: #091a32;
+}
+
+.logo {
+  color: #e8c36a;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: white;
+}
+
+nav a {
+  color: #dce5f2;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #e8c36a;
+}
+
+.hero {
+  text-align: center;
+  padding: 85px 20px 65px;
+  background:
+    radial-gradient(ellipse at top, #17345b 0%, #071326 65%);
+}
+
+.tag {
+  display: inline-block;
+  color: #e8c36a;
+  border: 1px solid #9b7a35;
+  border-radius: 30px;
+  padding: 7px 17px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+.hero h1 span {
+  color: #e8c36a;
+}
+
+.hero p {
+  color: #bdcbe0;
+  max-width: 650px;
+  margin: auto;
+  font-size: 16px;
+}
+
+.hero-button {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 13px 27px;
+  background: linear-gradient(135deg,#f0d58b,#bd9138);
+  color: #071326;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 55px 20px;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.section-heading h2 {
+  font-size: 30px;
+  color: #f0d58b;
+}
+
+.section-heading p {
+  color: #aebed3;
+  margin-top: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: linear-gradient(145deg,#142b4b,#0d1e36);
+  border: 1px solid #294568;
+  border-radius: 16px;
+  padding: 28px 22px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  transition: .3s ease;
+}
+
+.card:hover {
+  transform: translateY(-7px);
+  border-color: #e8c36a;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+.card .emoji {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  color: #e8c36a;
+  font-size: 19px;
+  margin-bottom: 9px;
+}
+
+.card p {
+  color: #bdcbe0;
+  font-size: 14px;
+}
+
+.about {
+  text-align: center;
+  margin-top: 65px;
+  padding: 35px 20px;
+  background: #0d1e36;
+  border-radius: 16px;
+  border: 1px solid #294568;
+}
+
+.about h2 {
+  color: #e8c36a;
+  margin-bottom: 12px;
+}
+
+.about p {
+  color: #bdcbe0;
+  max-width: 700px;
+  margin: auto;
+}
+
+footer {
+  text-align: center;
+  padding: 28px 15px;
+  color: #9eafc5;
+  border-top: 1px solid #294568;
+  font-size: 13px;
+}
+
+footer strong {
+  color: #e8c36a;
+}
+
+@media(max-width:750px) {
+  header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  nav a {
+    margin: 0 8px;
+    font-size: 12px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+  }
+
+  .card {
+    padding: 22px 12px;
+  }
+
+  .hero {
+    padding: 65px 18px 50px;
+  }
+}
+
+@media(max-width:420px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<h1>⚖️ NYAYVERSE AI</h1>
-<p>Your AI Knowledge Platform</p>
+  <div class="logo">⚖ NYAYVERSE <span>AI</span></div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#modules">Explore</a>
+    <a href="#about">About</a>
+  </nav>
 </header>
+
+<section class="hero" id="home">
+  <div class="tag">THE FUTURE OF KNOWLEDGE</div>
+
+  <h1>Welcome to <span>NYAYVERSE AI</span></h1>
+
+  <p>
+    One intelligent platform for Indian Law, Education,
+    Research and Artificial Intelligence.
+    Learn, explore and create with AI.
+  </p>
+
+  <a href="#modules" class="hero-button">Explore Platform →</a>
+</section>
+
 <main>
-<section class="hero">
-<h2>Welcome to NYAYVERSE AI</h2>
-<p>Explore Law, Education and Artificial Intelligence in one place.</p>
-</section>
-<section class="grid">
-<div class="card"><h3>⚖️ Legal AI</h3><p>Understand Indian Laws Easily</p></div>
-<div class="card"><h3>📚 Law Library</h3><p>Explore Indian Acts and Judgments</p></div>
-<div class="card"><h3>🎓 Student Zone</h3><p>Learn, Practice and Prepare</p></div>
-<div class="card"><h3>🎨 AI Image Studio</h3><p>Create Images and Posters</p></div>
-<div class="card"><h3>🎬 Creator Tools</h3><p>Create Scripts and Content</p></div>
-<div class="card"><h3>🤖 AI Assistant</h3><p>Your Intelligent Assistant</p></div>
-</section>
+
+  <section id="modules">
+    <div class="section-heading">
+      <h2>Explore Our AI Universe</h2>
+      <p>Powerful tools. Knowledge without boundaries.</p>
+    </div>
+
+    <div class="grid">
+
+      <a href="#legal-ai" class="card">
+        <div class="emoji">⚖️</div>
+        <h3>Legal AI</h3>
+        <p>Understand Indian laws, legal sections and judgments in simple language.</p>
+      </a>
+
+      <a href="#law-library" class="card">
+        <div class="emoji">📚</div>
+        <h3>Indian Law Library</h3>
+        <p>Explore Acts, Bare Acts, rules and important court judgments.</p>
+      </a>
+
+      <a href="#student-zone" class="card">
+        <div class="emoji">🎓</div>
+        <h3>Student Zone</h3>
+        <p>Learn, practise and prepare for law and competitive examinations.</p>
+      </a>
+
+      <a href="#image-studio" class="card">
+        <div class="emoji">🎨</div>
+        <h3>AI Image Studio</h3>
+        <p>Create creative images, posters and professional thumbnails.</p>
+      </a>
+
+      <a href="#creator-tools" class="card">
+        <div class="emoji">🎬</div>
+        <h3>Creator Tools</h3>
+        <p>Generate video scripts, titles, descriptions and content ideas.</p>
+      </a>
+
+      <a href="#ai-assistant" class="card">
+        <div class="emoji">🤖</div>
+        <h3>AI Assistant</h3>
+        <p>Your intelligent assistant for learning, research and creativity.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <h2>One Platform. Endless Possibilities.</h2>
+    <p>
+      NYAYVERSE AI is being developed as a knowledge platform
+      designed to make law, education and AI tools easier to access.
+      Our vision is to make technology useful for everyone.
+    </p>
+  </section>
+
 </main>
-<footer>© 2026 NYAYVERSE AI</footer>
+
+<footer>
+  <strong>⚖ NYAYVERSE AI</strong>
+  <p>Learn • Explore • Create</p>
+  <p>© 2026 NYAYVERSE AI. All Rights Reserved.</p>
+</footer>
+
 </body>
 </html>
