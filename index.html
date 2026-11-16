@@ -524,9 +524,16 @@ function getElement(id){
  return document.getElementById(id);
 }
 
+
 function toggleMenu(){
- getElement("sidebar").classList.toggle("open");
+ const sidebar = document.getElementById("sidebar");
+ if (!sidebar) {
+  alert("Navigation panel not found.");
+  return;
+ }
+ sidebar.classList.toggle("open");
 }
+
 
 function closeMenu(){
  getElement("sidebar").classList.remove("open");
@@ -892,7 +899,6 @@ function authNotice(){
   "Secure authentication, email verification and password reset "+
   "are not connected yet."
  );
-}
 }
 
 /* Close mobile navigation when Escape is pressed. */
