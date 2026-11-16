@@ -100,7 +100,6 @@ function openDepartment(key){
  if(d.soon)html+='<p><b>Coming Soon:</b> These options are displayed for planning purposes only. No external service or paid API is connected.</p>';
  html+='</div>';
  if(key==='ai-chat')html+='<div class="page-panel"><h2>Ask NYAYVERSE AI</h2><p>Use the question box below to start a conversation.</p></div>';
- if(key==='library) html+=''; 
  if(key==='library'){
   html+=`<div class="page-panel"><h2>Constitution PDF Ingestion</h2><p>Extract text from the stored Constitution PDF and save it to the NYAYVERSE legal database in batches of five pages.</p><div class="pdf-tools"><label for="adminToken">Admin ingestion token</label><input id="adminToken" type="password" placeholder="Enter your admin token" autocomplete="off"><button onclick="startPdfIngestion()">Start PDF Ingestion</button><button onclick="stopPdfIngestion()">Stop</button><div id="pdfStatus" class="pdf-status">Ready. Enter the admin token to begin.</div></div><p><b>Note:</b> The token is sent from your browser to your Worker. Do not use this on a shared or untrusted device.</p></div>`;
  }
