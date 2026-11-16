@@ -5,15 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090d18">
-
 <meta name="google-site-verification" content="ryUCHG6IpXaQ61p_peBYRXtyyoLU_fAH2_nY-qgWmFE">
 
 <title>NYAYVERSE AI – Indian Legal AI | Law, Rights & Legal Awareness</title>
-
 <meta name="description" content="NYAYVERSE AI is an Indian Legal AI platform providing easy-to-understand information about Indian laws, legal rights, court judgments and legal awareness.">
-
 <meta name="robots" content="index, follow">
-
 <link rel="canonical" href="https://nyayverseai.com/">
 
 <meta property="og:type" content="website">
@@ -23,7 +19,7 @@
 <meta property="og:site_name" content="NYAYVERSE AI">
 <meta property="og:locale" content="en_IN">
 
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NYAYVERSE AI – Indian Legal AI">
 <meta name="twitter:description" content="Your Indian Legal AI platform for laws, rights and legal knowledge.">
 
@@ -39,109 +35,226 @@
 </script>
 
 <style>
-:root{--bg:#090d18;--panel:#101827;--panel2:#172235;--border:#26344a;--text:#edf3ff;--muted:#9aa9bd;--accent:#4f8cff;--accent2:#7c5cff}
+:root{
+ --bg:#090d18;
+ --panel:#101827;
+ --panel2:#172235;
+ --border:#26344a;
+ --text:#edf3ff;
+ --muted:#9aa9bd;
+ --accent:#4f8cff;
+ --accent2:#7c5cff;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,Helvetica,sans-serif;min-height:100vh
+}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 .app{display:flex;min-height:100vh}
-.sidebar{width:255px;background:#0c1321;border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;gap:20px;flex-shrink:0}
+.sidebar{
+ width:255px;background:#0c1321;border-right:1px solid var(--border);
+ padding:22px 16px;display:flex;flex-direction:column;gap:20px;flex-shrink:0
+}
 .logo{display:flex;align-items:center;gap:11px;padding:5px}
-.logo-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#397cff,#805cff);display:grid;place-items:center;font-size:22px;font-weight:bold}
+.logo-icon{
+ width:42px;height:42px;border-radius:13px;
+ background:linear-gradient(135deg,#397cff,#805cff);
+ display:grid;place-items:center;font-size:22px;font-weight:bold
+}
 .logo h2{font-size:17px;margin:0;letter-spacing:1px}
 .logo small{color:var(--muted);font-size:10px}
-.new-chat{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#397cff,#765cff);color:white;font-weight:bold}
-.nav-title{font-size:11px;color:#8190a7;margin:8px 8px}
-.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#bdc9db;border:0;border-radius:9px;font-size:13px}
+.new-chat{
+ width:100%;padding:13px;border:0;border-radius:10px;
+ background:linear-gradient(100deg,#397cff,#765cff);
+ color:white;font-weight:bold
+}
+.nav-title{font-size:11px;color:#8190a7;margin:8px}
+.nav-item{
+ display:block;width:100%;padding:11px 12px;margin:3px 0;
+ text-align:left;background:transparent;color:#bdc9db;
+ border:0;border-radius:9px;font-size:13px
+}
 .nav-item:hover,.nav-item.active{background:var(--panel2);color:white}
 .sidebar-bottom{margin-top:auto}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
-.topbar{min-height:68px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 25px;background:#0c1321;gap:10px}
+.topbar{
+ min-height:68px;border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 25px;background:#0c1321;gap:10px
+}
 .top-left{display:flex;align-items:center;gap:12px}
 .topbar h3{font-size:15px;margin:0}
 .top-actions{display:flex;gap:9px;align-items:center}
-.small-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}
+.small-btn{
+ background:var(--panel2);color:var(--text);
+ border:1px solid var(--border);padding:9px 12px;border-radius:9px
+}
 .content{width:100%;max-width:1100px;margin:0 auto;padding:30px 22px;flex:1}
 .hero{text-align:center;margin:18px auto 28px}
-.hero-logo{width:65px;height:65px;margin:auto auto 17px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,#397cff,#805cff);box-shadow:0 8px 35px #397cff33}
+.hero-logo{
+ width:65px;height:65px;margin:auto auto 17px;border-radius:20px;
+ display:grid;place-items:center;font-size:30px;
+ background:linear-gradient(135deg,#397cff,#805cff);
+ box-shadow:0 8px 35px #397cff33
+}
 .hero h1{font-size:30px;margin:0 0 10px}
-.gradient{background:linear-gradient(90deg,#64a1ff,#a68aff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gradient{
+ background:linear-gradient(90deg,#64a1ff,#a68aff);
+ -webkit-background-clip:text;background-clip:text;color:transparent
+}
 .hero p{color:var(--muted);font-size:14px;line-height:1.6}
 .section-heading{font-size:17px;margin:28px 0 12px}
-.category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
-.category{background:var(--panel);border:1px solid var(--border);padding:17px;border-radius:13px;text-align:left;color:var(--text);min-height:125px}
-.category:hover{border-color:var(--accent);background:var(--panel2);transform:translateY(-1px)}
+.category-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;margin:20px 0
+}
+.category{
+ background:var(--panel);border:1px solid var(--border);
+ padding:17px;border-radius:13px;text-align:left;
+ color:var(--text);min-height:125px
+}
+.category:hover{
+ border-color:var(--accent);background:var(--panel2);
+ transform:translateY(-1px)
+}
 .category b{display:block;font-size:14px;margin:9px 0 5px}
 .category .emoji{font-size:23px}
 .category small{color:var(--muted);font-size:11px;line-height:1.5}
-.soon-tag{display:inline-block;margin-top:9px;padding:4px 7px;border-radius:20px;background:#302947;color:#c8b8ff;font-size:10px}
+.soon-tag{
+ display:inline-block;margin-top:9px;padding:4px 7px;
+ border-radius:20px;background:#302947;color:#c8b8ff;font-size:10px
+}
 .chat-area{display:none;flex-direction:column;gap:17px;margin:25px 0}
 .message{display:flex;gap:10px;align-items:flex-start}
-.avatar{flex-shrink:0;width:32px;height:32px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;font-size:14px}
-.bubble{max-width:85%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.avatar{
+ flex-shrink:0;width:32px;height:32px;border-radius:10px;
+ background:var(--panel2);display:grid;place-items:center;font-size:14px
+}
+.bubble{
+ max-width:85%;background:var(--panel);border:1px solid var(--border);
+ padding:13px 15px;border-radius:4px 13px 13px 13px;
+ line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere
+}
 .user .bubble{background:#172d50;border-color:#294d7e}
 .user{flex-direction:row-reverse}
-.composer{position:sticky;bottom:0;padding:14px 20px 20px;background:linear-gradient(transparent,var(--bg) 20%)}
-.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #35445e;border-radius:16px;padding:12px;box-shadow:0 10px 35px #0005}
-.composer textarea{width:100%;resize:none;min-height:55px;max-height:150px;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:14px}
-.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.composer{
+ position:sticky;bottom:0;padding:14px 20px 20px;
+ background:linear-gradient(transparent,var(--bg) 20%);z-index:2
+}
+.composer-inner{
+ max-width:850px;margin:auto;background:var(--panel);
+ border:1px solid #35445e;border-radius:16px;padding:12px;
+ box-shadow:0 10px 35px #0005
+}
+.composer textarea{
+ width:100%;resize:vertical;min-height:55px;max-height:150px;
+ background:transparent;border:0;outline:0;color:white;
+ padding:8px;font-size:14px
+}
+.composer-bottom{
+ display:flex;align-items:center;justify-content:space-between;gap:8px
+}
 .composer-bottom small{color:var(--muted);font-size:10px}
-.send{border:0;border-radius:10px;padding:10px 18px;color:white;background:var(--accent);font-weight:bold}
-.send:disabled{opacity:.55}
+.send{
+ border:0;border-radius:10px;padding:10px 18px;
+ color:white;background:var(--accent);font-weight:bold
+}
+.send:disabled{opacity:.55;cursor:not-allowed}
 .disclaimer{text-align:center;color:#77869b;font-size:10px;margin:14px}
-.footer{text-align:center;color:#718098;font-size:11px;padding:14px;line-height:1.8}
+.footer{
+ text-align:center;color:#718098;font-size:11px;
+ padding:14px;line-height:1.8
+}
 .footer a{color:#91b4ff;text-decoration:none;margin:0 5px}
-.modal-bg{display:none;position:fixed;inset:0;background:#000b;align-items:center;justify-content:center;padding:18px;z-index:10}
-.modal{width:100%;max-width:420px;max-height:90vh;overflow:auto;background:#111c2d;border:1px solid var(--border);border-radius:18px;padding:25px}
+.modal-bg{
+ display:none;position:fixed;inset:0;background:#000b;
+ align-items:center;justify-content:center;padding:18px;z-index:10
+}
+.modal{
+ width:100%;max-width:420px;max-height:90vh;overflow:auto;
+ background:#111c2d;border:1px solid var(--border);
+ border-radius:18px;padding:25px
+}
 .modal h2{margin:0 0 7px}
 .modal p{font-size:12px;color:var(--muted);line-height:1.5}
-.modal input{display:block;width:100%;padding:13px;margin:12px 0;background:#0b1321;border:1px solid var(--border);border-radius:9px;color:white;outline:none}
-.modal button.primary{width:100%;padding:13px;background:var(--accent);color:white;border:0;border-radius:9px;font-weight:bold}
-.modal-links{display:flex;justify-content:space-between;gap:8px;margin-top:17px;flex-wrap:wrap}
+.modal input{
+ display:block;width:100%;padding:13px;margin:12px 0;
+ background:#0b1321;border:1px solid var(--border);
+ border-radius:9px;color:white;outline:none
+}
+.modal button.primary{
+ width:100%;padding:13px;background:var(--accent);
+ color:white;border:0;border-radius:9px;font-weight:bold
+}
+.modal-links{
+ display:flex;justify-content:space-between;gap:8px;
+ margin-top:17px;flex-wrap:wrap
+}
 .modal-links button{background:none;border:0;color:#8fb4ff;font-size:12px}
 .close{float:right;background:none;border:0;color:white;font-size:22px}
 .mobile-menu{display:none}
-.page-panel{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:22px;margin:18px 0}
+.page-panel{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:15px;padding:22px;margin:18px 0
+}
 .page-panel h2{margin-top:0}
 .page-panel p,.page-panel li{color:var(--muted);font-size:13px;line-height:1.7}
-.sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
-.sub-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:13px;color:var(--text);text-align:left}
+.sub-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;margin-top:16px
+}
+.sub-card{
+ background:var(--panel2);border:1px solid var(--border);
+ border-radius:10px;padding:13px;color:var(--text);text-align:left
+}
+.sub-card:hover{border-color:var(--accent)}
 .back-btn{margin-bottom:12px}
-.policy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.policy-grid button{background:var(--panel2);color:#bdc9db;border:1px solid var(--border);padding:12px;border-radius:9px;text-align:left;font-size:12px}
 @media(max-width:850px){
-.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.sidebar{width:235px}
+ .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sidebar{width:235px}
 }
 @media(max-width:720px){
-.sidebar{display:none;position:fixed;z-index:8;inset:0 auto 0 0;width:270px;overflow:auto}
-.sidebar.open{display:flex}
-.mobile-menu{display:block}
-.topbar{padding:10px 13px}
-.content{padding:20px 13px}
-.hero h1{font-size:25px}
-.category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.category{padding:12px;min-height:120px}
-.composer{padding:10px}
-.bubble{max-width:90%;font-size:13px}
-.policy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.sub-grid{grid-template-columns:1fr}
-.topbar h3{font-size:13px}
-.top-actions{gap:5px}
-.small-btn{padding:8px 9px;font-size:12px}
+ .sidebar{
+  display:none;position:fixed;z-index:8;inset:0 auto 0 0;
+  width:270px;overflow:auto
+ }
+ .sidebar.open{display:flex}
+ .mobile-menu{display:block}
+ .topbar{padding:10px 13px}
+ .content{padding:20px 13px}
+ .hero h1{font-size:25px}
+ .category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .category{padding:12px;min-height:120px}
+ .composer{padding:10px}
+ .bubble{max-width:90%;font-size:13px}
+ .sub-grid{grid-template-columns:1fr}
+ .topbar h3{font-size:13px}
+ .top-actions{gap:5px}
+ .small-btn{padding:8px 9px;font-size:12px}
 }
 @media(max-width:390px){
-.category-grid{grid-template-columns:1fr}
-.topbar h3{display:none}
+ .category-grid{grid-template-columns:1fr}
+ .topbar h3{display:none}
 }
 </style>
 </head>
 
 <body>
 <div class="app">
+
 <aside class="sidebar" id="sidebar">
- <div class="logo"><div class="logo-icon">⚖</div><div><h2>NYAYVERSE AI</h2><small>INDIAN LEGAL INTELLIGENCE</small></div></div>
+ <div class="logo">
+  <div class="logo-icon">⚖</div>
+  <div>
+   <h2>NYAYVERSE AI</h2>
+   <small>INDIAN LEGAL INTELLIGENCE</small>
+  </div>
+ </div>
+
  <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+
  <div>
   <div class="nav-title">WORKSPACE</div>
   <button class="nav-item active" onclick="showHome()">⌂ Home</button>
@@ -150,6 +263,7 @@ button{cursor:pointer}
   <button class="nav-item" onclick="comingSoon('Recent Searches')">⌕ Recent Searches</button>
   <button class="nav-item" onclick="openDepartment('ai-chat')">✧ AI Chat</button>
  </div>
+
  <div>
   <div class="nav-title">DEPARTMENTS</div>
   <button class="nav-item" onclick="openDepartment('library')">📚 Law Library</button>
@@ -161,6 +275,7 @@ button{cursor:pointer}
   <button class="nav-item" onclick="openDepartment('evolution')">🌍 Law Origins & Evolution</button>
   <button class="nav-item" onclick="openDepartment('studio')">🎨 Creative Studio</button>
  </div>
+
  <div class="sidebar-bottom">
   <button class="nav-item" onclick="openDepartment('account')">⚙ Account & Security</button>
   <button class="nav-item" onclick="openModal('login')">⇥ Login / Sign Up</button>
@@ -169,6 +284,7 @@ button{cursor:pointer}
 </aside>
 
 <main class="main">
+
 <header class="topbar">
  <div class="top-left">
   <button class="small-btn mobile-menu" onclick="toggleMenu()">☰</button>
@@ -184,21 +300,56 @@ button{cursor:pointer}
  <div class="hero">
   <div class="hero-logo">⚖</div>
   <h1>Welcome to <span class="gradient">NYAYVERSE AI</span></h1>
-  <p>Your AI-powered Indian Legal Knowledge Platform.<br>Explore laws, legal education, examinations, judgments and creative tools.</p>
+  <p>Your AI-powered Indian Legal Knowledge Platform.<br>
+  Explore laws, legal education, examinations, judgments and creative tools.</p>
  </div>
+
  <h2 class="section-heading">Explore Departments</h2>
+
  <div class="category-grid">
-  <button class="category" onclick="openDepartment('library')"><span class="emoji">📚</span><b>Law Library</b><small>Indian Acts, Sections, Rules, Regulations and legal documents</small></button>
-  <button class="category" onclick="openDepartment('academy')"><span class="emoji">🎓</span><b>Law Academy</b><small>LLB, LLM, courses, colleges, admissions and study material</small></button>
-  <button class="category" onclick="openDepartment('exams')"><span class="emoji">📝</span><b>Law Exams</b><small>Judiciary, APO, APP, AIBE, UGC NET Law and legal jobs</small></button>
-  <button class="category" onclick="openDepartment('news')"><span class="emoji">📰</span><b>Law News</b><small>Supreme Court, High Courts, government updates and amendments</small></button>
-  <button class="category" onclick="openDepartment('cases')"><span class="emoji">⚖️</span><b>Case Studies</b><small>Landmark judgments, criminal and civil cases</small></button>
-  <button class="category" onclick="openDepartment('history')"><span class="emoji">🏛️</span><b>Law History</b><small>Ancient, medieval, British-era and modern legal history</small></button>
-  <button class="category" onclick="openDepartment('evolution')"><span class="emoji">🌍</span><b>Law Origins & Evolution</b><small>Origins of law and evolution of legal systems</small></button>
-  <button class="category" onclick="openDepartment('studio')"><span class="emoji">🎨</span><b>Creative Studio</b><small>Legal drafting, image and video creation tools</small><span class="soon-tag">Coming Soon</span></button>
+  <button class="category" onclick="openDepartment('library')">
+   <span class="emoji">📚</span><b>Law Library</b>
+   <small>Indian Acts, Sections, Rules, Regulations and legal documents</small>
+  </button>
+  <button class="category" onclick="openDepartment('academy')">
+   <span class="emoji">🎓</span><b>Law Academy</b>
+   <small>LLB, LLM, courses, colleges, admissions and study material</small>
+  </button>
+  <button class="category" onclick="openDepartment('exams')">
+   <span class="emoji">📝</span><b>Law Exams</b>
+   <small>Judiciary, APO, APP, AIBE, UGC NET Law and legal jobs</small>
+  </button>
+  <button class="category" onclick="openDepartment('news')">
+   <span class="emoji">📰</span><b>Law News</b>
+   <small>Supreme Court, High Courts, government updates and amendments</small>
+  </button>
+  <button class="category" onclick="openDepartment('cases')">
+   <span class="emoji">⚖️</span><b>Case Studies</b>
+   <small>Landmark judgments, criminal and civil cases</small>
+  </button>
+  <button class="category" onclick="openDepartment('history')">
+   <span class="emoji">🏛️</span><b>Law History</b>
+   <small>Ancient, medieval, British-era and modern legal history</small>
+  </button>
+  <button class="category" onclick="openDepartment('evolution')">
+   <span class="emoji">🌍</span><b>Law Origins & Evolution</b>
+   <small>Origins of law and evolution of legal systems</small>
+  </button>
+  <button class="category" onclick="openDepartment('studio')">
+   <span class="emoji">🎨</span><b>Creative Studio</b>
+   <small>Legal drafting, image and video creation tools</small>
+   <span class="soon-tag">Coming Soon</span>
+  </button>
  </div>
- <div class="disclaimer">NYAYVERSE AI provides general legal information for educational purposes, not professional legal advice.</div>
- <div class="footer">© 2026 NYAYVERSE AI · <a href="#" onclick="openDepartment('policies');return false">Policies & Support</a></div>
+
+ <div class="disclaimer">
+  NYAYVERSE AI provides general legal information for educational purposes, not professional legal advice.
+ </div>
+
+ <div class="footer">
+  © 2026 NYAYVERSE AI ·
+  <a href="#" onclick="openDepartment('policies');return false">Policies & Support</a>
+ </div>
 </section>
 
 <section class="content" id="departmentPage" style="display:none">
@@ -216,6 +367,7 @@ button{cursor:pointer}
  </div>
  <div class="footer">AI can make mistakes. Verify important legal information with official sources.</div>
 </div>
+
 </main>
 </div>
 
@@ -224,233 +376,530 @@ button{cursor:pointer}
   <button class="close" onclick="closeModal()">×</button>
   <h2 id="modalTitle">Welcome Back</h2>
   <p id="modalDesc">Login to your NYAYVERSE AI account.</p>
+
   <input id="authName" type="text" placeholder="Full name" style="display:none">
-  <input id="authEmail" type="email" placeholder="Email address">
-  <input id="authPassword" type="password" placeholder="Password">
+  <input id="authEmail" type="email" placeholder="Email address" autocomplete="email">
+  <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password">
   <input id="authConfirm" type="password" placeholder="Confirm password" style="display:none">
+
   <button class="primary" onclick="authNotice()" id="authAction">Continue</button>
+
   <div class="modal-links" id="modalLinks">
    <button onclick="openModal('forgot')">Forgot Password?</button>
    <button onclick="openModal('signup')">Create Account</button>
   </div>
+
   <p id="authNote">Authentication is a visual preview and is not connected yet.</p>
  </div>
 </div>
 
 <script>
-// Existing NYAYVERSE AI Cloudflare Worker endpoint
-const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-let busy=false;
+"use strict";
 
-const departments={
- library:{title:'Law Library',desc:'Explore Indian central and state laws, legal provisions and official legal documents.',items:['Constitution of India','Central Acts','State Acts','BNS – Bharatiya Nyaya Sanhita','BNSS – Bharatiya Nagarik Suraksha Sanhita','BSA – Bharatiya Sakshya Adhiniyam','Rules & Regulations','Consumer Law','Motor Vehicles Act','Family Law','Labour Laws']},
- academy:{title:'Law Academy',desc:'Explore legal education, academic programmes, institutions and learning resources.',items:['3-Year LLB','5-Year Integrated BA LLB','BBA LLB / BCom LLB / BSc LLB','LLM Programmes','PhD in Law','Diploma & Certificate Courses','Colleges & Universities','Admissions & Eligibility','Course Fees','Study Material']},
- exams:{title:'Law Exams',desc:'Prepare for legal entrance, professional qualification and government law examinations.',items:['Judiciary / Civil Judge','APO – Assistant Prosecution Officer','APP / Public Prosecutor','AIBE','UGC NET Law','CLAT PG','Legal Officer','Legal Assistant / Research Officer','Government Legal Jobs','Syllabus & Previous Papers','Mock Tests']},
- news:{title:'Law News',desc:'A dedicated place for legal developments and official notifications. News services are not connected yet.',items:['Supreme Court Updates','High Court Updates','Government Legal Updates','New Acts & Amendments','Legal Notifications','Regulatory Updates']},
- cases:{title:'Case Studies',desc:'Study important judgments with case background, legal issues, decisions and source references.',items:['Supreme Court Judgments','High Court Judgments','Landmark Cases','Constitution Bench Decisions','Criminal Cases','Civil Cases','Judgment PDFs & Sources']},
- history:{title:'Law History',desc:'Explore the historical development of legal institutions and systems in India and around the world.',items:['Ancient Indian Legal Systems','Medieval Legal History','British Era','East India Company Laws','Colonial Judiciary','High Courts in India','Supreme Court History','Constitution-Making History','Modern Legal Reforms','World Legal History']},
- evolution:{title:'Law Origins & Evolution',desc:'Understand how laws, legal ideas, rights and institutions originated and evolved over time.',items:['Origins of Law','Code of Hammurabi','Roman Law','Manusmriti & Ancient Texts','Vedic Legal Traditions','Evolution of Fundamental Rights','International Law','IPC to BNS','CrPC to BNSS','Evidence Act to BSA','Jurists & Legal Thinkers']},
- studio:{title:'Creative Studio',desc:'Creative tools planned for a future release. No image, video or drafting generation service is connected at this stage.',items:['Legal Drafting','Create Video','Create Photo','Text to Video','Text to Image'],soon:true},
- 'ai-chat':{title:'AI Chat',desc:'Ask your Indian legal questions in English, Hindi or Hinglish. The existing Gemini-powered backend connection is retained.',items:['Indian Constitution','BNS / BNSS / BSA','Police & Criminal Law','Consumer Rights','Motor Vehicles','Family & Labour Law']},
- account:{title:'User Account & Security',desc:'Account-management interface preview. Secure account services will require authentication and database integration.',items:['Login & Sign Up','Email Verification','Forgot / Reset Password','User Profile','Change Email','Change Password','Logout','Logout from All Devices','Chat History','Saved Answers','Recent Searches','Delete Individual Chat','Clear All Chat History','Download My Data','Permanent Account Deletion'],soon:true},
- policies:{title:'Policies & Support',desc:'Policy pages will be published with accurate terms when the related platform features are implemented.',items:['About Us','Privacy Policy','Terms & Conditions','User License Agreement','Legal Disclaimer','Cookie Policy','Security Policy','Data Retention & Deletion Policy','Contact & Grievance Redressal','Feedback','Help & Support']}
+/* Cloudflare Worker endpoint.
+   Keep the API key inside Cloudflare Worker secrets.
+   Do not put the Gemini API key in this frontend file. */
+const API_URL = "https://nyayverse-ai-backend.rjverma8988.workers.dev/";
+
+let busy = false;
+
+const departments = {
+ library: {
+  title:"Law Library",
+  desc:"Explore Indian central and state laws, legal provisions and official legal documents.",
+  items:[
+   "Constitution of India","Central Acts","State Acts",
+   "BNS – Bharatiya Nyaya Sanhita",
+   "BNSS – Bharatiya Nagarik Suraksha Sanhita",
+   "BSA – Bharatiya Sakshya Adhiniyam",
+   "Rules & Regulations","Consumer Law","Motor Vehicles Act",
+   "Family Law","Labour Laws"
+  ]
+ },
+ academy: {
+  title:"Law Academy",
+  desc:"Explore legal education, academic programmes, institutions and learning resources.",
+  items:[
+   "3-Year LLB","5-Year Integrated BA LLB",
+   "BBA LLB / BCom LLB / BSc LLB","LLM Programmes",
+   "PhD in Law","Diploma & Certificate Courses",
+   "Colleges & Universities","Admissions & Eligibility",
+   "Course Fees","Study Material"
+  ]
+ },
+ exams: {
+  title:"Law Exams",
+  desc:"Prepare for legal entrance, professional qualification and government law examinations.",
+  items:[
+   "Judiciary / Civil Judge","APO – Assistant Prosecution Officer",
+   "APP / Public Prosecutor","AIBE","UGC NET Law","CLAT PG",
+   "Legal Officer","Legal Assistant / Research Officer",
+   "Government Legal Jobs","Syllabus & Previous Papers","Mock Tests"
+  ]
+ },
+ news: {
+  title:"Law News",
+  desc:"Explore legal developments and official notifications. News services are not connected yet.",
+  items:[
+   "Supreme Court Updates","High Court Updates",
+   "Government Legal Updates","New Acts & Amendments",
+   "Legal Notifications","Regulatory Updates"
+  ]
+ },
+ cases: {
+  title:"Case Studies",
+  desc:"Study important judgments with case background, legal issues, decisions and source references.",
+  items:[
+   "Supreme Court Judgments","High Court Judgments",
+   "Landmark Cases","Constitution Bench Decisions",
+   "Criminal Cases","Civil Cases","Judgment PDFs & Sources"
+  ]
+ },
+ history: {
+  title:"Law History",
+  desc:"Explore the historical development of legal institutions and systems in India and around the world.",
+  items:[
+   "Ancient Indian Legal Systems","Medieval Legal History",
+   "British Era","East India Company Laws","Colonial Judiciary",
+   "High Courts in India","Supreme Court History",
+   "Constitution-Making History","Modern Legal Reforms",
+   "World Legal History"
+  ]
+ },
+ evolution: {
+  title:"Law Origins & Evolution",
+  desc:"Understand how laws, legal ideas, rights and institutions originated and evolved over time.",
+  items:[
+   "Origins of Law","Code of Hammurabi","Roman Law",
+   "Manusmriti & Ancient Texts","Vedic Legal Traditions",
+   "Evolution of Fundamental Rights","International Law",
+   "IPC to BNS","CrPC to BNSS","Evidence Act to BSA",
+   "Jurists & Legal Thinkers"
+  ]
+ },
+ studio: {
+  title:"Creative Studio",
+  desc:"Creative tools planned for a future release. No image, video or drafting generation service is connected yet.",
+  items:[
+   "Legal Drafting","Create Video","Create Photo",
+   "Text to Video","Text to Image"
+  ],
+  soon:true
+ },
+ "ai-chat": {
+  title:"AI Chat",
+  desc:"Ask your Indian legal questions in English, Hindi or Hinglish. The existing Gemini-powered backend connection is retained.",
+  items:[
+   "Indian Constitution","BNS / BNSS / BSA",
+   "Police & Criminal Law","Consumer Rights",
+   "Motor Vehicles","Family & Labour Law"
+  ]
+ },
+ account: {
+  title:"User Account & Security",
+  desc:"Account-management interface preview. Secure account services require authentication and database integration.",
+  items:[
+   "Login & Sign Up","Email Verification","Forgot / Reset Password",
+   "User Profile","Change Email","Change Password","Logout",
+   "Logout from All Devices","Chat History","Saved Answers",
+   "Recent Searches","Delete Individual Chat",
+   "Clear All Chat History","Download My Data",
+   "Permanent Account Deletion"
+  ],
+  soon:true
+ },
+ policies: {
+  title:"Policies & Support",
+  desc:"Policy pages will be published with accurate terms when the related platform features are implemented.",
+  items:[
+   "About Us","Privacy Policy","Terms & Conditions",
+   "User License Agreement","Legal Disclaimer","Cookie Policy",
+   "Security Policy","Data Retention & Deletion Policy",
+   "Contact & Grievance Redressal","Feedback","Help & Support"
+  ]
+ }
 };
 
+function getElement(id){
+ return document.getElementById(id);
+}
+
 function toggleMenu(){
- document.getElementById('sidebar').classList.toggle('open');
+ getElement("sidebar").classList.toggle("open");
 }
 
 function closeMenu(){
- document.getElementById('sidebar').classList.remove('open');
+ getElement("sidebar").classList.remove("open");
+}
+
+function getActiveContent(){
+ return getElement("departmentPage").style.display === "none"
+  ? getElement("home")
+  : getElement("departmentPage");
+}
+
+/* Move chat area to the currently visible page.
+   This prevents replies from being appended to a hidden page. */
+function moveChatArea(){
+ let area=getElement("chatArea");
+
+ if(!area){
+  area=document.createElement("div");
+  area.id="chatArea";
+  area.className="chat-area";
+ }
+
+ const target=getActiveContent();
+ target.appendChild(area);
+ area.style.display="flex";
+
+ return area;
+}
+
+function clearChat(){
+ const area=getElement("chatArea");
+ if(area) area.remove();
 }
 
 function showHome(){
  closeMenu();
- document.getElementById('departmentPage').style.display='none';
- document.getElementById('home').style.display='block';
- document.getElementById('composer').style.display='block';
- window.scrollTo({top:0,behavior:'smooth'});
+ getElement("departmentPage").style.display="none";
+ getElement("home").style.display="block";
+ getElement("composer").style.display="block";
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function newChat(){
- document.getElementById('chatArea')?.remove();
- const q=document.getElementById('question');
- q.value='';
- showHome();
+ clearChat();
+ getElement("question").value="";
+ getElement("departmentPage").style.display="none";
+ getElement("home").style.display="block";
+ getElement("composer").style.display="block";
+ closeMenu();
+ getElement("question").focus();
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function comingSoon(name){
- alert(name+' is coming soon. This is currently an interface preview only.');
+ alert(name+" is coming soon. This is currently an interface preview only.");
 }
 
 function openDepartment(key){
  closeMenu();
+
  const d=departments[key];
  if(!d)return;
 
- document.getElementById('home').style.display='none';
- document.getElementById('departmentPage').style.display='block';
- document.getElementById('composer').style.display=(key==='studio'||key==='account'||key==='policies')?'none':'block';
+ getElement("home").style.display="none";
+ getElement("departmentPage").style.display="block";
 
- let html=`<div class="hero" style="text-align:left;margin:8px 0 20px"><h1><span class="gradient">${d.title}</span></h1><p>${d.desc}</p></div><div class="page-panel"><h2>${d.soon?'Available in a future update':'Explore '+d.title}</h2><div class="sub-grid">`;
+ getElement("composer").style.display =
+  (key==="studio" || key==="account" || key==="policies")
+  ? "none"
+  : "block";
+
+ const container=getElement("departmentContent");
+ container.replaceChildren();
+
+ const hero=document.createElement("div");
+ hero.className="hero";
+ hero.style.textAlign="left";
+ hero.style.margin="8px 0 20px";
+
+ const heading=document.createElement("h1");
+ const title=document.createElement("span");
+ title.className="gradient";
+ title.textContent=d.title;
+ heading.appendChild(title);
+
+ const description=document.createElement("p");
+ description.textContent=d.desc;
+
+ hero.appendChild(heading);
+ hero.appendChild(description);
+ container.appendChild(hero);
+
+ const panel=document.createElement("div");
+ panel.className="page-panel";
+
+ const panelHeading=document.createElement("h2");
+ panelHeading.textContent=d.soon
+  ? "Available in a future update"
+  : "Explore "+d.title;
+
+ panel.appendChild(panelHeading);
+
+ const grid=document.createElement("div");
+ grid.className="sub-grid";
 
  d.items.forEach(item=>{
-  html+=`<button class="sub-card" onclick="${d.soon||key==='policies'||key==='account'?'comingSoon('+JSON.stringify(item)+')':'askTopic('+JSON.stringify(item)+')'}">${item} ${d.soon?'· Coming Soon':'→'}</button>`;
+  const button=document.createElement("button");
+  button.type="button";
+  button.className="sub-card";
+  button.textContent=item+(d.soon?" · Coming Soon":" →");
+
+  button.addEventListener("click",()=>{
+   if(d.soon || key==="policies" || key==="account"){
+    comingSoon(item);
+   }else{
+    askTopic(item);
+   }
+  });
+
+  grid.appendChild(button);
  });
 
- html+='</div>';
+ panel.appendChild(grid);
 
  if(d.soon){
-  html+='<p><b>Coming Soon:</b> These options are displayed for planning purposes only. No external service or paid API is connected.</p>';
+  const note=document.createElement("p");
+  note.textContent="Coming Soon: These options are displayed for planning purposes only. No external service or paid API is connected.";
+  panel.appendChild(note);
  }
 
- html+='</div>';
- document.getElementById('departmentContent').innerHTML=html;
- window.scrollTo({top:0,behavior:'smooth'});
+ container.appendChild(panel);
+
+ /* Keep any existing chat visible in the selected department. */
+ const existingChat=getElement("chatArea");
+ if(existingChat && key!=="studio" && key!=="account" && key!=="policies"){
+  container.appendChild(existingChat);
+ }
+
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function askTopic(topic){
- const q=document.getElementById('question');
- q.value='Please explain '+topic+' under Indian law in clear and structured language. Include relevant legal provisions and official sources where available.';
- document.getElementById('composer').style.display='block';
+ const q=getElement("question");
+
+ q.value="Please explain "+topic+
+ " under Indian law in clear and structured language. "+
+ "Include relevant legal provisions and official sources where available.";
+
+ getElement("composer").style.display="block";
  q.focus();
- window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+
+ window.scrollTo({
+  top:document.body.scrollHeight,
+  behavior:"smooth"
+ });
 }
 
 function detectLanguage(text){
- const hindiChars=/[\u0900-\u097F]/.test(text);
- if(hindiChars)return 'Hindi';
+ if(/[\u0900-\u097F]/.test(text)){
+  return "Hindi";
+ }
 
  const words=text.toLowerCase().match(/[a-z]+/g)||[];
- const hinglishWords=['kya','hai','hain','kaise','kyun','kyu','nahi','nahin','mujhe','mera','meri','aap','batao','samjhao','kanoon','kanun','dhara','police','karu','kare','hoga','hogi','karna','chahiye','mein','me','aur','agar','ka','ki','ke'];
- const hits=words.filter(w=>hinglishWords.includes(w));
 
- return hits.length>=2?'Hinglish':'English';
+ const hinglishWords=[
+  "kya","hai","hain","kaise","kyun","kyu","nahi","nahin",
+  "mujhe","mera","meri","aap","batao","samjhao",
+  "kanoon","kanun","dhara","police","karu","kare",
+  "hoga","hogi","karna","chahiye","mein","me",
+  "aur","agar","ka","ki","ke"
+ ];
+
+ const hits=words.filter(word=>hinglishWords.includes(word));
+
+ return hits.length>=2 ? "Hinglish" : "English";
 }
 
 function addMessage(text,type){
- let area=document.getElementById('chatArea');
+ const area=moveChatArea();
 
- if(!area){
-  area=document.createElement('div');
-  area.id='chatArea';
-  area.className='chat-area';
+ const row=document.createElement("div");
+ row.className="message "+type;
 
-  const target=document.getElementById('departmentPage').style.display==='none'?document.getElementById('home'):document.getElementById('departmentPage');
-  target.appendChild(area);
- }
+ const avatar=document.createElement("div");
+ avatar.className="avatar";
+ avatar.textContent=type==="user" ? "👤" : "⚖️";
 
- area.style.display='flex';
-
- const row=document.createElement('div');
- row.className='message '+type;
-
- const avatar=document.createElement('div');
- avatar.className='avatar';
- avatar.textContent=type==='user'?'👤':'⚖️';
-
- const bubble=document.createElement('div');
- bubble.className='bubble';
+ const bubble=document.createElement("div");
+ bubble.className="bubble";
  bubble.textContent=text;
 
  row.appendChild(avatar);
  row.appendChild(bubble);
  area.appendChild(row);
 
- area.scrollIntoView({behavior:'smooth',block:'end'});
+ area.scrollIntoView({behavior:"smooth",block:"end"});
+
  return bubble;
 }
 
-function handleKey(e){
- if(e.key==='Enter'&&!e.shiftKey){
-  e.preventDefault();
+function handleKey(event){
+ if(event.key==="Enter" && !event.shiftKey){
+  event.preventDefault();
   sendMessage();
  }
 }
 
 async function sendMessage(){
- const input=document.getElementById('question');
+ const input=getElement("question");
  const question=input.value.trim();
 
- if(!question||busy)return;
+ if(!question || busy)return;
 
  busy=true;
- const btn=document.getElementById('sendBtn');
- btn.disabled=true;
- input.value='';
 
- addMessage(question,'user');
+ const button=getElement("sendBtn");
+ button.disabled=true;
+
+ input.value="";
+
+ addMessage(question,"user");
 
  const detectedLanguage=detectLanguage(question);
- const answer=addMessage('Thinking... Please wait.','ai');
+ const answer=addMessage("Thinking... Please wait.","ai");
 
  try{
   const response=await fetch(API_URL,{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({message:question,language:detectedLanguage})
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    message:question,
+    language:detectedLanguage
+   })
   });
 
-  const data=await response.json();
+  const rawText=await response.text();
 
-  if(!response.ok){
-   throw new Error(data.error||data.message||('Server error: '+response.status));
+  let data={};
+
+  try{
+   data=rawText ? JSON.parse(rawText) : {};
+  }catch(parseError){
+   throw new Error(
+    "The server returned an invalid response. Please check the Worker API response."
+   );
   }
 
-  const reply=data.reply||data.response||data.answer||(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('\n');
+  if(!response.ok){
+   throw new Error(
+    data.error || data.message || ("Server error: "+response.status)
+   );
+  }
 
-  answer.textContent=reply||'No response received. Please try again.';
+  const candidateText =
+   data.candidates &&
+   data.candidates[0] &&
+   data.candidates[0].content &&
+   data.candidates[0].content.parts
+   ? data.candidates[0].content.parts
+      .map(part=>part.text || "")
+      .join("\n")
+   : "";
+
+  const reply =
+   data.reply ||
+   data.response ||
+   data.answer ||
+   candidateText;
+
+  answer.textContent =
+   typeof reply==="string" && reply.trim()
+   ? reply
+   : "The server responded, but no answer text was found. Please check the Worker response format.";
+
  }catch(error){
-  answer.textContent='Sorry, an error occurred: '+error.message+'\n\nPlease try again after some time.';
+  answer.textContent=
+   "Sorry, an error occurred: "+
+   (error.message || "Unable to connect to the server.")+
+   "\n\nPlease try again after some time.";
+ }finally{
+  busy=false;
+  button.disabled=false;
+  input.focus();
  }
-
- busy=false;
- btn.disabled=false;
 }
 
+/* Login, signup and password reset are UI previews only.
+   No real account is created or authenticated by this code. */
 function openModal(type){
- const title=document.getElementById('modalTitle');
- const desc=document.getElementById('modalDesc');
- const pass=document.getElementById('authPassword');
- const confirm=document.getElementById('authConfirm');
- const name=document.getElementById('authName');
- const links=document.getElementById('modalLinks');
- const action=document.getElementById('authAction');
+ const title=getElement("modalTitle");
+ const desc=getElement("modalDesc");
+ const pass=getElement("authPassword");
+ const confirm=getElement("authConfirm");
+ const name=getElement("authName");
+ const email=getElement("authEmail");
+ const links=getElement("modalLinks");
+ const action=getElement("authAction");
 
- name.style.display='none';
- confirm.style.display='none';
- pass.style.display='block';
+ name.value="";
+ email.value="";
+ pass.value="";
+ confirm.value="";
 
- if(type==='signup'){
-  title.textContent='Create Account';
-  desc.textContent='Join NYAYVERSE AI.';
-  name.style.display='block';
-  confirm.style.display='block';
-  action.textContent='Create Account';
-  links.innerHTML='<button onclick="openModal(\'login\')">Already registered? Login</button>';
- }else if(type==='forgot){
-  title.textContent='Reset Password';
-  desc.textContent='Enter your email to request a password reset.';
-  pass.style.display='none';
-  action.textContent='Send Reset Link';
-  links.innerHTML='<button onclick="openModal(\'login\')">Back to Login</button>';
+ name.style.display="none";
+ confirm.style.display="none";
+ pass.style.display="block";
+
+ if(type==="signup"){
+  title.textContent="Create Account";
+  desc.textContent="Join NYAYVERSE AI.";
+  name.style.display="block";
+  confirm.style.display="block";
+  action.textContent="Create Account";
+  links.innerHTML="";
+
+  const loginButton=document.createElement("button");
+  loginButton.textContent="Already registered? Login";
+  loginButton.addEventListener("click",()=>openModal("login"));
+  links.appendChild(loginButton);
+
+ }else if(type==="forgot"){
+  title.textContent="Reset Password";
+  desc.textContent="Enter your email to request a password reset.";
+  pass.style.display="none";
+  action.textContent="Send Reset Link";
+  links.innerHTML="";
+
+  const backButton=document.createElement("button");
+  backButton.textContent="Back to Login";
+  backButton.addEventListener("click",()=>openModal("login"));
+  links.appendChild(backButton);
+
  }else{
-  title.textContent='Welcome Back';
-  desc.textContent='Login to your NYAYVERSE AI account.';
-  action.textContent='Continue';
-  links.innerHTML='<button onclick="openModal(\'forgot\')">Forgot Password?</button><button onclick="openModal(\'signup\')">Create Account</button>';
+  title.textContent="Welcome Back";
+  desc.textContent="Login to your NYAYVERSE AI account.";
+  action.textContent="Continue";
+  links.innerHTML="";
+
+  const forgotButton=document.createElement("button");
+  forgotButton.textContent="Forgot Password?";
+  forgotButton.addEventListener("click",()=>openModal("forgot"));
+
+  const signupButton=document.createElement("button");
+  signupButton.textContent="Create Account";
+  signupButton.addEventListener("click",()=>openModal("signup"));
+
+  links.appendChild(forgotButton);
+  links.appendChild(signupButton);
  }
 
- document.getElementById('modalBg').style.display='flex';
+ getElement("modalBg").style.display="flex";
 }
 
 function closeModal(){
- document.getElementById('modalBg').style.display='none';
+ getElement("modalBg").style.display="none";
 }
 
 function authNotice(){
- alert('This is the Login / Signup interface preview. Secure authentication, email verification and password reset will be connected in a later backend setup.');
+ alert(
+  "This is the Login / Signup interface preview. "+
+  "Secure authentication, email verification and password reset "+
+  "are not connected yet."
 }
+
+/* Close mobile navigation when Escape is pressed. */
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"){
+  closeMenu();
+  closeModal();
+ }
+});
 </script>
 </body>
 </html>
