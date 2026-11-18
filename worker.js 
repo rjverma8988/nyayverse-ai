@@ -1,0 +1,658 @@
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, x-admin-token",
+  "Access-Control-Max-Age": "86400"
+};
+
+const MAX_BODY_BYTES = 1_000_000;
+const DEFAULT_MODEL = "gemini-3.8-flash";
+
+function jsonResponse(data, status = 200, extraHeaders = {}) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json; charset=utf-8",
+      ...extraHeaders
+    }
+  });
+}
+
+function languageRule(language = "English") {
+  const value = String(language).toLowerCase();
+
+  if (value.includes("hindi") || value.includes("हिंदी")) {
+    return "Reply in clear, natural Hindi using Devanagari script.";
+  }
+
+  if (value.includes("hinglish")) {
+    return "Reply in natural Hinglish using Roman script.";
+  }
+
+  return "Reply in clear, natural English.";
+}
+
+async function readJson(request) {
+  const declaredLength = Number(
+    request.headers.get("content-length") || 0
+  );
+
+  if (declaredLength > MAX_BODY_BYTES) {
+    throw new Error("Request body is too large.");
+  }
+
+  const raw = await request.text();
+
+  if (new TextEncoder().encode(raw).length > MAX_BODY_BYTES) {
+    throw new Error("Request body is too large.");
+  }
+
+  try {
+    return JSON.parse(raw || "{}");
+  } catch {
+    throw new Error("Invalid JSON request body.");
+  }
+}
+
+function extractGeminiResult(data) {
+  const candidate = data?.candidates?.[0];
+
+  const answer = (candidate?.content?.parts || [])
+    .map(part =>
+      typeof part.text === "string" ? part.text : ""
+    )
+    .filter(Boolean)
+    .join("\n")
+    .trim();
+
+  const metadata = candidate?.groundingMetadata || {};
+
+  const sources = (metadata.groundingChunks || [])
+    .map(chunk => chunk?.web)
+    .filter(web => web?.uri)
+    .map(web => ({
+      title: web.title || web.uri,
+      url: web.uri
+    }))
+    .filter((item, index, list) =>
+      list.findIndex(x => x.url === item.url) === index
+    );
+
+  return {
+    answer: answer ||
+      "I could not generate a reliable answer. Please try rephrasing your question.",
+    sources,
+    searchQueries: metadata.webSearchQueries || [],
+    groundingUsed: Boolean(
+      metadata.searchEntryPoint ||
+      metadata.groundingChunks?.length
+    )
+  };
+}
+
+async function askGemini(
+  env,
+  prompt,
+  language = "English",
+  options = {}
+) {
+  if (!env.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY secret is missing.");
+  }
+
+  const model = env.GEMINI_MODEL || DEFAULT_MODEL;
+  const useGoogleSearch = options.googleSearch === true;
+
+  const systemPrompt = `
+You are NYAYVERSE AI, a helpful Indian legal-information
+and general-purpose assistant.
+
+${languageRule(language)}
+
+CORE RULES:
+
+- Answer the user's actual question directly and naturally.
+- Do not treat greetings or casual conversation as legal questions.
+- Gemini is the primary answer engine.
+- Use Google Search when current information, verification,
+  missing facts, or reliable source links are needed.
+- If available information is insufficient, use Google Search
+  rather than inventing an answer.
+- Prefer official government, court, regulator, university,
+  and primary-source websites.
+- Accurately represent what those sources say.
+- Never invent laws, sections, judgments, dates, statistics,
+  quotations, URLs, or sources.
+- If reliable information is unavailable, clearly say so.
+- For Indian legal questions, distinguish enacted law from
+  bills, rules, notifications, judgments, and proposals.
+- Mention jurisdiction and relevant dates when useful.
+- Do not present educational information as legal advice.
+- Explain in simple language with useful structure.
+- Do not claim to have searched the web unless Google Search
+  grounding metadata is actually returned.
+
+${prompt}
+`;
+
+  const requestBody = {
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: systemPrompt }]
+      }
+    ],
+    generationConfig: {
+      temperature: useGoogleSearch ? 1.0 : 0.4,
+      maxOutputTokens: 4096
+    }
+  };
+
+  if (useGoogleSearch) {
+    requestBody.tools = [
+      {
+        google_search: {}
+      }
+    ];
+  }
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": env.GEMINI_API_KEY
+      },
+      body: JSON.stringify(requestBody),
+      signal: AbortSignal.timeout(55000)
+    }
+  );
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const message =
+      data?.error?.message ||
+      `Gemini API request failed (${response.status}).`;
+
+    throw new Error(message);
+  }
+
+  return extractGeminiResult(data);
+}
+
+function appendSources(answer, sources) {
+  if (!sources?.length) return answer;
+
+  const lines = sources
+    .slice(0, 8)
+    .map((source, index) =>
+      `${index + 1}. ${source.title}\n   ${source.url}`
+    );
+
+  return `${answer}\n\nSources (Google Search):\n${lines.join("\n")}`;
+}
+
+/* =========================================
+   PRIMARY AI CHAT
+   Gemini API + Google Search Grounding
+   Internal Database is NOT used for chat.
+========================================= */
+
+async function handleChat(request, env) {
+  const body = await readJson(request);
+
+  const message = String(
+    body.message || body.question || ""
+  ).trim();
+
+  const language = body.language || "English";
+
+  if (!message) {
+    return jsonResponse({
+      success: false,
+      error: "Message is required."
+    }, 400);
+  }
+
+  if (message.length > 12000) {
+    return jsonResponse({
+      success: false,
+      error: "Message is too long. Maximum 12,000 characters."
+    }, 413);
+  }
+
+  // Gemini is primary.
+  // Google Search is available as a grounded tool.
+  // Gemini decides when web search is needed.
+  // D1 Database is not queried in this chat flow.
+
+  const result = await askGemini(
+    env,
+    message,
+    language,
+    { googleSearch: true }
+  );
+
+  const answer = appendSources(
+    result.answer,
+    result.sources
+  );
+
+  return jsonResponse({
+    success: true,
+    answer,
+    reply: answer,
+    response: answer,
+    message_type: "chat",
+    provider: "gemini",
+    google_search_used: result.groundingUsed,
+    search_queries: result.searchQueries,
+    sources: result.sources,
+    database_matches: 0,
+    database_used: false
+  });
+}
+
+/* =========================================
+   SECONDARY DATABASE FUNCTIONS
+   Kept for Law Library and future use.
+========================================= */
+
+async function getLegalContext(env, question) {
+  if (!env.LEGAL_DB) return [];
+
+  const words = String(question)
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .split(/\s+/)
+    .filter(word => word.length > 2)
+    .slice(0, 8);
+
+  if (!words.length) return [];
+
+  const conditions = words
+    .map(() => "(content LIKE ? OR section_title LIKE ?)")
+    .join(" OR ");
+
+  const bindings = [];
+
+  for (const word of words) {
+    bindings.push(`%${word}%`, `%${word}%`);
+  }
+
+  const result = await env.LEGAL_DB
+    .prepare(`
+      SELECT
+        document_id,
+        chunk_index,
+        section_title,
+        content
+      FROM legal_chunks
+      WHERE ${conditions}
+      ORDER BY document_id, chunk_index
+      LIMIT 5
+    `)
+    .bind(...bindings)
+    .all();
+
+  return result.results || [];
+}
+
+async function handleSearch(url, env) {
+  const query = (
+    url.searchParams.get("q") || ""
+  ).trim();
+
+  if (!query) {
+    return jsonResponse({
+      success: false,
+      error: "Search query is required."
+    }, 400);
+  }
+
+  const results = await getLegalContext(env, query);
+
+  return jsonResponse({
+    success: true,
+    count: results.length,
+    results,
+    database_used: true
+  });
+}
+
+/* =========================================
+   PDF READER
+========================================= */
+
+async function handlePDF(env) {
+  if (!env.LEGAL_PDFS) {
+    return jsonResponse({
+      success: false,
+      error: "R2 bucket binding is missing."
+    }, 500);
+  }
+
+  const object = await env.LEGAL_PDFS.get(
+    "constitution_of_india_2026.pdf"
+  );
+
+  if (!object) {
+    return jsonResponse({
+      success: false,
+      error: "PDF not found in R2."
+    }, 404);
+  }
+
+  const headers = new Headers(corsHeaders);
+
+  object.writeHttpMetadata(headers);
+
+  headers.set("Content-Type", "application/pdf");
+
+  headers.set(
+    "Content-Disposition",
+    "inline; filename=constitution_of_india_2026.pdf"
+  );
+
+  headers.set(
+    "Cache-Control",
+    "public, max-age=3600"
+  );
+
+  return new Response(object.body, { headers });
+}
+
+/* =========================================
+   LEGAL DATA INGESTION
+   Existing data is preserved.
+========================================= */
+
+async function handleIngest(request, env) {
+  if (!env.LEGAL_DB) {
+    return jsonResponse({
+      success: false,
+      error: "D1 database binding is missing."
+    }, 500);
+  }
+
+  const token = request.headers.get("x-admin-token");
+
+  if (
+    !env.INGEST_ADMIN_TOKEN ||
+    token !== env.INGEST_ADMIN_TOKEN
+  ) {
+    return jsonResponse({
+      success: false,
+      error: "Unauthorized."
+    }, 401);
+  }
+
+  const body = await readJson(request);
+
+  const documentId = Number(body.document_id);
+  const pages = body.pages;
+
+  if (!Number.isInteger(documentId) || documentId < 1) {
+    return jsonResponse({
+      success: false,
+      error: "Valid document_id is required."
+    }, 400);
+  }
+
+  if (
+    !Array.isArray(pages) ||
+    pages.length < 1 ||
+    pages.length > 5
+  ) {
+    return jsonResponse({
+      success: false,
+      error: "Send between 1 and 5 pages per batch."
+    }, 400);
+  }
+
+  const statements = [];
+
+  for (const page of pages) {
+    const pageNumber = Number(page.pageNumber);
+    const content = String(page.text || "").trim();
+
+    if (
+      !Number.isInteger(pageNumber) ||
+      pageNumber < 1 ||
+      !content ||
+      content.length > 50000
+    ) {
+      return jsonResponse({
+        success: false,
+        error: `Invalid page number or text on page ${pageNumber || "unknown"}.`
+      }, 400);
+    }
+
+    // Existing section titles are preserved.
+    statements.push(
+      env.LEGAL_DB.prepare(`
+        INSERT INTO legal_chunks
+        (document_id, chunk_index, section_title, content)
+        VALUES (?, ?, ?, ?)
+        ON CONFLICT(document_id, chunk_index)
+        DO UPDATE SET content = excluded.content
+      `).bind(
+        documentId,
+        pageNumber,
+        `Page ${pageNumber}`,
+        content
+      )
+    );
+  }
+
+  await env.LEGAL_DB.batch(statements);
+
+  return jsonResponse({
+    success: true,
+    message: "Pages ingested successfully.",
+    document_id: documentId,
+    pages_saved: pages.length,
+    page_numbers: pages.map(page =>
+      Number(page.pageNumber)
+    )
+  });
+}
+
+/* =========================================
+   LEGAL TEXT TRANSLATION
+========================================= */
+
+async function handleTranslate(request, env) {
+  if (!env.LEGAL_DB) {
+    return jsonResponse({
+      success: false,
+      error: "D1 database binding is missing."
+    }, 500);
+  }
+
+  const body = await readJson(request);
+
+  const documentId = Number(body.document_id);
+  const chunkIndex = Number(body.chunk_index);
+
+  const targetLanguage = String(
+    body.target_language || ""
+  ).trim();
+
+  if (
+    !Number.isInteger(documentId) ||
+    !Number.isInteger(chunkIndex) ||
+    !targetLanguage
+  ) {
+    return jsonResponse({
+      success: false,
+      error: "document_id, chunk_index and target_language are required."
+    }, 400);
+  }
+
+  const source = await env.LEGAL_DB
+    .prepare(`
+      SELECT content
+      FROM legal_chunks
+      WHERE document_id = ? AND chunk_index = ?
+    `)
+    .bind(documentId, chunkIndex)
+    .first();
+
+  if (!source) {
+    return jsonResponse({
+      success: false,
+      error: "Legal text not found."
+    }, 404);
+  }
+
+  const result = await askGemini(
+    env,
+    `Translate the following legal text into ${targetLanguage}.
+Preserve its legal meaning, section numbers and structure.
+Do not add or remove legal provisions.
+
+${source.content}`,
+    targetLanguage,
+    { googleSearch: false }
+  );
+
+  await env.LEGAL_DB
+    .prepare(`
+      INSERT INTO legal_translations
+      (document_id, chunk_index, target_language, translated_text)
+      VALUES (?, ?, ?, ?)
+      ON CONFLICT(document_id, chunk_index)
+      DO UPDATE SET
+        target_language = excluded.target_language,
+        translated_text = excluded.translated_text
+    `)
+    .bind(
+      documentId,
+      chunkIndex,
+      targetLanguage,
+      result.answer
+    )
+    .run();
+
+  return jsonResponse({
+    success: true,
+    document_id: documentId,
+    chunk_index: chunkIndex,
+    target_language: targetLanguage,
+    translated_text: result.answer
+  });
+}
+
+/* =========================================
+   MAIN ROUTER
+========================================= */
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: corsHeaders
+      });
+    }
+
+    try {
+      if (
+        request.method === "GET" &&
+        path === "/"
+      ) {
+        return jsonResponse({
+          success: true,
+          service: "NYAYVERSE AI Backend",
+          status: "online",
+          primary_ai: "Google Gemini API",
+          web_search: "Google Search Grounding",
+          legal_database: "secondary / not used for chat answers"
+        });
+      }
+
+      if (
+        request.method === "GET" &&
+        path === "/test-pdf"
+      ) {
+        if (!env.LEGAL_PDFS) {
+          return jsonResponse({
+            success: false,
+            error: "R2 bucket binding is missing."
+          }, 500);
+        }
+
+        const object = await env.LEGAL_PDFS.get(
+          "constitution_of_india_2026.pdf"
+        );
+
+        return jsonResponse({
+          success: true,
+          pdf_exists: Boolean(object),
+          pdf_size: object?.size || 0
+        });
+      }
+
+      if (
+        request.method === "GET" &&
+        path === "/library/pdf"
+      ) {
+        return await handlePDF(env);
+      }
+
+      if (
+        request.method === "GET" &&
+        path === "/library/search"
+      ) {
+        return await handleSearch(url, env);
+      }
+
+      if (
+        request.method === "POST" &&
+        path === "/admin/ingest-chunk"
+      ) {
+        return await handleIngest(request, env);
+      }
+
+      if (
+        request.method === "POST" &&
+        path === "/library/translate"
+      ) {
+        return await handleTranslate(request, env);
+      }
+
+      if (
+        request.method === "POST" &&
+        (path === "/" || path === "/chat")
+      ) {
+        return await handleChat(request, env);
+      }
+
+      return jsonResponse({
+        success: false,
+        error: "Route not found."
+      }, 404);
+
+    } catch (error) {
+      const message =
+        error?.message || "Internal server error.";
+
+      const status = /too large/i.test(message)
+        ? 413
+        : 500;
+
+      return jsonResponse({
+        success: false,
+        error: message
+      }, status);
+    }
+  }
+};
