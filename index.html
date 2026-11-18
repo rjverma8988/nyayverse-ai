@@ -116,6 +116,29 @@ button{cursor:pointer}
 .small-btn{padding:8px 9px;font-size:12px}
 }
 @media(min-width:721px){.mobile-menu{display:block}}
+
+/* Clean Home Layout - Existing Midnight Blue Theme */
+.home-hero{margin:30px auto 18px}
+.home-hero h1{font-size:29px;margin:0 0 9px}
+.home-prompt{font-size:20px!important;color:var(--muted);margin:0!important}
+#home .composer{position:relative;bottom:auto;padding:8px 0 4px;background:transparent}
+#home .composer-inner{max-width:850px;border-radius:16px}
+#home .composer .footer{display:none}
+#home .studio-grid{margin:18px 0 14px;gap:10px}
+#home .studio-card{min-height:94px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#home .studio-icon{font-size:23px;margin:0;color:var(--accent)}
+#home .studio-card b{font-size:12px;line-height:1.35;margin:0}
+#home .disclaimer{margin:16px 0 8px;line-height:1.5}
+@media(max-width:720px){
+ #home .home-hero{margin:24px auto 14px}
+ #home .home-hero h1{font-size:24px}
+ #home .home-prompt{font-size:18px!important}
+ #home .studio-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:14px 0 10px}
+ #home .studio-card{min-height:88px;padding:10px 5px}
+ #home .studio-card b{font-size:11px}
+ #home .composer{padding:7px 0}
+ #home .composer-inner{padding:10px}
+}
 </style>
 </head>
 <body>
@@ -159,28 +182,23 @@ button{cursor:pointer}
 </header>
 
 <section class="content" id="home">
- <div class="hero">
-  <div class="hero-logo">⚖</div>
+ <div class="hero home-hero">
   <h1>Welcome to <span class="gradient">NYAYVERSE AI</span></h1>
-  <p>Your intelligent workspace for Indian legal research and creative tools.</p>
+  <p class="home-prompt">How can I help you?</p>
  </div>
 
- <h2 class="section-heading">Creative Studio</h2>
  <div class="studio-grid">
   <button class="studio-card" onclick="openCreativeTool('image')">
-   <span class="studio-icon">🎨</span>
+   <span class="studio-icon">▧</span>
    <b>Create Image</b>
-   <small>Create an image from your text prompt. Configure your image before generation.</small>
   </button>
   <button class="studio-card" onclick="openCreativeTool('video')">
-   <span class="studio-icon">🎬</span>
+   <span class="studio-icon">▷</span>
    <b>Create Video</b>
-   <small>Prepare a video prompt, select duration and aspect ratio.</small>
   </button>
   <button class="studio-card" onclick="openCreativeTool('checker')">
-   <span class="studio-icon">🔍</span>
-   <b>Fake Image & Video Checker</b>
-   <small>Upload an image or video for a future AI authenticity and manipulation check.</small>
+   <span class="studio-icon">◈</span>
+   <b>Fake Media Checker</b>
   </button>
  </div>
 
@@ -265,7 +283,7 @@ function showHome(){
  document.getElementById('departmentPage').style.display='none';
  document.getElementById('home').style.display='block';
  const composer=document.getElementById('composer');
- document.getElementById('home').appendChild(composer);
+ document.getElementById('home').insertBefore(composer,document.querySelector('#home .studio-grid'));
  composer.style.display='block';
  window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -572,23 +590,26 @@ function openModal(type){
  if(type==='signup'){
   title.textContent='Create Account';desc.textContent='Join NYAYVERSE AI.';
   name.style.display='block';confirm.style.display='block';action.textContent='Create Account';
-  links.innerHTML='<button onclick="openModal(\'login\')">Already registered? Login</button>';
+  links.innerHTML='<button onclick="openModal(\\'login\\')">Already registered? Login</button>';
  }else if(type==='forgot'){
   title.textContent='Reset Password';desc.textContent='Enter your email to request a password reset.';
   pass.style.display='none';action.textContent='Send Reset Link';
-  links.innerHTML='<button onclick="openModal(\'login\')">Back to Login</button>';
+  links.innerHTML='<button onclick="openModal(\\'login\\')">Back to Login</button>';
  }else{
   title.textContent='Welcome Back';desc.textContent='Login to your NYAYVERSE AI account.';
   action.textContent='Continue';
-  links.innerHTML='<button onclick="openModal(\'forgot\')">Forgot Password?</button><button onclick="openModal(\'signup\')">Create Account</button>';
+  links.innerHTML='<button onclick="openModal(\\'forgot\\')">Forgot Password?</button><button onclick="openModal(\\'signup\\')">Create Account</button>';
  }
  document.getElementById('modalBg').style.display='flex';
 }
 function closeModal(){document.getElementById('modalBg').style.display='none'}
 function authNotice(){alert('This is the Login / Signup interface preview. Secure authentication, email verification and password reset will be connected in a later backend setup.')}
 
-/* Put the chat composer inside Home on first load. */
-document.getElementById('home').appendChild(document.getElementById('composer'));
+/* Place the composer directly above the three Creative Studio cards. */
+document.getElementById('home').insertBefore(
+ document.getElementById('composer'),
+ document.querySelector('#home .studio-grid')
+);
 </script>
 </body>
 </html>
