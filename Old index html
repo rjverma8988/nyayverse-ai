@@ -1,0 +1,611 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d18">
+<title>NYAYVERSE AI - Indian Legal AI</title>
+<style>
+:root{--bg:#090d18;--panel:#101827;--panel2:#172235;--border:#26344a;--text:#edf3ff;--muted:#9aa9bd;--accent:#4f8cff;--accent2:#7c5cff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:255px;background:#0c1321;border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;gap:20px;flex-shrink:0;transition:width .25s ease,padding .25s ease}
+.app.sidebar-collapsed .sidebar{width:0;min-width:0;padding-left:0;padding-right:0;border:0;overflow:hidden;gap:0}
+.logo{display:flex;align-items:center;gap:11px;padding:5px}
+.logo-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#397cff,#805cff);display:grid;place-items:center;font-size:22px;font-weight:bold}
+.logo h2{font-size:17px;margin:0;letter-spacing:1px}
+.logo small{color:var(--muted);font-size:10px}
+.new-chat{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#397cff,#765cff);color:white;font-weight:bold}
+.nav-title{font-size:11px;color:#8190a7;margin:8px 8px}
+.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#bdc9db;border:0;border-radius:9px;font-size:13px}
+.nav-item:hover,.nav-item.active{background:var(--panel2);color:white}
+.sidebar-bottom{margin-top:auto}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{min-height:68px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 25px;background:#0c1321;gap:10px}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar h3{font-size:15px;margin:0}
+.top-actions{display:flex;gap:9px;align-items:center}
+.small-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}
+.mobile-menu{display:block}
+.content{width:100%;max-width:1100px;margin:0 auto;padding:30px 22px;flex:1}
+.hero{text-align:center;margin:18px auto 28px}
+.hero-logo{width:65px;height:65px;margin:auto auto 17px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,#397cff,#805cff);box-shadow:0 8px 35px #397cff33}
+.hero h1{font-size:30px;margin:0 0 10px}
+.gradient{background:linear-gradient(90deg,#64a1ff,#a68aff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:14px;line-height:1.6}
+.section-heading{font-size:17px;margin:28px 0 12px}
+.studio-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:25px 0}
+.studio-card{background:linear-gradient(145deg,var(--panel),#111d30);border:1px solid var(--border);padding:20px;border-radius:15px;text-align:left;color:var(--text);min-height:175px;transition:.2s}
+.studio-card:hover{border-color:var(--accent);transform:translateY(-3px);background:var(--panel2)}
+.studio-icon{font-size:30px;display:block;margin-bottom:15px}
+.studio-card b{display:block;font-size:15px;margin-bottom:8px}
+.studio-card small{color:var(--muted);font-size:12px;line-height:1.6}
+.tool-panel{background:var(--panel);border:1px solid var(--border);padding:22px;border-radius:15px;margin:18px 0}
+.tool-panel h2{margin:0 0 10px}
+.tool-panel p{font-size:13px;color:var(--muted);line-height:1.6}
+.tool-label{display:block;font-size:12px;color:#c7d5eb;margin:16px 0 8px}
+.tool-input,.tool-select,.tool-textarea{width:100%;padding:13px;background:#0b1321;border:1px solid var(--border);border-radius:10px;color:white;outline:none}
+.tool-textarea{min-height:120px;resize:vertical}
+.tool-input:focus,.tool-select:focus,.tool-textarea:focus{border-color:var(--accent)}
+.tool-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.primary-btn{padding:11px 17px;border:0;border-radius:9px;background:linear-gradient(100deg,#397cff,#765cff);color:white;font-weight:bold}
+.secondary-btn{padding:11px 17px;border:1px solid var(--border);border-radius:9px;background:var(--panel2);color:white}
+.tool-status{margin-top:15px;padding:12px;background:#0b1321;border:1px solid var(--border);border-radius:9px;color:#a9c7ff;font-size:12px;line-height:1.6;white-space:pre-wrap}
+.preview{display:none;max-width:100%;max-height:360px;margin-top:15px;border-radius:12px;border:1px solid var(--border)}
+.file-info{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
+.chat-area{display:none;flex-direction:column;gap:17px;margin:25px 0}
+.message{display:flex;gap:10px;align-items:flex-start}
+.avatar{flex-shrink:0;width:32px;height:32px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;font-size:14px}
+.bubble{max-width:85%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user .bubble{background:#172d50;border-color:#294d7e}
+.user{flex-direction:row-reverse}
+.composer{position:sticky;bottom:0;padding:14px 20px 20px;background:linear-gradient(transparent,var(--bg) 20%)}
+.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #35445e;border-radius:16px;padding:12px;box-shadow:0 10px 35px #0005}
+.composer textarea{width:100%;resize:none;min-height:55px;max-height:150px;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:14px}
+.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.composer-bottom small{color:var(--muted);font-size:10px}
+.send{border:0;border-radius:10px;padding:10px 18px;color:white;background:var(--accent);font-weight:bold}
+.send:disabled{opacity:.55}
+.disclaimer{text-align:center;color:#77869b;font-size:10px;margin:14px}
+.footer{text-align:center;color:#718098;font-size:11px;padding:14px;line-height:1.8}
+.footer a{color:#91b4ff;text-decoration:none;margin:0 5px}
+.modal-bg{display:none;position:fixed;inset:0;background:#000b;align-items:center;justify-content:center;padding:18px;z-index:10}
+.modal{width:100%;max-width:420px;max-height:90vh;overflow:auto;background:#111c2d;border:1px solid var(--border);border-radius:18px;padding:25px}
+.modal h2{margin:0 0 7px}
+.modal p{font-size:12px;color:var(--muted);line-height:1.5}
+.modal input{display:block;width:100%;padding:13px;margin:12px 0;background:#0b1321;border:1px solid var(--border);border-radius:9px;color:white;outline:none}
+.modal button.primary{width:100%;padding:13px;background:var(--accent);color:white;border:0;border-radius:9px;font-weight:bold}
+.modal-links{display:flex;justify-content:space-between;gap:8px;margin-top:17px;flex-wrap:wrap}
+.modal-links button{background:none;border:0;color:#8fb4ff;font-size:12px}
+.close{float:right;background:none;border:0;color:white;font-size:22px}
+.page-panel{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:22px;margin:18px 0}
+.page-panel h2{margin-top:0}
+.page-panel p,.page-panel li{color:var(--muted);font-size:13px;line-height:1.7}
+.sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+.sub-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:13px;color:var(--text);text-align:left}
+.back-btn{margin-bottom:12px}
+.policy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.policy-grid button{background:var(--panel2);color:#bdc9db;border:1px solid var(--border);padding:12px;border-radius:9px;text-align:left;font-size:12px}
+.voice-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.voice-tools button,.speak-btn,.pdf-tools button{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px}
+.speak-btn{margin-top:10px;color:#a9c7ff}
+.pdf-tools{margin-top:20px;padding:15px;background:#0c1525;border:1px solid var(--border);border-radius:12px}
+.pdf-tools input{width:100%;padding:11px;margin:10px 0;background:#090d18;border:1px solid var(--border);border-radius:8px;color:white}
+.pdf-tools button{margin:5px 5px 5px 0}
+.pdf-status{font-size:12px;color:#a9c7ff;white-space:pre-wrap;line-height:1.6;margin-top:10px}
+@media(max-width:850px){.studio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar{width:235px}}
+@media(max-width:720px){
+.sidebar{display:none;position:fixed;z-index:8;inset:0 auto 0 0;width:270px;overflow:auto}
+.sidebar.open{display:flex}
+.mobile-menu{display:block}
+.topbar{padding:10px 13px}
+.content{padding:20px 13px}
+.hero h1{font-size:25px}
+.studio-grid{grid-template-columns:1fr;gap:10px}
+.studio-card{min-height:130px}
+.composer{padding:10px}
+.bubble{max-width:90%;font-size:13px}
+.policy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sub-grid{grid-template-columns:1fr}
+.topbar h3{font-size:13px}
+.top-actions{gap:5px}
+.small-btn{padding:8px 9px;font-size:12px}
+}
+@media(min-width:721px){.mobile-menu{display:block}}
+
+/* Home layout */
+.home-hero{margin:30px auto 18px}
+.home-hero h1{font-size:29px;margin:0 0 9px}
+.home-prompt{font-size:20px!important;color:var(--muted);margin:0!important}
+#home .composer{position:relative;bottom:auto;padding:8px 0 4px;background:transparent}
+#home .composer-inner{max-width:850px;border-radius:16px}
+#home .composer .footer{display:none}
+#home .studio-grid{margin:18px 0 14px;gap:10px}
+#home .studio-card{min-height:94px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#home .studio-icon{font-size:23px;margin:0;color:var(--accent)}
+#home .studio-card b{font-size:12px;line-height:1.35;margin:0}
+#home .disclaimer{margin:16px 0 8px;line-height:1.5}
+@media(max-width:720px){
+ #home .home-hero{margin:24px auto 14px}
+ #home .home-hero h1{font-size:24px}
+ #home .home-prompt{font-size:18px!important}
+ #home .studio-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:14px 0 10px}
+ #home .studio-card{min-height:88px;padding:10px 5px}
+ #home .studio-card b{font-size:11px}
+ #home .composer{padding:7px 0}
+ #home .composer-inner{padding:10px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="logo"><div class="logo-icon">⚖</div><div><h2>NYAYVERSE AI</h2><small>INDIAN LEGAL INTELLIGENCE</small></div></div>
+ <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+ <div>
+  <div class="nav-title">WORKSPACE</div>
+  <button class="nav-item active" onclick="showHome()">⌂ Home</button>
+  <button class="nav-item" onclick="comingSoon('Chat History')">◷ Chat History</button>
+  <button class="nav-item" onclick="comingSoon('Saved Answers')">☆ Saved Answers</button>
+  <button class="nav-item" onclick="comingSoon('Recent Searches')">⌕ Recent Searches</button>
+  <button class="nav-item" onclick="openDepartment('ai-chat')">✧ AI Chat</button>
+  <button class="nav-item" onclick="openDepartment('projects')">📁 Projects</button>
+ </div>
+ <div>
+  <div class="nav-title">ACCOUNT</div>
+  <button class="nav-item" onclick="openDepartment('account')">⚙ Account & Security</button>
+  <button class="nav-item" onclick="openModal('login')">⇥ Login / Sign Up</button>
+  <button class="nav-item" onclick="comingSoon('Sign Out')">↪ Sign Out</button>
+ </div>
+ <div class="sidebar-bottom">
+  <div class="nav-title">POLICIES</div>
+  <button class="nav-item" onclick="openDepartment('terms')">Terms & Conditions</button>
+  <button class="nav-item" onclick="openDepartment('privacy')">Privacy Policy</button>
+  <div class="nav-title">NYAYVERSE AI · BETA</div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="small-btn mobile-menu" onclick="toggleSidebar()">☰</button>
+  <h3>⚖ NYAYVERSE AI</h3>
+ </div>
+ <div class="top-actions">
+  <span style="font-size:11px;color:var(--muted)">Interface: English</span>
+  <button class="small-btn" onclick="openModal('login')">Login</button>
+ </div>
+</header>
+
+<section class="content" id="home">
+ <div class="hero home-hero">
+  <h1>Welcome to <span class="gradient">NYAYVERSE AI</span></h1>
+  <p class="home-prompt">How can I help you?</p>
+ </div>
+
+ <div class="composer" id="composer">
+  <div class="composer-inner">
+   <textarea id="question" placeholder="Ask anything about Indian law..." onkeydown="handleKey(event)"></textarea>
+   <div class="composer-bottom">
+    <small>⚖ NYAYVERSE AI · Automatic response language detection</small>
+    <div class="voice-tools">
+     <button type="button" onclick="startVoiceInput()">🎙 Voice Input</button>
+     <button type="button" onclick="stopSpeaking()">■ Stop</button>
+     <button class="send" id="sendBtn" onclick="sendMessage()">Send ➤</button>
+    </div>
+   </div>
+  </div>
+  <div class="footer">AI can make mistakes. Verify important legal information with official sources.</div>
+ </div>
+
+ <div class="studio-grid">
+  <button class="studio-card" onclick="openCreativeTool('image')">
+   <span class="studio-icon">▧</span>
+   <b>Create Image</b>
+  </button>
+  <button class="studio-card" onclick="openCreativeTool('video')">
+   <span class="studio-icon">▷</span>
+   <b>Create Video</b>
+  </button>
+  <button class="studio-card" onclick="openCreativeTool('checker')">
+   <span class="studio-icon">◈</span>
+   <b>Fake Media Checker</b>
+  </button>
+ </div>
+
+ <div class="disclaimer">NYAYVERSE AI provides general legal information for educational purposes, not professional legal advice.</div>
+ <div class="footer">© 2026 NYAYVERSE AI · <a href="#" onclick="openDepartment('policies');return false">Policies & Support</a></div>
+</section>
+
+<section class="content" id="departmentPage" style="display:none">
+ <button class="small-btn back-btn" onclick="showHome()">← Back to Home</button>
+ <div id="departmentContent"></div>
+</section>
+</main>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+ <div class="modal">
+  <button class="close" onclick="closeModal()">×</button>
+  <h2 id="modalTitle">Welcome Back</h2>
+  <p id="modalDesc">Login to your NYAYVERSE AI account.</p>
+  <input id="authName" type="text" placeholder="Full name" style="display:none">
+  <input id="authEmail" type="email" placeholder="Email address">
+  <input id="authPassword" type="password" placeholder="Password">
+  <input id="authConfirm" type="password" placeholder="Confirm password" style="display:none">
+  <button class="primary" onclick="authNotice()" id="authAction">Continue</button>
+  <div class="modal-links" id="modalLinks">
+   <button onclick="openModal('forgot')">Forgot Password?</button>
+   <button onclick="openModal('signup')">Create Account</button>
+  </div>
+  <p id="authNote">Authentication is a visual preview and is not connected yet.</p>
+ </div>
+</div>
+
+<script>
+const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
+let busy=false;
+let recognition=null;
+let ingestStopRequested=false;
+let currentTool=null;
+let selectedMediaUrl=null;
+
+const departments={
+ projects:{title:'Projects',desc:'Your legal research and saved workspaces. Project management will be connected in a future update.',items:['Create New Project','My Projects','Shared Projects'],soon:true},
+ terms:{title:'Terms & Conditions',desc:'Terms and conditions for using NYAYVERSE AI. The complete policy will be published before launch.',items:['Platform Use','User Responsibilities','Acceptable Use','Limitations of AI Responses'],soon:true},
+ privacy:{title:'Privacy Policy',desc:'Privacy information for NYAYVERSE AI. The complete policy will be published before launch.',items:['Information We Collect','How Information Is Used','Data Security','Data Retention','Your Privacy Choices'],soon:true},
+ library:{title:'Law Library',desc:'Explore Indian central and state laws, legal provisions and official legal documents.',items:['Constitution of India','Central Acts','State Acts','BNS – Bharatiya Nyaya Sanhita','BNSS – Bharatiya Nagarik Suraksha Sanhita','BSA – Bharatiya Sakshya Adhiniyam','Rules & Regulations','Consumer Law','Motor Vehicles Act','Family Law','Labour Laws']},
+ academy:{title:'Law Academy',desc:'Explore legal education, academic programmes, institutions and learning resources.',items:['3-Year LLB','5-Year Integrated BA LLB','BBA LLB / BCom LLB / BSc LLB','LLM Programmes','PhD in Law','Diploma & Certificate Courses','Colleges & Universities','Admissions & Eligibility','Course Fees','Study Material']},
+ exams:{title:'Law Exams',desc:'Prepare for legal entrance, professional qualification and government law examinations.',items:['Judiciary / Civil Judge','APO – Assistant Prosecution Officer','APP / Public Prosecutor','AIBE','UGC NET Law','CLAT PG','Legal Officer','Legal Assistant / Research Officer','Government Legal Jobs','Syllabus & Previous Papers','Mock Tests']},
+ news:{title:'Law News',desc:'A dedicated place for legal developments and official notifications. News services are not connected yet.',items:['Supreme Court Updates','High Court Updates','Government Legal Updates','New Acts & Amendments','Legal Notifications','Regulatory Updates']},
+ cases:{title:'Case Studies',desc:'Study important judgments with case background, legal issues, decisions and source references.',items:['Supreme Court Judgments','High Court Judgments','Landmark Cases','Constitution Bench Decisions','Criminal Cases','Civil Cases','Judgment PDFs & Sources']},
+ history:{title:'Law History',desc:'Explore the historical development of legal institutions and systems in India and around the world.',items:['Ancient Indian Legal Systems','Medieval Legal History','British Era','East India Company Laws','Colonial Judiciary','High Courts in India','Supreme Court History','Constitution-Making History','Modern Legal Reforms','World Legal History']},
+ evolution:{title:'Law Origins & Evolution',desc:'Understand how laws, legal ideas, rights and institutions originated and evolved over time.',items:['Origins of Law','Code of Hammurabi','Roman Law','Manusmriti & Ancient Texts','Vedic Legal Traditions','Evolution of Fundamental Rights','International Law','IPC to BNS','CrPC to BNSS','Evidence Act to BSA','Jurists & Legal Thinkers']},
+ studio:{title:'Creative Studio',desc:'Use the three creative tools available on the home screen.',items:['Create Image','Create Video','Fake Image & Video Checker']},
+ 'ai-chat':{title:'AI Chat',desc:'Ask your Indian legal questions in English, Hindi or Hinglish. The existing Gemini-powered backend connection is retained.',items:['Indian Constitution','BNS / BNSS / BSA','Police & Criminal Law','Consumer Rights','Motor Vehicles','Family & Labour Law']},
+ account:{title:'User Account & Security',desc:'Account-management interface preview. Secure account services will require authentication and database integration.',items:['Login & Sign Up','Email Verification','Forgot / Reset Password','User Profile','Change Email','Change Password','Logout','Logout from All Devices','Chat History','Saved Answers','Recent Searches','Delete Individual Chat','Clear All Chat History','Download My Data','Permanent Account Deletion'],soon:true},
+ policies:{title:'Policies & Support',desc:'Policy pages will be published with accurate terms when the related platform features are implemented.',items:['About Us','Privacy Policy','Terms & Conditions','User License Agreement','Legal Disclaimer','Cookie Policy','Security Policy','Data Retention & Deletion Policy','Contact & Grievance Redressal','Feedback','Help & Support']}
+};
+
+function toggleMenu(){document.getElementById('sidebar').classList.toggle('open')}
+function toggleSidebar(){
+ if(window.innerWidth<=720)toggleMenu();
+ else document.querySelector('.app').classList.toggle('sidebar-collapsed');
+}
+function closeMenu(){document.getElementById('sidebar').classList.remove('open')}
+
+function showHome(){
+ closeMenu();
+ document.getElementById('departmentPage').style.display='none';
+ document.getElementById('home').style.display='block';
+ const composer=document.getElementById('composer');
+ document.getElementById('home').insertBefore(composer,document.querySelector('#home .studio-grid'));
+ composer.style.display='block';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function newChat(){
+ document.getElementById('chatArea')?.remove();
+ const q=document.getElementById('question');
+ q.value='';
+ stopSpeaking();
+ showHome();
+}
+
+function comingSoon(name){alert(name+' is coming soon. This is currently an interface preview only.')}
+
+function openDepartment(key){
+ closeMenu();
+ const d=departments[key];
+ if(!d)return;
+ document.getElementById('home').style.display='none';
+ document.getElementById('departmentPage').style.display='block';
+ const composer=document.getElementById('composer');
+ document.getElementById('departmentPage').appendChild(composer);
+ composer.style.display=(key==='account'||key==='policies'||key==='terms'||key==='privacy')?'none':'block';
+
+ let html=`<div class="hero" style="text-align:left;margin:8px 0 20px"><h1><span class="gradient">${d.title}</span></h1><p>${d.desc}</p></div><div class="page-panel"><h2>${d.soon?'Available in a future update':'Explore '+d.title}</h2><div class="sub-grid">`;
+ d.items.forEach(item=>{
+  html+=`<button class="sub-card" onclick="${d.soon||key==='policies'||key==='account'||key==='terms'||key==='privacy'?'comingSoon('+JSON.stringify(item)+')':'askTopic('+JSON.stringify(item)+')'}">${item} ${d.soon?'· Coming Soon':'→'}</button>`;
+ });
+ html+='</div>';
+ if(d.soon)html+='<p><b>Coming Soon:</b> These options are displayed for planning purposes only. No external service or paid API is connected.</p>';
+ html+='</div>';
+ if(key==='ai-chat')html+='<div class="page-panel"><h2>Ask NYAYVERSE AI</h2><p>Use the question box below to start a conversation.</p></div>';
+ if(key==='library'){
+  html+=`<div class="page-panel"><h2>Constitution PDF Ingestion</h2><p>Extract text from the stored Constitution PDF and save it to the NYAYVERSE legal database in batches of five pages.</p><div class="pdf-tools"><label for="adminToken">Admin ingestion token</label><input id="adminToken" type="password" placeholder="Enter your admin token" autocomplete="off"><button onclick="startPdfIngestion()">Start PDF Ingestion</button><button onclick="stopPdfIngestion()">Stop</button><div id="pdfStatus" class="pdf-status">Ready. Enter the admin token to begin.</div></div><p><b>Note:</b> The token is sent from your browser to your Worker. Do not use this on a shared or untrusted device.</p></div>`;
+ }
+ document.getElementById('departmentContent').innerHTML=html;
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function askTopic(topic){
+ const q=document.getElementById('question');
+ q.value='Please explain '+topic+' under Indian law in clear and structured language. Include relevant legal provisions and official sources where available.';
+ const composer=document.getElementById('composer');
+ composer.style.display='block';
+ q.focus();
+ window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+}
+
+/* CREATIVE STUDIO TOOLS */
+function openCreativeTool(tool){
+ currentTool=tool;
+ const home=document.getElementById('home');
+ const dept=document.getElementById('departmentPage');
+ home.style.display='none';
+ dept.style.display='block';
+ const composer=document.getElementById('composer');
+ dept.appendChild(composer);
+ composer.style.display='none';
+
+ let html='';
+ if(tool==='image'){
+  html=`<div class="tool-panel">
+   <h2>🎨 Create Image</h2>
+   <p>Describe the image you want to create. You can configure the prompt and image format here. Image generation API will be connected in the backend setup.</p>
+   <label class="tool-label" for="imagePrompt">Image Description / Prompt</label>
+   <textarea id="imagePrompt" class="tool-textarea" placeholder="Example: Create a professional Indian legal awareness poster about fundamental rights..."></textarea>
+   <label class="tool-label" for="imageRatio">Image Aspect Ratio</label>
+   <select id="imageRatio" class="tool-select"><option value="1:1">Square (1:1)</option><option value="9:16">Portrait (9:16)</option><option value="16:9">Landscape (16:9)</option><option value="4:5">Social Post (4:5)</option></select>
+   <div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('image')">Generate Image</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div>
+   <div id="toolStatus" class="tool-status">Ready. Enter your image prompt. Actual image generation will be enabled after backend integration.</div>
+   <img id="toolPreview" class="preview" alt="Generated image preview">
+  </div>`;
+ }else if(tool==='video'){
+  html=`<div class="tool-panel">
+   <h2>🎬 Create Video</h2>
+   <p>Prepare a video description and choose your video format. Video generation service will be connected in the backend setup.</p>
+   <label class="tool-label" for="videoPrompt">Video Description / Prompt</label>
+   <textarea id="videoPrompt" class="tool-textarea" placeholder="Describe your video scene, camera movement, subject, style and background..."></textarea>
+   <label class="tool-label" for="videoRatio">Video Aspect Ratio</label>
+   <select id="videoRatio" class="tool-select"><option value="9:16">Portrait (9:16) - Shorts / Reels</option><option value="16:9">Landscape (16:9) - YouTube</option><option value="1:1">Square (1:1)</option></select>
+   <label class="tool-label" for="videoDuration">Video Duration</label>
+   <select id="videoDuration" class="tool-select"><option value="5 seconds">5 seconds</option><option value="10 seconds">10 seconds</option><option value="15 seconds">15 seconds</option><option value="30 seconds">30 seconds</option></select>
+   <div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('video')">Generate Video</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div>
+   <div id="toolStatus" class="tool-status">Ready. Enter your video prompt. Actual video generation will be enabled after backend integration.</div>
+   <video id="toolPreview" class="preview" controls></video>
+  </div>`;
+ }else{
+  html=`<div class="tool-panel">
+   <h2>🔍 Fake Image & Video Checker</h2>
+   <p>Upload an image or video file to prepare it for authenticity analysis. The checker will not claim a result until the detection backend is connected.</p>
+   <label class="tool-label" for="checkerFile">Select Image or Video</label>
+   <input id="checkerFile" class="tool-input" type="file" accept="image/*,video/*" onchange="previewCheckerFile(event)">
+   <div id="checkerFileInfo" class="file-info">No file selected.</div>
+   <img id="checkerImagePreview" class="preview" alt="Selected image preview">
+   <video id="checkerVideoPreview" class="preview" controls></video>
+   <div class="tool-actions"><button class="primary-btn" onclick="checkMedia()">Check Media</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div>
+   <div id="toolStatus" class="tool-status">Select an image or video. Authenticity analysis will be enabled after backend integration.</div>
+   <p>Important: AI-media detection is probabilistic and cannot guarantee 100% accuracy. An inconclusive result may be necessary.</p>
+  </div>`;
+ }
+ document.getElementById('departmentContent').innerHTML=`
+ <button class="small-btn back-btn" onclick="showHome()">← Back to Home</button>
+ <div class="hero" style="text-align:left;margin:8px 0 18px"><h1><span class="gradient">Creative Studio</span></h1><p>Use the selected tool below.</p></div>${html}`;
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function requestGeneration(type){
+ const prompt=document.getElementById(type==='image'?'imagePrompt':'videoPrompt')?.value.trim();
+ const status=document.getElementById('toolStatus');
+ if(!prompt){status.textContent='Please enter a description before continuing.';return}
+ const ratio=document.getElementById(type==='image'?'imageRatio':'videoRatio').value;
+ const duration=type==='video'?document.getElementById('videoDuration').value:'Not applicable';
+ status.textContent='Your prompt has been prepared successfully.\n\nPrompt: '+prompt+'\nAspect ratio: '+ratio+'\nDuration: '+duration+'\n\nGeneration service is not connected yet. The backend/API integration will be completed in the next setup. No fake result has been created.';
+}
+
+function previewCheckerFile(event){
+ const file=event.target.files?.[0];
+ const info=document.getElementById('checkerFileInfo');
+ const image=document.getElementById('checkerImagePreview');
+ const video=document.getElementById('checkerVideoPreview');
+ if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
+ image.style.display='none';video.style.display='none';
+ if(!file){info.textContent='No file selected.';return}
+ const isImage=file.type.startsWith('image/');
+ const isVideo=file.type.startsWith('video/');
+ if(!isImage&&!isVideo){event.target.value='';info.textContent='Unsupported file. Please select an image or video.';return}
+ if(file.size>100*1024*1024){event.target.value='';info.textContent='File is larger than 100 MB. Please choose a smaller file.';return}
+ selectedMediaUrl=URL.createObjectURL(file);
+ info.textContent=file.name+' · '+(file.size/1024/1024).toFixed(2)+' MB · '+file.type;
+ if(isImage){image.src=selectedMediaUrl;image.style.display='block'}
+ else{video.src=selectedMediaUrl;video.style.display='block'}
+ document.getElementById('toolStatus').textContent='File selected and preview loaded. Click Check Media when the detection service is connected.';
+}
+
+function checkMedia(){
+ const file=document.getElementById('checkerFile')?.files?.[0];
+ const status=document.getElementById('toolStatus');
+ if(!file){status.textContent='Please select an image or video first.';return}
+ status.textContent='File is selected and ready for analysis. The Fake Media Checker API is not connected yet, so no authenticity verdict can be produced at this stage. Backend integration is required.';
+}
+
+function clearTool(){
+ if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
+ const panel=document.getElementById('departmentContent');
+ if(panel){
+  panel.querySelectorAll('textarea,input[type="file"]').forEach(el=>el.value='');
+  panel.querySelectorAll('.tool-status').forEach(el=>el.textContent='Cleared. You can start again.');
+  panel.querySelectorAll('.preview').forEach(el=>{el.removeAttribute('src');el.style.display='none'});
+  const info=document.getElementById('checkerFileInfo');
+  if(info)info.textContent='No file selected.';
+ }
+}
+
+function detectLanguage(text){
+ const hindiChars=/[\u0900-\u097F]/.test(text);
+ if(hindiChars)return 'Hindi';
+ const words=text.toLowerCase().match(/[a-z]+/g)||[];
+ const hinglishWords=['kya','hai','hain','kaise','kyun','kyu','nahi','nahin','mujhe','mera','meri','aap','batao','samjhao','kanoon','kanun','dhara','police','karu','kare','hoga','hogi','karna','chahiye','mein','me','aur','agar','ka','ki','ke'];
+ const hits=words.filter(w=>hinglishWords.includes(w));
+ return hits.length>=2?'Hinglish':'English';
+}
+
+function addMessage(text,type){
+ let area=document.getElementById('chatArea');
+ if(!area){
+  area=document.createElement('div');
+  area.id='chatArea';
+  area.className='chat-area';
+  const homeVisible=document.getElementById('home').style.display!=='none';
+  const target=homeVisible?document.getElementById('home'):document.getElementById('departmentPage');
+  const composer=document.getElementById('composer');
+  if(composer.parentElement===target)target.insertBefore(area,composer);
+  else target.appendChild(area);
+ }
+ area.style.display='flex';
+ const row=document.createElement('div');
+ row.className='message '+type;
+ const avatar=document.createElement('div');
+ avatar.className='avatar';
+ avatar.textContent=type==='user'?'👤':'⚖️';
+ const bubble=document.createElement('div');
+ bubble.className='bubble';
+ bubble.textContent=text;
+ row.appendChild(avatar);row.appendChild(bubble);area.appendChild(row);
+ area.scrollIntoView({behavior:'smooth',block:'end'});
+ return bubble;
+}
+
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}}
+
+async function sendMessage(){
+ const input=document.getElementById('question');
+ const question=input.value.trim();
+ if(!question||busy)return;
+ busy=true;
+ const btn=document.getElementById('sendBtn');
+ btn.disabled=true;input.value='';
+ addMessage(question,'user');
+ const detectedLanguage=detectLanguage(question);
+ const answer=addMessage('Thinking... Please wait.','ai');
+ try{
+  const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:question,language:detectedLanguage})});
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||data.message||('Server error: '+response.status));
+  const reply=data.reply||data.response||data.answer||(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('\n');
+  answer.textContent=reply||'No response received. Please try again.';
+  const speakButton=document.createElement('button');
+  speakButton.className='speak-btn';speakButton.type='button';speakButton.textContent='🔊 Listen to Answer';
+  speakButton.onclick=()=>speakText(reply||'No response received.');
+  answer.appendChild(document.createElement('br'));answer.appendChild(speakButton);
+ }catch(error){answer.textContent='Sorry, an error occurred: '+error.message+'\n\nPlease try again after some time.'}
+ busy=false;btn.disabled=false;
+}
+
+function startVoiceInput(){
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){alert('Voice input is not supported in this browser. Please use an updated Chrome browser.');return}
+ stopSpeaking();
+ recognition=new SpeechRecognition();recognition.lang='hi-IN';recognition.interimResults=false;recognition.maxAlternatives=1;
+ recognition.onresult=(event)=>{
+  const transcript=event.results[0][0].transcript;
+  const input=document.getElementById('question');
+  input.value=(input.value+' '+transcript).trim();input.focus();
+ };
+ recognition.onerror=(event)=>alert('Voice input error: '+event.error);
+ recognition.onend=()=>{recognition=null};
+ recognition.start();
+}
+
+function speakText(text){
+ if(!('speechSynthesis' in window)){alert('Text-to-speech is not supported in this browser.');return}
+ window.speechSynthesis.cancel();
+ const utterance=new SpeechSynthesisUtterance(text);
+ const language=detectLanguage(text);
+ utterance.lang=language==='Hindi'||language==='Hinglish'?'hi-IN':'en-IN';
+ utterance.rate=0.95;window.speechSynthesis.speak(utterance);
+}
+function stopSpeaking(){
+ if('speechSynthesis' in window)window.speechSynthesis.cancel();
+ if(recognition){try{recognition.stop()}catch(e){}recognition=null}
+}
+
+function stopPdfIngestion(){
+ ingestStopRequested=true;
+ const status=document.getElementById('pdfStatus');
+ if(status)status.textContent='Stop requested. The current batch will finish first.';
+}
+
+async function startPdfIngestion(){
+ const token=document.getElementById('adminToken')?.value.trim();
+ const status=document.getElementById('pdfStatus');
+ if(!token){alert('Please enter your admin ingestion token.');return}
+ if(!window.confirm('Start extracting the Constitution PDF and saving its text into the legal database?'))return;
+ ingestStopRequested=false;status.textContent='Loading PDF processing library...';
+ try{
+  const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
+  pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
+  status.textContent='Downloading Constitution PDF...';
+  const pdfResponse=await fetch(API_URL+'library/pdf');
+  if(!pdfResponse.ok)throw new Error('PDF download failed: HTTP '+pdfResponse.status);
+  const pdfData=await pdfResponse.arrayBuffer();
+  const pdf=await pdfjs.getDocument({data:new Uint8Array(pdfData)}).promise;
+  const totalPages=pdf.numPages;let savedPages=0;
+  status.textContent=`PDF loaded: ${totalPages} pages. Starting extraction...`;
+  for(let start=1;start<=totalPages;start+=5){
+   if(ingestStopRequested)break;
+   const batch=[];const end=Math.min(start+4,totalPages);
+   for(let pageNumber=start;pageNumber<=end;pageNumber++){
+    if(ingestStopRequested)break;
+    status.textContent=`Extracting page ${pageNumber} of ${totalPages}...`;
+    const page=await pdf.getPage(pageNumber);
+    const textContent=await page.getTextContent();
+    const pageText=textContent.items.map(item=>item.str||'').join(' ').trim();
+    if(!pageText)throw new Error('No extractable text found on page '+pageNumber+'. This page may be scanned.');
+    if(pageText.length>50000)throw new Error('Page '+pageNumber+' exceeds the 50,000 character limit.');
+    batch.push({pageNumber,text:pageText});
+   }
+   if(!batch.length)break;
+   status.textContent=`Saving pages ${start}–${end} to legal database...`;
+   const saveResponse=await fetch(API_URL+'admin/ingest-chunk',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-admin-token':token},
+    body:JSON.stringify({document_id:1,pages:batch})
+   });
+   const saveData=await saveResponse.json();
+   if(!saveResponse.ok||!saveData.success)throw new Error(saveData.error||'Database save failed at page '+start);
+   savedPages+=batch.length;
+   status.textContent=`Saved ${savedPages} of ${totalPages} pages successfully.`;
+   await new Promise(resolve=>setTimeout(resolve,150));
+  }
+  status.textContent=ingestStopRequested?`Stopped. ${savedPages} pages were saved. You can restart the process.`:`Completed successfully. ${savedPages} pages saved to the legal database.`;
+ }catch(error){status.textContent='Ingestion error: '+error.message}
+}
+
+function openModal(type){
+ const title=document.getElementById('modalTitle');
+ const desc=document.getElementById('modalDesc');
+ const pass=document.getElementById('authPassword');
+ const confirm=document.getElementById('authConfirm');
+ const name=document.getElementById('authName');
+ const links=document.getElementById('modalLinks');
+ const action=document.getElementById('authAction');
+ name.style.display='none';confirm.style.display='none';pass.style.display='block';
+ if(type==='signup'){
+  title.textContent='Create Account';desc.textContent='Join NYAYVERSE AI.';
+  name.style.display='block';confirm.style.display='block';action.textContent='Create Account';
+  links.innerHTML = `<button onclick="openModal('login')">Already registered? Login</button>`;
+ }else if(type==='forgot'){
+  title.textContent='Reset Password';desc.textContent='Enter your email to request a password reset.';
+  pass.style.display='none';action.textContent='Send Reset Link';
+  links.innerHTML = `<button onclick="openModal('login')">Back to Login</button>`;
+ }else{
+  title.textContent='Welcome Back';desc.textContent='Login to your NYAYVERSE AI account.';
+  action.textContent='Continue';
+  links.innerHTML = `<button onclick="openModal('forgot')">Forgot Password?</button><button onclick="openModal('signup')">Create Account</button>`;
+ }
+ document.getElementById('modalBg').style.display='flex';
+}
+function closeModal(){document.getElementById('modalBg').style.display='none'}
+function authNotice(){alert('This is the Login / Signup interface preview. Secure authentication, email verification and password reset will be connected in a later backend setup.')}
+
+/* Composer is permanently placed below the Home heading in the HTML. */
+</script>
+</body>
+</html>
