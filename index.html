@@ -117,7 +117,7 @@ button{cursor:pointer}
 }
 @media(min-width:721px){.mobile-menu{display:block}}
 
-/* Clean Home Layout - Existing Midnight Blue Theme */
+/* Home layout */
 .home-hero{margin:30px auto 18px}
 .home-hero h1{font-size:29px;margin:0 0 9px}
 .home-prompt{font-size:20px!important;color:var(--muted);margin:0!important}
@@ -187,6 +187,21 @@ button{cursor:pointer}
   <p class="home-prompt">How can I help you?</p>
  </div>
 
+ <div class="composer" id="composer">
+  <div class="composer-inner">
+   <textarea id="question" placeholder="Ask anything about Indian law..." onkeydown="handleKey(event)"></textarea>
+   <div class="composer-bottom">
+    <small>⚖ NYAYVERSE AI · Automatic response language detection</small>
+    <div class="voice-tools">
+     <button type="button" onclick="startVoiceInput()">🎙 Voice Input</button>
+     <button type="button" onclick="stopSpeaking()">■ Stop</button>
+     <button class="send" id="sendBtn" onclick="sendMessage()">Send ➤</button>
+    </div>
+   </div>
+  </div>
+  <div class="footer">AI can make mistakes. Verify important legal information with official sources.</div>
+ </div>
+
  <div class="studio-grid">
   <button class="studio-card" onclick="openCreativeTool('image')">
    <span class="studio-icon">▧</span>
@@ -210,21 +225,6 @@ button{cursor:pointer}
  <button class="small-btn back-btn" onclick="showHome()">← Back to Home</button>
  <div id="departmentContent"></div>
 </section>
-
-<div class="composer" id="composer">
- <div class="composer-inner">
-  <textarea id="question" placeholder="Ask anything about Indian law..." onkeydown="handleKey(event)"></textarea>
-  <div class="composer-bottom">
-   <small>⚖ NYAYVERSE AI · Automatic response language detection</small>
-   <div class="voice-tools">
-    <button type="button" onclick="startVoiceInput()">🎙 Voice Input</button>
-    <button type="button" onclick="stopSpeaking()">■ Stop</button>
-    <button class="send" id="sendBtn" onclick="sendMessage()">Send ➤</button>
-   </div>
-  </div>
- </div>
- <div class="footer">AI can make mistakes. Verify important legal information with official sources.</div>
-</div>
 </main>
 </div>
 
@@ -590,26 +590,22 @@ function openModal(type){
  if(type==='signup'){
   title.textContent='Create Account';desc.textContent='Join NYAYVERSE AI.';
   name.style.display='block';confirm.style.display='block';action.textContent='Create Account';
-  links.innerHTML='<button onclick="openModal(\\'login\\')">Already registered? Login</button>';
+  links.innerHTML = `<button onclick="openModal('login')">Already registered? Login</button>`;
  }else if(type==='forgot'){
   title.textContent='Reset Password';desc.textContent='Enter your email to request a password reset.';
   pass.style.display='none';action.textContent='Send Reset Link';
-  links.innerHTML='<button onclick="openModal(\\'login\\')">Back to Login</button>';
+  links.innerHTML = `<button onclick="openModal('login')">Back to Login</button>`;
  }else{
   title.textContent='Welcome Back';desc.textContent='Login to your NYAYVERSE AI account.';
   action.textContent='Continue';
-  links.innerHTML='<button onclick="openModal(\\'forgot\\')">Forgot Password?</button><button onclick="openModal(\\'signup\\')">Create Account</button>';
+  links.innerHTML = `<button onclick="openModal('forgot')">Forgot Password?</button><button onclick="openModal('signup')">Create Account</button>`;
  }
  document.getElementById('modalBg').style.display='flex';
 }
 function closeModal(){document.getElementById('modalBg').style.display='none'}
 function authNotice(){alert('This is the Login / Signup interface preview. Secure authentication, email verification and password reset will be connected in a later backend setup.')}
 
-/* Place the composer directly above the three Creative Studio cards. */
-document.getElementById('home').insertBefore(
- document.getElementById('composer'),
- document.querySelector('#home .studio-grid')
-);
+/* Composer is permanently placed below the Home heading in the HTML. */
 </script>
 </body>
 </html>
