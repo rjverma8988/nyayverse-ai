@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090909">
-<title>NYAYVERSE AI - Indian Legal AI</title>
+<title>NYAYVERSE AI - Your AI Assistant</title>
 
 <style>
 :root{
@@ -599,6 +599,58 @@ button{cursor:pointer}
  margin-top:10px
 }
 
+/* SOURCES AND CONTEXTUAL DISCLAIMERS */
+
+.source-box{
+ margin-top:14px;
+ padding:12px;
+ background:#0d0d0c;
+ border:1px solid var(--border);
+ border-radius:10px;
+ font-size:12px;
+ white-space:normal;
+}
+
+.source-heading{
+ color:#dfc477;
+ font-weight:bold;
+ margin-bottom:9px;
+}
+
+.source-list{
+ display:flex;
+ flex-direction:column;
+ gap:8px;
+}
+
+.source-link{
+ color:#e2c477;
+ text-decoration:none;
+ overflow-wrap:anywhere;
+ line-height:1.5;
+}
+
+.source-link:hover{
+ text-decoration:underline;
+ color:#f5d98e;
+}
+
+.legal-disclaimer{
+ margin-top:13px;
+ padding:12px;
+ background:#211b10;
+ border:1px solid #80632e;
+ border-radius:10px;
+ color:#e5d5ad;
+ font-size:12px;
+ line-height:1.6;
+ white-space:pre-wrap;
+}
+
+.response-actions{
+ margin-top:10px;
+}
+
 /* HOME SCREEN */
 
 .home-hero{margin:30px auto 18px}
@@ -651,11 +703,6 @@ button{cursor:pointer}
  font-size:13px;
  line-height:1.35;
  margin:0
-}
-
-#home .disclaimer{
- margin:16px 0 8px;
- line-height:1.5
 }
 
 #home .studio-card.ai-assistant-card{
@@ -749,7 +796,7 @@ button{cursor:pointer}
   <div class="logo-icon">⚖</div>
   <div>
    <h2>NYAYVERSE AI</h2>
-   <small>INDIAN LEGAL INTELLIGENCE</small>
+   <small>YOUR AI ASSISTANT</small>
   </div>
  </div>
 
@@ -799,7 +846,7 @@ button{cursor:pointer}
 <section class="content" id="home">
 
  <div class="hero home-hero">
-  <h1>Welcome to <span class="gradient">NYAYVERSE AI</span></h1>
+  <h1>Hello! I am <span class="gradient">NYAYVERSE AI</span>, your AI assistant.</h1>
   <p class="home-prompt">How can I help you?</p>
  </div>
 
@@ -808,12 +855,12 @@ button{cursor:pointer}
 
    <textarea
     id="question"
-    placeholder="Ask anything about Indian law or any other topic..."
+    placeholder="Ask me anything..."
     onkeydown="handleKey(event)"
    ></textarea>
 
    <div class="composer-bottom">
-    <small>⚖ NYAYVERSE AI · Automatic response language detection</small>
+    <small>NYAYVERSE AI · Automatic response language detection</small>
 
     <div class="voice-tools">
      <button type="button" onclick="startVoiceInput()">🎙 Voice Input</button>
@@ -825,7 +872,7 @@ button{cursor:pointer}
   </div>
 
   <div class="footer">
-   AI can make mistakes. Verify important legal information with official sources.
+   AI can make mistakes. Verify important information using reliable sources.
   </div>
  </div>
 
@@ -851,10 +898,6 @@ button{cursor:pointer}
    <b>AI Assistant</b>
   </button>
 
- </div>
-
- <div class="disclaimer">
-  NYAYVERSE AI provides general legal information for educational purposes, not professional legal advice.
  </div>
 
  <div class="footer">
@@ -896,7 +939,6 @@ button{cursor:pointer}
    Authentication is a visual preview and is not connected yet.
   </p>
  </div>
-
 </div>
 
 <script>
@@ -913,7 +955,7 @@ const departments={
 
  projects:{
   title:'Projects',
-  desc:'Your legal research and saved workspaces. Project management will be connected in a future update.',
+  desc:'Your research and saved workspaces. Project management will be connected in a future update.',
   items:['Create New Project','My Projects','Shared Projects'],
   soon:true
  },
@@ -1055,14 +1097,14 @@ const departments={
 
  'ai-chat':{
   title:'AI Assistant',
-  desc:'Your unified NYAYVERSE AI Assistant. Ask questions naturally. Legal research, education, career guidance, reasoning and other assistant capabilities will be integrated behind this interface.',
+  desc:'Your unified NYAYVERSE AI Assistant. Ask naturally about general knowledge, education, career, health information, Indian law, research, and everyday topics.',
   items:[
-   'Indian Constitution',
-   'BNS / BNSS / BSA',
-   'Police & Criminal Law',
-   'Consumer Rights',
-   'Motor Vehicles',
-   'Family & Labour Law'
+   'General Knowledge',
+   'Education & Study',
+   'Career Guidance',
+   'Health Information',
+   'Indian Law & Legal Research',
+   'Research & Current Affairs'
   ]
  },
 
@@ -1185,12 +1227,12 @@ function openDepartment(key){
 
  let html=`
  <div class="hero" style="text-align:left;margin:8px 0 20px">
-  <h1><span class="gradient">${d.title}</span></h1>
-  <p>${d.desc}</p>
+  <h1><span class="gradient">${escapeHTML(d.title)}</span></h1>
+  <p>${escapeHTML(d.desc)}</p>
  </div>
 
  <div class="page-panel">
-  <h2>${d.soon?'Available in a future update':'Explore '+d.title}</h2>
+  <h2>${d.soon?'Available in a future update':'Explore '+escapeHTML(d.title)}</h2>
   <div class="sub-grid">
  `;
 
@@ -1209,7 +1251,7 @@ function openDepartment(key){
 
   html+=`
    <button class="sub-card" onclick="${action}">
-    ${item} ${d.soon?'· Coming Soon':'→'}
+    ${escapeHTML(item)} ${d.soon?'· Coming Soon':'→'}
    </button>
   `;
  });
@@ -1233,8 +1275,8 @@ function openDepartment(key){
    <div class="page-panel">
     <h2>Ask NYAYVERSE AI</h2>
     <p>
-     Use the question box below to start a conversation.
-     The assistant interface is connected to the existing Worker chat endpoint.
+     Ask anything in your preferred language. The assistant can handle
+     general questions and specialized topics through one chat interface.
     </p>
    </div>
   `;
@@ -1290,10 +1332,7 @@ function askTopic(topic){
 
  const q=document.getElementById('question');
 
- q.value=
-  'Please explain '+topic+
-  ' under Indian law in clear and structured language. '+
-  'Include relevant legal provisions and official sources where available.';
+ q.value='Please explain '+topic+' in clear and structured language. Include reliable sources where available.';
 
  const composer=document.getElementById('composer');
 
@@ -1346,7 +1385,7 @@ function openCreativeTool(tool){
     <textarea
      id="imagePrompt"
      class="tool-textarea"
-     placeholder="Example: Create a professional Indian legal awareness poster about fundamental rights..."
+     placeholder="Describe the image you want to create..."
     ></textarea>
 
     <label class="tool-label" for="imageRatio">Image Aspect Ratio</label>
@@ -1653,6 +1692,146 @@ function detectLanguage(text){
  return hits.length>=2?'Hinglish':'English';
 }
 
+/* SAFE TEXT AND SOURCE RENDERING */
+
+function escapeHTML(value){
+
+ return String(value??'').replace(/[&<>"']/g,char=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+ }[char]));
+}
+
+function getSafeHttpUrl(value){
+
+ if(typeof value!=='string')return null;
+
+ try{
+  const url=new URL(value);
+
+  if(url.protocol!=='https:'&&url.protocol!=='http:'){
+   return null;
+  }
+
+  return url.href;
+
+ }catch(error){
+  return null;
+}
+
+}
+
+function renderAIResponse(bubble,data,reply){
+
+ bubble.textContent=reply||'No response received. Please try again.';
+
+ /* SOURCE LINKS */
+
+ const sourceItems=Array.isArray(data.sources)
+  ?data.sources
+  :Array.isArray(data.citations)
+   ?data.citations
+   :[];
+
+ const validSources=[];
+
+ sourceItems.forEach(source=>{
+
+  if(!source||typeof source!=='object')return;
+
+  const sourceName=
+   source.name||
+   source.title||
+   source.source||
+   source.label||
+   'Source';
+
+  const sourceUrl=
+   getSafeHttpUrl(
+    source.url||
+    source.link||
+    source.href
+   );
+
+  if(!sourceUrl)return;
+
+  validSources.push({
+   name:String(sourceName),
+   url:sourceUrl
+  });
+ });
+
+ if(validSources.length){
+
+  const sourceBox=document.createElement('div');
+  sourceBox.className='source-box';
+
+  const heading=document.createElement('div');
+  heading.className='source-heading';
+  heading.textContent='Sources & References';
+
+  const list=document.createElement('div');
+  list.className='source-list';
+
+  validSources.forEach(source=>{
+
+   const link=document.createElement('a');
+
+   link.className='source-link';
+   link.href=source.url;
+   link.target='_blank';
+   link.rel='noopener noreferrer';
+   link.textContent=source.name;
+
+   list.appendChild(link);
+  });
+
+  sourceBox.appendChild(heading);
+  sourceBox.appendChild(list);
+
+  bubble.appendChild(sourceBox);
+ }
+
+ /* CONTEXTUAL LEGAL DISCLAIMER */
+
+ if(data.showLegalDisclaimer===true){
+
+  const disclaimerText=
+   typeof data.legalDisclaimer==='string'&&
+   data.legalDisclaimer.trim()
+    ?data.legalDisclaimer.trim()
+    :'This response provides general legal information and is not a substitute for advice from a qualified legal professional. Consider consulting a lawyer before taking legal action.';
+
+  const disclaimerBox=document.createElement('div');
+
+  disclaimerBox.className='legal-disclaimer';
+  disclaimerBox.textContent=disclaimerText;
+
+  bubble.appendChild(disclaimerBox);
+ }
+
+ /* READ ANSWER BUTTON */
+
+ const actions=document.createElement('div');
+ actions.className='response-actions';
+
+ const speakButton=document.createElement('button');
+
+ speakButton.className='speak-btn';
+ speakButton.type='button';
+ speakButton.textContent='🔊 Listen to Answer';
+
+ speakButton.onclick=()=>{
+  speakText(reply||'No response received.');
+ };
+
+ actions.appendChild(speakButton);
+ bubble.appendChild(actions);
+}
+
 /* CHAT */
 
 function addMessage(text,type){
@@ -1689,7 +1868,7 @@ function addMessage(text,type){
 
  const avatar=document.createElement('div');
  avatar.className='avatar';
- avatar.textContent=type==='user'?'👤':'⚖️';
+ avatar.textContent=type==='user'?'👤':'✧';
 
  const bubble=document.createElement('div');
  bubble.className='bubble';
@@ -1746,7 +1925,13 @@ async function sendMessage(){
    })
   });
 
-  const data=await response.json();
+  let data;
+
+  try{
+   data=await response.json();
+  }catch(parseError){
+   throw new Error('The server returned an invalid response. Please try again.');
+  }
 
   if(!response.ok){
    throw new Error(
@@ -1764,18 +1949,11 @@ async function sendMessage(){
     .map(p=>p.text||'')
     .join('\n');
 
-  answer.textContent=reply||'No response received. Please try again.';
-
-  const speakButton=document.createElement('button');
-
-  speakButton.className='speak-btn';
-  speakButton.type='button';
-  speakButton.textContent='🔊 Listen to Answer';
-
-  speakButton.onclick=()=>speakText(reply||'No response received.');
-
-  answer.appendChild(document.createElement('br'));
-  answer.appendChild(speakButton);
+  if(!reply){
+   answer.textContent='No response received. Please try again.';
+  }else{
+   renderAIResponse(answer,data,String(reply));
+  }
 
  }catch(error){
 
