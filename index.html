@@ -78,6 +78,19 @@ button{cursor:pointer}
 .logo h2{font-size:17px;margin:0;letter-spacing:1px}
 .logo small{color:var(--muted);font-size:10px}
 
+.sidebar-close{
+ display:none;
+ margin-left:auto;
+ width:34px;
+ height:34px;
+ border:1px solid var(--border);
+ border-radius:8px;
+ background:var(--panel2);
+ color:var(--text);
+ font-size:22px;
+ line-height:1
+}
+
 .new-chat{
  width:100%;
  padding:13px;
@@ -146,6 +159,8 @@ button{cursor:pointer}
 }
 
 .mobile-menu{display:block}
+
+.sidebar-overlay{display:none}
 
 .content{
  width:100%;
@@ -719,16 +734,46 @@ button{cursor:pointer}
 }
 
 @media(max-width:720px){
+
  .sidebar{
   display:none;
   position:fixed;
   z-index:8;
   inset:0 auto 0 0;
   width:270px;
-  overflow:auto
+  max-width:85vw;
+  overflow-y:auto;
+  box-shadow:12px 0 35px #0008
  }
 
  .sidebar.open{display:flex}
+
+ .sidebar-close{display:block}
+
+ .sidebar-overlay{
+  display:block;
+  position:fixed;
+  inset:0;
+  z-index:7;
+  background:#0009;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .2s ease,visibility .2s ease
+ }
+
+ .sidebar-overlay.open{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto
+ }
+
+ .app.sidebar-collapsed .sidebar{
+  width:270px;
+  max-width:85vw;
+  padding:22px 16px;
+  border-right:1px solid var(--border)
+ }
 
  .mobile-menu{display:block}
 
@@ -788,6 +833,8 @@ button{cursor:pointer}
 
 <body>
 
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMenu()"></div>
+
 <div class="app">
 
 <aside class="sidebar" id="sidebar">
@@ -798,6 +845,7 @@ button{cursor:pointer}
    <h2>NYAYVERSE AI</h2>
    <small>YOUR AI ASSISTANT</small>
   </div>
+  <button class="sidebar-close" type="button" onclick="closeMenu()" aria-label="Close sidebar">×</button>
  </div>
 
  <button class="new-chat" onclick="newChat()">＋ New Chat</button>
@@ -833,7 +881,7 @@ button{cursor:pointer}
 
 <header class="topbar">
  <div class="top-left">
-  <button class="small-btn mobile-menu" onclick="toggleSidebar()">☰</button>
+  <button class="small-btn mobile-menu" onclick="toggleSidebar()" aria-label="Toggle sidebar">☰</button>
   <h3>⚖ NYAYVERSE AI</h3>
  </div>
 
@@ -1097,15 +1145,7 @@ const departments={
 
  'ai-chat':{
   title:'AI Assistant',
-  desc:'Your unified NYAYVERSE AI Assistant. Ask naturally about general knowledge, education, career, health information, Indian law, research, and everyday topics.',
-  items:[
-   'General Knowledge',
-   'Education & Study',
-   'Career Guidance',
-   'Health Information',
-   'Indian Law & Legal Research',
-   'Research & Current Affairs'
-  ]
+  desc:'Your unified NYAYVERSE AI Assistant. Ask naturally about any topic, in your preferred language. The assistant is designed to handle general knowledge, education, career, health information, Indian law, research and everyday conversations through one chat interface.'
  },
 
  account:{
@@ -1151,21 +1191,61 @@ const departments={
 
 };
 
+/* SIDEBAR CONTROLS */
+
 function toggleMenu(){
- document.getElementById('sidebar').classList.toggle('open');
+ toggleSidebar();
 }
 
 function toggleSidebar(){
+
+ const sidebar=document.getElementById('sidebar');
+ const overlay=document.getElementById('sidebarOverlay');
+ const app=document.querySelector('.app');
+
  if(window.innerWidth<=720){
-  toggleMenu();
+
+  const isOpen=sidebar.classList.contains('open');
+
+  if(isOpen){
+   closeMenu();
+  }else{
+   sidebar.classList.add('open');
+   overlay.classList.add('open');
+  }
+
  }else{
-  document.querySelector('.app').classList.toggle('sidebar-collapsed');
+
+  app.classList.toggle('sidebar-collapsed');
+
  }
 }
 
 function closeMenu(){
+
  document.getElementById('sidebar').classList.remove('open');
+ document.getElementById('sidebarOverlay').classList.remove('open');
+
 }
+
+document.addEventListener('keydown',function(event){
+
+ if(event.key==='Escape'){
+  closeMenu();
+  closeModal();
+ }
+
+});
+
+window.addEventListener('resize',function(){
+
+ if(window.innerWidth>720){
+  closeMenu();
+ }
+
+});
+
+/* HOME AND DEPARTMENTS */
 
 function showHome(){
 
@@ -1230,56 +1310,68 @@ function openDepartment(key){
   <h1><span class="gradient">${escapeHTML(d.title)}</span></h1>
   <p>${escapeHTML(d.desc)}</p>
  </div>
-
- <div class="page-panel">
-  <h2>${d.soon?'Available in a future update':'Explore '+escapeHTML(d.title)}</h2>
-  <div class="sub-grid">
  `;
 
- d.items.forEach(item=>{
-
-  const isPreview=
-   d.soon||
-   key==='policies'||
-   key==='account'||
-   key==='terms'||
-   key==='privacy';
-
-  const action=isPreview
-   ?'comingSoon('+JSON.stringify(item)+')'
-   :'askTopic('+JSON.stringify(item)+')';
-
-  html+=`
-   <button class="sub-card" onclick="${action}">
-    ${escapeHTML(item)} ${d.soon?'· Coming Soon':'→'}
-   </button>
-  `;
- });
-
- html+='</div>';
-
- if(d.soon){
-  html+=`
-   <p>
-    <b>Coming Soon:</b>
-    These options are displayed for planning purposes only.
-    No external service or paid API is connected.
-   </p>
-  `;
- }
-
- html+='</div>';
+ /*
+  * Unified AI Assistant:
+  * No separate topic categories or selectable modes.
+  * Other existing departments retain their original item lists.
+  */
 
  if(key==='ai-chat'){
+
   html+=`
    <div class="page-panel">
     <h2>Ask NYAYVERSE AI</h2>
     <p>
-     Ask anything in your preferred language. The assistant can handle
-     general questions and specialized topics through one chat interface.
+     Ask anything in your preferred language.
+     Continue your conversation naturally through one unified AI Assistant.
     </p>
    </div>
   `;
+
+ }else{
+
+  html+=`
+   <div class="page-panel">
+    <h2>${d.soon?'Available in a future update':'Explore '+escapeHTML(d.title)}</h2>
+    <div class="sub-grid">
+  `;
+
+  (d.items||[]).forEach(item=>{
+
+   const isPreview=
+    d.soon||
+    key==='policies'||
+    key==='account'||
+    key==='terms'||
+    key==='privacy';
+
+   const action=isPreview
+    ?'comingSoon('+JSON.stringify(item)+')'
+    :'askTopic('+JSON.stringify(item)+')';
+
+   html+=`
+    <button class="sub-card" onclick="${action}">
+     ${escapeHTML(item)} ${d.soon?'· Coming Soon':'→'}
+    </button>
+   `;
+  });
+
+  html+='</div>';
+
+  if(d.soon){
+   html+=`
+    <p>
+     <b>Coming Soon:</b>
+     These options are displayed for planning purposes only.
+     No external service or paid API is connected.
+    </p>
+   `;
+  }
+
+  html+='</div>';
+
  }
 
  if(key==='library'){
@@ -1379,7 +1471,7 @@ function openCreativeTool(tool){
     </p>
 
     <label class="tool-label" for="imagePrompt">
-     Image Description / Prompt
+     Image Description
     </label>
 
     <textarea
@@ -1522,11 +1614,12 @@ function openCreativeTool(tool){
   `;
  }
 
- document.getElementById('departmentContent').innerHTML=`
+ /*
+  * The department page already has one Back to Home button.
+  * Do not inject another button into Creative Studio.
+  */
 
-  <button class="small-btn back-btn" onclick="showHome()">
-   ← Back to Home
-  </button>
+ document.getElementById('departmentContent').innerHTML=`
 
   <div class="hero" style="text-align:left;margin:8px 0 18px">
    <h1><span class="gradient">Creative Studio</span></h1>
@@ -1720,7 +1813,7 @@ function getSafeHttpUrl(value){
 
  }catch(error){
   return null;
-}
+ }
 
 }
 
