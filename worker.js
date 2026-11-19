@@ -1,758 +1,587 @@
+/* ---------------- NYAYVERSE AUTH SYSTEM ---------------- */
 
-/**
- * NYAYVERSE AI — API-FIRST WORKER
- * Keep index.html unchanged.
- *
- * Primary AI: Google Gemini
- * Web search: Gemini Google Search Grounding
- * Image / Video: fal.ai Queue API
- * Fake media detection: Reality Defender
- * Database: NOT used for AI answers, Library search or translation.
- * D1/R2: retained only for existing PDF storage and admin ingestion.
- *
- * Required secrets:
- * GEMINI_API_KEY
- * FAL_KEY
- * REALITY_DEFENDER_API_KEY
- * INGEST_ADMIN_TOKEN
- *
- * Optional Worker variables:
- * GEMINI_MODEL       = gemini-3.8-flash
- * FAL_IMAGE_MODEL    = fal-ai/flux/dev
- * FAL_VIDEO_MODEL    = fal-ai/kling-video/v2.1/standard
- */
+const AUTH_SESSION_DAYS = 30;
+const AUTH_TOKEN_MINUTES = 30;
+const AUTH_PASSWORD_ITERATIONS = 310000;
 
-const MAX_JSON_BYTES = 25 * 1024 * 1024;
-const MAX_MEDIA_BYTES = 18 * 1024 * 1024;
-const DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
-const REALITY_BASE = "https://api.prd.realitydefender.xyz";
-
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, x-admin-token",
-  "Access-Control-Max-Age": "86400"
-};
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      ...CORS_HEADERS,
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store"
-    }
-  });
+function authRandomToken() {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  return Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("");
 }
 
-function errorResponse(error, status = 500) {
-  return json({
-    success: false,
-    error: String(error || "Internal server error")
-  }, status);
+async function authHash(value) {
+  const data = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(digest), b =>
+    b.toString(16).padStart(2, "0")
+  ).join("");
 }
 
-async function readBody(request, maxBytes = MAX_JSON_BYTES) {
-  const length = Number(request.headers.get("content-length") || 0);
-  if (length > maxBytes) throw new Error("Request body is too large.");
-
-  const raw = await request.text();
-  if (new TextEncoder().encode(raw).length > maxBytes) {
-    throw new Error("Request body is too large.");
-  }
-
-  try {
-    return JSON.parse(raw || "{}");
-  } catch {
-    throw new Error("Invalid JSON request.");
-  }
-}
-
-function languageInstruction(language) {
-  const value = String(language || "").toLowerCase();
-
-  if (value.includes("hindi") || value.includes("हिंदी")) {
-    return "Respond in clear, natural Hindi using Devanagari script.";
-  }
-  if (value.includes("hinglish")) {
-    return "Respond in natural Hinglish using Roman script.";
-  }
-  return "Respond in clear, natural English.";
-}
-
-function extractGemini(data) {
-  const candidate = data?.candidates?.[0];
-  const parts = candidate?.content?.parts || [];
-
-  const answer = parts
-    .map(p => typeof p.text === "string" ? p.text : "")
-    .filter(Boolean)
-    .join("\n")
-    .trim();
-
-  const metadata = candidate?.groundingMetadata || {};
-  const sources = (metadata.groundingChunks || [])
-    .map(item => item?.web)
-    .filter(item => item?.uri)
-    .map(item => ({
-      title: item.title || item.uri,
-      url: item.uri
-    }))
-    .filter((item, index, arr) =>
-      arr.findIndex(x => x.url === item.url) === index
-    );
-
-  return {
-    answer,
-    sources,
-    searchQueries: metadata.webSearchQueries || [],
-    searchUsed: Boolean(
-      metadata.groundingChunks?.length ||
-      metadata.searchEntryPoint
-    )
-  };
-}
-
-/* ---------------- GEMINI + GOOGLE SEARCH ---------------- */
-
-async function gemini(env, prompt, language = "English", search = true) {
-  if (!env.GEMINI_API_KEY) {
-    throw new Error("GEMINI_API_KEY secret is missing.");
-  }
-
-  const model = env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
-
-  const system = `
-You are NYAYVERSE AI, an Indian legal information and general
-knowledge assistant.
-
-${languageInstruction(language)}
-
-Rules:
-- Answer the actual question directly.
-- Do not treat greetings as legal questions.
-- Never invent laws, sections, case names, judgments, dates,
-  statistics, citations, quotations or source URLs.
-- Prefer official Indian government, Parliament, Supreme Court,
-  High Courts, regulators and other primary sources.
-- Distinguish enacted law from bills, draft rules, proposals,
-  notifications and court judgments.
-- Mention the relevant jurisdiction and date where useful.
-- If a fact is uncertain, say so clearly.
-- Do not claim to have searched unless search grounding metadata
-  is returned by the API.
-- Do not use or claim access to NYAYVERSE's D1 database.
-- This is general educational information, not legal advice.
-
-USER REQUEST:
-${prompt}
-`;
-
-  const payload = {
-    contents: [{
-      role: "user",
-      parts: [{ text: system }]
-    }],
-    generationConfig: {
-      temperature: search ? 1 : 0.4,
-      maxOutputTokens: 4096
-    }
-  };
-
-  if (search) {
-    payload.tools = [{ google_search: {} }];
-  }
-
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": env.GEMINI_API_KEY
-      },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(55000)
-    }
+async function authPasswordHash(password, salt) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(password),
+    "PBKDF2",
+    false,
+    ["deriveBits"]
   );
 
-  const data = await response.json().catch(() => ({}));
+  const bits = await crypto.subtle.deriveBits({
+    name: "PBKDF2",
+    salt: new TextEncoder().encode(salt),
+    iterations: AUTH_PASSWORD_ITERATIONS,
+    hash: "SHA-256"
+  }, key, 256);
 
-  if (!response.ok) {
-    throw new Error(
-      data?.error?.message || `Gemini API error: ${response.status}`
-    );
+  return Array.from(new Uint8Array(bits), b =>
+    b.toString(16).padStart(2, "0")
+  ).join("");
+}
+
+function authEqual(a, b) {
+  a = String(a || "");
+  b = String(b || "");
+  if (a.length !== b.length) return false;
+
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
+}
+
+function authNow() {
+  return new Date().toISOString();
+}
+
+function authFutureMinutes(minutes) {
+  return new Date(Date.now() + minutes * 60000).toISOString();
+}
+
+function authFutureDays(days) {
+  return new Date(Date.now() + days * 86400000).toISOString();
+}
+
+async function ensureAuthSchema(env) {
+  if (!env.LEGAL_DB) throw new Error("LEGAL_DB D1 binding is missing.");
+
+  await env.LEGAL_DB.batch([
+    env.LEGAL_DB.prepare(`
+      CREATE TABLE IF NOT EXISTS nyay_users (
+        id TEXT PRIMARY KEY,
+        email TEXT NOT NULL UNIQUE,
+        password_hash TEXT NOT NULL,
+        password_salt TEXT NOT NULL,
+        email_verified INTEGER NOT NULL DEFAULT 0,
+        status TEXT NOT NULL DEFAULT 'active',
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        last_login_at TEXT
+      )
+    `),
+    env.LEGAL_DB.prepare(`
+      CREATE TABLE IF NOT EXISTS nyay_sessions (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        token_hash TEXT NOT NULL UNIQUE,
+        expires_at TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        revoked_at TEXT,
+        FOREIGN KEY(user_id) REFERENCES nyay_users(id)
+      )
+    `),
+    env.LEGAL_DB.prepare(`
+      CREATE TABLE IF NOT EXISTS nyay_email_tokens (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        token_hash TEXT NOT NULL UNIQUE,
+        purpose TEXT NOT NULL,
+        expires_at TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        used_at TEXT,
+        FOREIGN KEY(user_id) REFERENCES nyay_users(id)
+      )
+    `),
+    env.LEGAL_DB.prepare(`
+      CREATE INDEX IF NOT EXISTS idx_nyay_sessions_user
+      ON nyay_sessions(user_id)
+    `),
+    env.LEGAL_DB.prepare(`
+      CREATE INDEX IF NOT EXISTS idx_nyay_email_tokens_user
+      ON nyay_email_tokens(user_id, purpose)
+    `)
+  ]);
+}
+
+async function authSendEmail(env, to, subject, html) {
+  if (!env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY secret is missing.");
+  }
+  if (!env.AUTH_EMAIL_FROM) {
+    throw new Error("AUTH_EMAIL_FROM secret is missing.");
   }
 
-  const result = extractGemini(data);
-  if (!result.answer) {
-    throw new Error("Gemini returned an empty response.");
-  }
-
-  return result;
-}
-
-function sourceList(sources) {
-  return (sources || []).slice(0, 10).map((source, index) => ({
-    number: index + 1,
-    title: source.title,
-    url: source.url
-  }));
-}
-
-function withSources(answer, sources) {
-  if (!sources?.length) return answer;
-
-  return answer + "\n\nSources:\n" +
-    sources.slice(0, 8).map((s, i) =>
-      `${i + 1}. ${s.title}\n${s.url}`
-    ).join("\n");
-}
-
-/* ---------------- CHAT ---------------- */
-
-async function handleChat(request, env) {
-  const body = await readBody(request);
-  const message = String(body.message || body.question || "").trim();
-  const language = body.language || "English";
-
-  if (!message) return errorResponse("Message is required.", 400);
-  if (message.length > 12000) {
-    return errorResponse("Message exceeds 12,000 characters.", 413);
-  }
-
-  // Gemini is the primary AI.
-  // Google Search Grounding is enabled.
-  // No D1 or R2 query occurs in this function.
-  const result = await gemini(env, message, language, true);
-  const reply = withSources(result.answer, result.sources);
-
-  return json({
-    success: true,
-    answer: reply,
-    reply,
-    response: reply,
-    provider: "gemini",
-    google_search_used: result.searchUsed,
-    search_queries: result.searchQueries,
-    sources: sourceList(result.sources),
-    database_used: false
-  });
-}
-
-/* ---------------- LAW LIBRARY SEARCH ---------------- */
-
-async function handleLibrarySearch(request, env) {
-  const body = await readBody(request);
-  const query = String(body.query || body.q || "").trim();
-
-  if (!query) return errorResponse("Search query is required.", 400);
-
-  const prompt = `
-Search for this Indian legal topic using Google Search.
-Prioritize official sources such as India Code, Legislative
-Department, e-Gazette, Supreme Court of India, High Courts,
-India's government ministries and statutory regulators.
-
-Topic: ${query}
-
-Return:
-1. A simple explanation of the topic.
-2. Relevant Act / Rules / Regulations / constitutional provisions,
-   only when verified.
-3. Relevant official documents or judgments.
-4. Effective date or current status where available.
-5. Direct source URLs.
-
-Clearly label anything that could not be verified.
-`;
-
-  const result = await gemini(env, prompt, body.language || "English", true);
-
-  return json({
-    success: true,
-    query,
-    answer: result.answer,
-    results: sourceList(result.sources),
-    sources: sourceList(result.sources),
-    search_queries: result.searchQueries,
-    provider: "gemini_google_search",
-    database_used: false
-  });
-}
-
-/* ---------------- LAW NEWS ---------------- */
-
-async function handleNews(request, env) {
-  const body = await readBody(request);
-  const topic = String(body.topic || body.query || "latest Indian legal updates").trim();
-
-  const prompt = `
-Find the latest Indian legal news and updates about:
-${topic}
-
-Use Google Search. Prioritize official court websites,
-government departments, India Code, e-Gazette and regulators.
-For each update include:
-- Headline
-- What happened
-- Date of event / notification / judgment
-- Current status
-- Official source URL
-
-Do not present an old report as breaking news.
-If the date or current status cannot be verified, say so.
-`;
-
-  const result = await gemini(env, prompt, body.language || "English", true);
-
-  return json({
-    success: true,
-    answer: result.answer,
-    news: result.answer,
-    sources: sourceList(result.sources),
-    search_queries: result.searchQueries,
-    provider: "gemini_google_search",
-    database_used: false
-  });
-}
-
-/* ---------------- TRANSLATION ---------------- */
-
-async function handleTranslate(request, env) {
-  const body = await readBody(request);
-  const text = String(body.text || body.content || "").trim();
-  const target = String(body.target_language || body.targetLanguage || "").trim();
-
-  if (!text) return errorResponse("Text to translate is required.", 400);
-  if (!target) return errorResponse("Target language is required.", 400);
-  if (text.length > 20000) {
-    return errorResponse("Text exceeds 20,000 characters.", 413);
-  }
-
-  const result = await gemini(
-    env,
-    `Translate the following text into ${target}.
-Preserve legal meaning, section numbers, citations, headings,
-formatting and defined terms. Do not add or remove provisions.
-If a legal term has no exact equivalent, retain the original
-term in brackets with a clear translation.
-
-TEXT:
-${text}`,
-    target,
-    false
-  );
-
-  return json({
-    success: true,
-    translated_text: result.answer,
-    translation: result.answer,
-    target_language: target,
-    provider: "gemini",
-    database_used: false
-  });
-}
-
-/* ---------------- FAL.AI HELPERS ---------------- */
-
-function validFalModel(model) {
-  return typeof model === "string" &&
-    /^[a-zA-Z0-9._-]+(\/[a-zA-Z0-9._-]+){1,4}$/.test(model);
-}
-
-function aspectDimensions(ratio) {
-  const values = {
-    "1:1": { width: 1024, height: 1024 },
-    "9:16": { width: 768, height: 1365 },
-    "16:9": { width: 1365, height: 768 },
-    "4:5": { width: 1024, height: 1280 }
-  };
-  return values[ratio] || values["1:1"];
-}
-
-async function falSubmit(env, model, input) {
-  if (!env.FAL_KEY) throw new Error("FAL_KEY secret is missing.");
-  if (!validFalModel(model)) throw new Error("Invalid fal.ai model ID.");
-
-  const response = await fetch(`https://queue.fal.run/${model}`, {
+  const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
-      "Authorization": `Key ${env.FAL_KEY}`,
-      "Content-Type": "application/json",
-      "X-Fal-Store-IO": "1"
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(input),
-    signal: AbortSignal.timeout(55000)
+    body: JSON.stringify({
+      from: env.AUTH_EMAIL_FROM,
+      to: [to],
+      subject,
+      html
+    }),
+    signal: AbortSignal.timeout(30000)
   });
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(
-      data?.detail || data?.error || `fal.ai submit failed: ${response.status}`
-    );
+    throw new Error(data.message || `Email delivery failed: ${response.status}`);
   }
-
-  return { ...data, model };
+  return data;
 }
 
-async function handleCreateImage(request, env) {
-  const body = await readBody(request);
-  const prompt = String(body.prompt || body.description || "").trim();
-  const ratio = String(body.aspect_ratio || body.ratio || "1:1");
+async function authCreateEmailToken(env, userId, purpose) {
+  const token = authRandomToken();
+  const id = crypto.randomUUID();
 
-  if (!prompt) return errorResponse("Image prompt is required.", 400);
-  if (prompt.length > 4000) return errorResponse("Prompt is too long.", 413);
+  await env.LEGAL_DB.prepare(`
+    INSERT INTO nyay_email_tokens
+      (id, user_id, token_hash, purpose, expires_at, created_at)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).bind(
+    id,
+    userId,
+    await authHash(token),
+    purpose,
+    authFutureMinutes(AUTH_TOKEN_MINUTES),
+    authNow()
+  ).run();
 
-  const model = env.FAL_IMAGE_MODEL || "fal-ai/flux/dev";
-  const dimensions = aspectDimensions(ratio);
-
-  const job = await falSubmit(env, model, {
-    prompt,
-    image_size: dimensions,
-    num_images: 1,
-    enable_safety_checker: true
-  });
-
-  return json({
-    success: true,
-    provider: "fal.ai",
-    type: "image",
-    model,
-    status: job.status || "IN_QUEUE",
-    request_id: job.request_id,
-    status_url: job.status_url,
-    response_url: job.response_url,
-    message: "Image generation request submitted."
-  }, 202);
+  return token;
 }
 
-async function handleCreateVideo(request, env) {
-  const body = await readBody(request);
-  const prompt = String(body.prompt || body.description || "").trim();
-  const ratio = String(body.aspect_ratio || body.ratio || "9:16");
-  const durationRaw = String(body.duration || "5").toLowerCase();
-  const duration = Number.parseInt(durationRaw, 10);
+async function authSendVerification(env, user) {
+  const token = await authCreateEmailToken(env, user.id, "verify");
+  const base = String(env.PUBLIC_APP_URL || "").replace(/\/+$/, "");
 
-  if (!prompt) return errorResponse("Video prompt is required.", 400);
-  if (prompt.length > 4000) return errorResponse("Prompt is too long.", 413);
-  if (![5, 10, 15, 30].includes(duration)) {
-    return errorResponse("Duration must be 5, 10, 15 or 30 seconds.", 400);
-  }
+  if (!base) throw new Error("PUBLIC_APP_URL secret is missing.");
 
-  const model = env.FAL_VIDEO_MODEL || "fal-ai/kling-video/v2.1/standard";
+  const link = `${base}/?auth=verify&token=${encodeURIComponent(token)}`;
 
-  // Video model input schemas vary. Configure FAL_VIDEO_MODEL
-  // to a model whose schema accepts prompt, aspect_ratio, duration.
-  const job = await falSubmit(env, model, {
-    prompt,
-    aspect_ratio: ratio,
-    duration
-  });
-
-  return json({
-    success: true,
-    provider: "fal.ai",
-    type: "video",
-    model,
-    status: job.status || "IN_QUEUE",
-    request_id: job.request_id,
-    status_url: job.status_url,
-    response_url: job.response_url,
-    message: "Video generation request submitted."
-  }, 202);
-}
-
-async function handleFalStatus(url, env) {
-  if (!env.FAL_KEY) throw new Error("FAL_KEY secret is missing.");
-
-  const model = url.searchParams.get("model") || "";
-  const requestId = url.searchParams.get("request_id") || "";
-
-  if (!validFalModel(model)) return errorResponse("Valid model parameter is required.", 400);
-  if (!/^[a-zA-Z0-9-]+$/.test(requestId)) {
-    return errorResponse("Valid request_id is required.", 400);
-  }
-
-  const base = `https://queue.fal.run/${model}/requests/${requestId}`;
-
-  const statusResponse = await fetch(`${base}/status`, {
-    headers: { "Authorization": `Key ${env.FAL_KEY}` }
-  });
-  const statusData = await statusResponse.json().catch(() => ({}));
-
-  if (!statusResponse.ok) {
-    throw new Error(statusData?.detail || `fal.ai status error: ${statusResponse.status}`);
-  }
-
-  if (statusData.status !== "COMPLETED") {
-    return json({
-      success: true,
-      status: statusData.status,
-      request_id: requestId,
-      queue_position: statusData.queue_position ?? null,
-      result: null
-    });
-  }
-
-  if (statusData.error) {
-    return json({
-      success: false,
-      status: "FAILED",
-      error: statusData.error
-    }, 502);
-  }
-
-  const resultResponse = await fetch(base, {
-    headers: { "Authorization": `Key ${env.FAL_KEY}` }
-  });
-  const resultData = await resultResponse.json().catch(() => ({}));
-
-  if (!resultResponse.ok) {
-    throw new Error(resultData?.detail || `fal.ai result error: ${resultResponse.status}`);
-  }
-
-  return json({
-    success: true,
-    status: "COMPLETED",
-    request_id: requestId,
-    result: resultData
-  });
-}
-
-/* ---------------- REALITY DEFENDER ---------------- */
-
-function decodeBase64(value) {
-  const clean = String(value || "").replace(/^data:[^,]+,/, "");
-  const binary = atob(clean);
-  const bytes = new Uint8Array(binary.length);
-
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return bytes;
-}
-
-async function handleMediaCheck(request, env) {
-  if (!env.REALITY_DEFENDER_API_KEY) {
-    throw new Error("REALITY_DEFENDER_API_KEY secret is missing.");
-  }
-
-  const body = await readBody(request);
-  const fileName = String(body.file_name || body.filename || "upload.bin");
-  const base64 = body.file_base64 || body.base64;
-  const mimeType = String(body.mime_type || body.content_type || "application/octet-stream");
-
-  if (!base64) return errorResponse("file_base64 is required.", 400);
-  if (!/^[a-zA-Z0-9._ -]{1,160}$/.test(fileName)) {
-    return errorResponse("Invalid file name.", 400);
-  }
-
-  const bytes = decodeBase64(base64);
-  if (!bytes.length) return errorResponse("Empty media file.", 400);
-  if (bytes.length > MAX_MEDIA_BYTES) {
-    return errorResponse("Media file exceeds 18 MB. Choose a smaller file.", 413);
-  }
-
-  const headers = {
-    "X-API-KEY": env.REALITY_DEFENDER_API_KEY,
-    "Content-Type": "application/json"
-  };
-
-  // Step 1: request a signed upload URL.
-  const signedResponse = await fetch(
-    `${REALITY_BASE}/api/files/aws-presigned`,
-    {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ fileName }),
-      signal: AbortSignal.timeout(30000)
-    }
+  await authSendEmail(
+    env,
+    user.email,
+    "Verify your NYAYVERSE AI account",
+    `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto">
+      <h2>Welcome to NYAYVERSE AI</h2>
+      <p>Click below to verify your email address.</p>
+      <p><a href="${link}" style="display:inline-block;padding:12px 20px;background:#b89035;color:#111;text-decoration:none;border-radius:6px">Verify Email</a></p>
+      <p>This link expires in 30 minutes. If you did not create this account, ignore this email.</p>
+    </div>`
   );
+}
 
-  const signedData = await signedResponse.json().catch(() => ({}));
-  if (!signedResponse.ok) {
-    throw new Error(
-      signedData?.message || signedData?.error ||
-      `Reality Defender signed URL error: ${signedResponse.status}`
-    );
+async function authCreateSession(env, user) {
+  const token = authRandomToken();
+  const id = crypto.randomUUID();
+
+  await env.LEGAL_DB.prepare(`
+    INSERT INTO nyay_sessions
+      (id, user_id, token_hash, expires_at, created_at)
+    VALUES (?, ?, ?, ?, ?)
+  `).bind(
+    id,
+    user.id,
+    await authHash(token),
+    authFutureDays(AUTH_SESSION_DAYS),
+    authNow()
+  ).run();
+
+  await env.LEGAL_DB.prepare(`
+    UPDATE nyay_users SET last_login_at = ?, updated_at = ? WHERE id = ?
+  `).bind(authNow(), authNow(), user.id).run();
+
+  return {
+    token,
+    expires_at: authFutureDays(AUTH_SESSION_DAYS)
+  };
+}
+
+async function authGetUser(request, env) {
+  const header = request.headers.get("Authorization") || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
+
+  if (!token || token.length > 200) return null;
+
+  const tokenHash = await authHash(token);
+  const row = await env.LEGAL_DB.prepare(`
+    SELECT
+      u.id, u.email, u.email_verified, u.status,
+      s.id AS session_id, s.expires_at
+    FROM nyay_sessions s
+    JOIN nyay_users u ON u.id = s.user_id
+    WHERE s.token_hash = ?
+      AND s.revoked_at IS NULL
+      AND s.expires_at > ?
+      AND u.status = 'active'
+    LIMIT 1
+  `).bind(tokenHash, authNow()).first();
+
+  return row || null;
+}
+
+async function authSignup(request, env) {
+  await ensureAuthSchema(env);
+  const body = await readBody(request, 20000);
+
+  const email = String(body.email || "").trim().toLowerCase();
+  const password = String(body.password || "");
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
+    return errorResponse("Enter a valid email address.", 400);
+  }
+  if (password.length < 10 || password.length > 128) {
+    return errorResponse("Password must be 10 to 128 characters.", 400);
   }
 
-  const signedUrl =
-    signedData?.response?.signedUrl ||
-    signedData?.signedUrl;
+  const existing = await env.LEGAL_DB.prepare(
+    "SELECT id FROM nyay_users WHERE email = ? LIMIT 1"
+  ).bind(email).first();
 
-  const requestId =
-    signedData?.response?.requestId ||
-    signedData?.requestId ||
-    signedData?.response?.id;
-
-  if (!signedUrl) {
-    throw new Error("Reality Defender did not return a signed upload URL.");
+  if (existing) {
+    return errorResponse("An account with this email already exists. Please log in or reset your password.", 409);
   }
 
-  // Step 2: upload raw file bytes to the signed URL.
-  const uploadResponse = await fetch(signedUrl, {
-    method: "PUT",
-    headers: { "Content-Type": mimeType },
-    body: bytes,
-    signal: AbortSignal.timeout(55000)
-  });
+  const id = crypto.randomUUID();
+  const salt = authRandomToken();
+  const passwordHash = await authPasswordHash(password, salt);
 
-  if (!uploadResponse.ok) {
-    throw new Error(`Reality Defender media upload failed: ${uploadResponse.status}`);
-  }
+  await env.LEGAL_DB.prepare(`
+    INSERT INTO nyay_users
+      (id, email, password_hash, password_salt, email_verified,
+       status, created_at, updated_at)
+    VALUES (?, ?, ?, ?, 0, 'active', ?, ?)
+  `).bind(id, email, passwordHash, salt, authNow(), authNow()).run();
 
-  if (!requestId) {
+  try {
+    await authSendVerification(env, { id, email });
+  } catch (error) {
+    // Account remains unverified; user can request another verification email.
     return json({
       success: true,
-      status: "UPLOADED",
-      message: "Media uploaded. The API did not return a request ID, so a verdict cannot yet be fetched. Check your Reality Defender API account or SDK workflow.",
-      file_name: fileName
+      account_created: true,
+      verification_sent: false,
+      message: "Account created, but verification email could not be sent. Please request verification again.",
+      email
     }, 202);
   }
 
-  // Step 3: fetch current detection result.
-  const resultResponse = await fetch(
-    `${REALITY_BASE}/api/media/users/${encodeURIComponent(requestId)}`,
-    { headers, signal: AbortSignal.timeout(30000) }
-  );
+  return json({
+    success: true,
+    account_created: true,
+    verification_sent: true,
+    message: "Account created. Check your email to verify your account."
+  }, 201);
+}
 
-  const resultData = await resultResponse.json().catch(() => ({}));
-  if (!resultResponse.ok) {
-    throw new Error(
-      resultData?.message || `Reality Defender result error: ${resultResponse.status}`
+async function authVerifyEmail(request, env) {
+  await ensureAuthSchema(env);
+  const body = await readBody(request, 10000);
+  const token = String(body.token || "").trim();
+
+  if (!token) return errorResponse("Verification token is required.", 400);
+
+  const row = await env.LEGAL_DB.prepare(`
+    SELECT id, user_id FROM nyay_email_tokens
+    WHERE token_hash = ? AND purpose = 'verify'
+      AND used_at IS NULL AND expires_at > ?
+    LIMIT 1
+  `).bind(await authHash(token), authNow()).first();
+
+  if (!row) return errorResponse("Verification link is invalid or expired.", 400);
+
+  await env.LEGAL_DB.batch([
+    env.LEGAL_DB.prepare(
+      "UPDATE nyay_email_tokens SET used_at = ? WHERE id = ?"
+    ).bind(authNow(), row.id),
+    env.LEGAL_DB.prepare(
+      "UPDATE nyay_users SET email_verified = 1, updated_at = ? WHERE id = ?"
+    ).bind(authNow(), row.user_id)
+  ]);
+
+  return json({
+    success: true,
+    verified: true,
+    message: "Email verified successfully. You can now log in."
+  });
+}
+
+async function authResendVerification(request, env) {
+  await ensureAuthSchema(env);
+  const body = await readBody(request, 10000);
+  const email = String(body.email || "").trim().toLowerCase();
+
+  if (!email) return errorResponse("Email is required.", 400);
+
+  const user = await env.LEGAL_DB.prepare(`
+    SELECT id, email, email_verified FROM nyay_users
+    WHERE email = ? AND status = 'active' LIMIT 1
+  `).bind(email).first();
+
+  if (user && !user.email_verified) {
+    await authSendVerification(env, user);
+  }
+
+  return json({
+    success: true,
+    message: "If the account needs verification, a verification email has been sent."
+  });
+}
+
+async function authLogin(request, env) {
+  await ensureAuthSchema(env);
+  const body = await readBody(request, 10000);
+  const email = String(body.email || "").trim().toLowerCase();
+  const password = String(body.password || "");
+
+  if (!email || !password) {
+    return errorResponse("Email and password are required.", 400);
+  }
+
+  const user = await env.LEGAL_DB.prepare(`
+    SELECT id, email, password_hash, password_salt,
+           email_verified, status
+    FROM nyay_users WHERE email = ? LIMIT 1
+  `).bind(email).first();
+
+  if (!user || user.status !== "active") {
+    return errorResponse("Invalid email or password.", 401);
+  }
+
+  const candidate = await authPasswordHash(password, user.password_salt);
+  if (!authEqual(candidate, user.password_hash)) {
+    return errorResponse("Invalid email or password.", 401);
+  }
+
+  if (!user.email_verified) {
+    return errorResponse("Please verify your email before logging in.", 403);
+  }
+
+  const session = await authCreateSession(env, user);
+
+  return json({
+    success: true,
+    token: session.token,
+    token_type: "Bearer",
+    expires_at: session.expires_at,
+    user: {
+      id: user.id,
+      email: user.email,
+      email_verified: true
+    }
+  });
+}
+
+async function authMe(request, env) {
+  await ensureAuthSchema(env);
+  const user = await authGetUser(request, env);
+
+  if (!user) return errorResponse("Authentication required.", 401);
+
+  return json({
+    success: true,
+    user: {
+      id: user.id,
+      email: user.email,
+      email_verified: Boolean(user.email_verified)
+    },
+    session_expires_at: user.expires_at
+  });
+}
+
+async function authLogout(request, env) {
+  await ensureAuthSchema(env);
+  const header = request.headers.get("Authorization") || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
+
+  if (token) {
+    await env.LEGAL_DB.prepare(`
+      UPDATE nyay_sessions SET revoked_at = ?
+      WHERE token_hash = ? AND revoked_at IS NULL
+    `).bind(authNow(), await authHash(token)).run();
+  }
+
+  return json({ success: true, message: "Logged out successfully." });
+}
+
+async function authLogoutAll(request, env) {
+  await ensureAuthSchema(env);
+  const user = await authGetUser(request, env);
+  if (!user) return errorResponse("Authentication required.", 401);
+
+  await env.LEGAL_DB.prepare(`
+    UPDATE nyay_sessions SET revoked_at = ?
+    WHERE user_id = ? AND revoked_at IS NULL
+  `).bind(authNow(), user.id).run();
+
+  return json({ success: true, message: "All sessions have been logged out." });
+}
+
+async function authForgotPassword(request, env) {
+  await ensureAuthSchema(env);
+  const body = await readBody(request, 10000);
+  const email = String(body.email || "").trim().toLowerCase();
+
+  if (!email) return errorResponse("Email is required.", 400);
+
+  const user = await env.LEGAL_DB.prepare(`
+    SELECT id, email FROM nyay_users
+    WHERE email = ? AND status = 'active' AND email_verified = 1
+    LIMIT 1
+  `).bind(email).first();
+
+  if (user) {
+    const token = await authCreateEmailToken(env, user.id, "reset");
+    const base = String(env.PUBLIC_APP_URL || "").replace(/\/+$/, "");
+    if (!base) throw new Error("PUBLIC_APP_URL secret is missing.");
+
+    const link = `${base}/?auth=reset&token=${encodeURIComponent(token)}`;
+
+    await authSendEmail(
+      env,
+      user.email,
+      "Reset your NYAYVERSE AI password",
+      `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto">
+        <h2>Password reset</h2>
+        <p>Use the link below to reset your password.</p>
+        <p><a href="${link}" style="display:inline-block;padding:12px 20px;background:#b89035;color:#111;text-decoration:none;border-radius:6px">Reset Password</a></p>
+        <p>This link expires in 30 minutes. If you did not request this, ignore this email.</p>
+      </div>`
     );
   }
 
   return json({
     success: true,
-    provider: "reality_defender",
-    request_id: requestId,
-    status: resultData?.response?.status || resultData?.status || "PROCESSING",
-    result: resultData,
-    message: "Detection request submitted. If processing is not complete, poll the result endpoint."
-  }, 202);
-}
-
-async function handleMediaResult(url, env) {
-  if (!env.REALITY_DEFENDER_API_KEY) {
-    throw new Error("REALITY_DEFENDER_API_KEY secret is missing.");
-  }
-
-  const requestId = url.searchParams.get("request_id") || "";
-  if (!/^[a-zA-Z0-9_-]{1,200}$/.test(requestId)) {
-    return errorResponse("Valid request_id is required.", 400);
-  }
-
-  const response = await fetch(
-    `${REALITY_BASE}/api/media/users/${encodeURIComponent(requestId)}`,
-    {
-      headers: {
-        "X-API-KEY": env.REALITY_DEFENDER_API_KEY,
-        "Content-Type": "application/json"
-      },
-      signal: AbortSignal.timeout(30000)
-    }
-  );
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data?.message || `Reality Defender result error: ${response.status}`);
-  }
-
-  return json({
-    success: true,
-    provider: "reality_defender",
-    request_id: requestId,
-    status: data?.response?.status || data?.status || "PROCESSING",
-    result: data
+    message: "If a verified account exists for this email, a password reset link has been sent."
   });
 }
 
-/* ---------------- EXISTING D1/R2 STORAGE ONLY ---------------- */
+async function authResetPassword(request, env) {
+  await ensureAuthSchema(env);
+  const body = await readBody(request, 10000);
+  const token = String(body.token || "").trim();
+  const password = String(body.password || "");
 
-async function handlePdf(env) {
-  if (!env.LEGAL_PDFS) {
-    return errorResponse("LEGAL_PDFS R2 binding is missing.");
+  if (!token) return errorResponse("Reset token is required.", 400);
+  if (password.length < 10 || password.length > 128) {
+    return errorResponse("Password must be 10 to 128 characters.", 400);
   }
 
-  const object = await env.LEGAL_PDFS.get("constitution_of_india_2026.pdf");
-  if (!object) return errorResponse("Constitution PDF not found in R2.", 404);
+  const row = await env.LEGAL_DB.prepare(`
+    SELECT id, user_id FROM nyay_email_tokens
+    WHERE token_hash = ? AND purpose = 'reset'
+      AND used_at IS NULL AND expires_at > ?
+    LIMIT 1
+  `).bind(await authHash(token), authNow()).first();
 
-  const headers = new Headers(CORS_HEADERS);
-  object.writeHttpMetadata(headers);
-  headers.set("Content-Type", "application/pdf");
-  headers.set("Content-Disposition", "inline; filename=constitution_of_india_2026.pdf");
-  headers.set("Cache-Control", "private, max-age=3600");
+  if (!row) return errorResponse("Password reset link is invalid or expired.", 400);
 
-  return new Response(object.body, { headers });
-}
+  const salt = authRandomToken();
+  const passwordHash = await authPasswordHash(password, salt);
 
-async function handleIngest(request, env) {
-  if (!env.LEGAL_DB) return errorResponse("LEGAL_DB D1 binding is missing.");
-
-  const token = request.headers.get("x-admin-token");
-  if (!env.INGEST_ADMIN_TOKEN || token !== env.INGEST_ADMIN_TOKEN) {
-    return errorResponse("Unauthorized.", 401);
-  }
-
-  const body = await readBody(request);
-  const documentId = Number(body.document_id);
-  const pages = body.pages;
-
-  if (!Number.isInteger(documentId) || documentId < 1) {
-    return errorResponse("Valid document_id is required.", 400);
-  }
-  if (!Array.isArray(pages) || pages.length < 1 || pages.length > 5) {
-    return errorResponse("Send 1 to 5 pages per batch.", 400);
-  }
-
-  const statements = [];
-
-  for (const page of pages) {
-    const pageNumber = Number(page.pageNumber);
-    const content = String(page.text || "").trim();
-
-    if (!Number.isInteger(pageNumber) || pageNumber < 1 ||
-        !content || content.length > 50000) {
-      return errorResponse("Invalid page number or page text.", 400);
-    }
-
-    statements.push(
-      env.LEGAL_DB.prepare(`
-        INSERT INTO legal_chunks
-          (document_id, chunk_index, section_title, content)
-        VALUES (?, ?, ?, ?)
-        ON CONFLICT(document_id, chunk_index)
-        DO UPDATE SET content = excluded.content
-      `).bind(documentId, pageNumber, `Page ${pageNumber}`, content)
-    );
-  }
-
-  await env.LEGAL_DB.batch(statements);
+  await env.LEGAL_DB.batch([
+    env.LEGAL_DB.prepare(`
+      UPDATE nyay_users
+      SET password_hash = ?, password_salt = ?, updated_at = ?
+      WHERE id = ?
+    `).bind(passwordHash, salt, authNow(), row.user_id),
+    env.LEGAL_DB.prepare(
+      "UPDATE nyay_email_tokens SET used_at = ? WHERE id = ?"
+    ).bind(authNow(), row.id),
+    env.LEGAL_DB.prepare(`
+      UPDATE nyay_sessions SET revoked_at = ?
+      WHERE user_id = ? AND revoked_at IS NULL
+    `).bind(authNow(), row.user_id)
+  ]);
 
   return json({
     success: true,
-    document_id: documentId,
-    pages_saved: pages.length,
-    message: "PDF text saved to the legal storage database."
+    message: "Password reset successfully. Please log in again."
   });
 }
 
-/* ---------------- HEALTH CHECK + ROUTER ---------------- */
+async function authDeleteAccount(request, env) {
+  await ensureAuthSchema(env);
+  const user = await authGetUser(request, env);
+  if (!user) return errorResponse("Authentication required.", 401);
+
+  const body = await readBody(request, 10000);
+  if (String(body.confirm || "").toUpperCase() !== "DELETE") {
+    return errorResponse('Send {"confirm":"DELETE"} to confirm account deletion.', 400);
+  }
+
+  await env.LEGAL_DB.batch([
+    env.LEGAL_DB.prepare("DELETE FROM nyay_sessions WHERE user_id = ?").bind(user.id),
+    env.LEGAL_DB.prepare("DELETE FROM nyay_email_tokens WHERE user_id = ?").bind(user.id),
+    env.LEGAL_DB.prepare("DELETE FROM nyay_users WHERE id = ?").bind(user.id)
+  ]);
+
+  return json({
+    success: true,
+    message: "Account and authentication records deleted."
+  });
+}/* ---------------- HEALTH CHECK + ROUTER ---------------- */
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
+    const method = request.method;
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: CORS_HEADERS });
+    if (method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: {
+        ...CORS_HEADERS,
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, x-admin-token"
+      }});
     }
 
     try {
-      if (request.method === "GET" && path === "/") {
+      // AUTH ROUTES
+      if (method === "POST" && path === "/auth/signup")
+        return await authSignup(request, env);
+
+      if (method === "POST" && path === "/auth/login")
+        return await authLogin(request, env);
+
+      if (method === "POST" && path === "/auth/verify")
+        return await authVerifyEmail(request, env);
+
+      if (method === "POST" && path === "/auth/resend-verification")
+        return await authResendVerification(request, env);
+
+      if (method === "POST" && path === "/auth/forgot-password")
+        return await authForgotPassword(request, env);
+
+      if (method === "POST" && path === "/auth/reset-password")
+        return await authResetPassword(request, env);
+
+      if (method === "GET" && path === "/auth/me")
+        return await authMe(request, env);
+
+      if (method === "POST" && path === "/auth/logout")
+        return await authLogout(request, env);
+
+      if (method === "POST" && path === "/auth/logout-all")
+        return await authLogoutAll(request, env);
+
+      if (method === "DELETE" && path === "/auth/delete")
+        return await authDeleteAccount(request, env);
+
+      // EXISTING HOME
+      if (method === "GET" && path === "/") {
         return json({
           success: true,
           service: "NYAYVERSE AI Backend",
@@ -761,11 +590,13 @@ export default {
           search: "Google Search Grounding",
           image_video: "fal.ai",
           fake_media_checker: "Reality Defender",
+          authentication: "enabled",
           database_policy: "D1 is not used for AI answers, Library search, News or Translation."
         });
       }
 
-      if (request.method === "GET" && path === "/health") {
+      // HEALTH
+      if (method === "GET" && path === "/health") {
         return json({
           success: true,
           status: "online",
@@ -774,67 +605,86 @@ export default {
             fal: Boolean(env.FAL_KEY),
             reality_defender: Boolean(env.REALITY_DEFENDER_API_KEY),
             d1_storage: Boolean(env.LEGAL_DB),
-            r2_pdf_storage: Boolean(env.LEGAL_PDFS)
+            r2_pdf_storage: Boolean(env.LEGAL_PDFS),
+            resend: Boolean(env.RESEND_API_KEY),
+            auth_email: Boolean(env.AUTH_EMAIL_FROM)
           }
         });
       }
 
-      if (request.method === "POST" &&
+      // CHAT
+      if (method === "POST" &&
           (path === "/" || path === "/chat" || path === "/api/chat")) {
         return await handleChat(request, env);
       }
 
-      if (request.method === "POST" &&
+      // LIBRARY SEARCH
+      if (method === "POST" &&
           (path === "/library/search" || path === "/api/library/search")) {
         return await handleLibrarySearch(request, env);
       }
 
-      if (request.method === "POST" &&
+      // NEWS
+      if (method === "POST" &&
           (path === "/news" || path === "/api/news")) {
         return await handleNews(request, env);
       }
 
-      if (request.method === "POST" &&
+      // TRANSLATION
+      if (method === "POST" &&
           (path === "/library/translate" || path === "/api/translate")) {
         return await handleTranslate(request, env);
       }
 
-      if (request.method === "POST" &&
+      // IMAGE
+      if (method === "POST" &&
           (path === "/api/image" || path === "/create-image")) {
         return await handleCreateImage(request, env);
       }
 
-      if (request.method === "POST" &&
+      // VIDEO
+      if (method === "POST" &&
           (path === "/api/video" || path === "/create-video")) {
         return await handleCreateVideo(request, env);
       }
 
-      if (request.method === "GET" &&
+      // FAL STATUS
+      if (method === "GET" &&
           (path === "/api/fal/status" || path === "/fal/status")) {
         return await handleFalStatus(url, env);
       }
 
-      if (request.method === "POST" &&
+      // FAKE MEDIA CHECK
+      if (method === "POST" &&
           (path === "/api/media/check" || path === "/media/check")) {
         return await handleMediaCheck(request, env);
       }
 
-      if (request.method === "GET" &&
+      // MEDIA RESULT
+      if (method === "GET" &&
           (path === "/api/media/result" || path === "/media/result")) {
         return await handleMediaResult(url, env);
       }
 
-      if (request.method === "GET" && path === "/library/pdf") {
+      // PDF
+      if (method === "GET" && path === "/library/pdf") {
         return await handlePdf(env);
       }
 
-      if (request.method === "POST" && path === "/admin/ingest-chunk") {
+      // ADMIN INGESTION
+      if (method === "POST" && path === "/admin/ingest-chunk") {
         return await handleIngest(request, env);
       }
 
-      if (request.method === "GET" && path === "/test-pdf") {
-        if (!env.LEGAL_PDFS) return errorResponse("LEGAL_PDFS binding missing.");
-        const object = await env.LEGAL_PDFS.get("constitution_of_india_2026.pdf");
+      // PDF TEST
+      if (method === "GET" && path === "/test-pdf") {
+        if (!env.LEGAL_PDFS)
+          return errorResponse("LEGAL_PDFS binding missing.");
+
+        const object = await env.LEGAL_PDFS.get(
+          "constitution_of_india_2026.pdf"
+        );
+
         return json({
           success: true,
           pdf_exists: Boolean(object),
