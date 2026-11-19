@@ -9,162 +9,88 @@
 
 <style>
 :root{
- --bg:#090909;
- --panel:#141414;
- --panel2:#1d1a14;
- --border:#393020;
- --text:#f5f0e5;
- --muted:#b5aa91;
- --gold:#d6ad55;
- --gold2:#f1d58b;
- --gold-dark:#94702d;
- --danger:#d96b63;
+ --bg:#090909;--panel:#141414;--panel2:#1d1a14;
+ --border:#393020;--text:#f5f0e5;--muted:#b5aa91;
+ --gold:#d6ad55;--gold2:#f1d58b;--gold-dark:#94702d;
+ --danger:#d96b63
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 .app{display:flex;min-height:100vh}
-.sidebar{
- width:255px;background:#0d0c0a;border-right:1px solid var(--border);
- padding:20px 15px;display:flex;flex-direction:column;gap:18px;
- flex-shrink:0;transition:.25s
-}
+.sidebar{width:255px;background:#0d0c0a;border-right:1px solid var(--border);padding:20px 15px;display:flex;flex-direction:column;gap:18px;flex-shrink:0;transition:.25s}
 .app.sidebar-collapsed .sidebar{width:0;min-width:0;padding:0;border:0;overflow:hidden}
 .logo{display:flex;align-items:center;gap:11px;padding:5px}
-.logo-icon,.hero-logo{
- display:grid;place-items:center;color:#171109;
- background:linear-gradient(135deg,var(--gold2),var(--gold-dark));
- box-shadow:0 5px 25px #d6ad5522
-}
+.logo-icon,.hero-logo{display:grid;place-items:center;color:#171109;background:linear-gradient(135deg,var(--gold2),var(--gold-dark));box-shadow:0 5px 25px #d6ad5522}
 .logo-icon{width:42px;height:42px;border-radius:13px;font-size:22px;font-weight:bold}
 .logo h2{font-size:16px;margin:0;letter-spacing:1px}
 .logo small{color:var(--muted);font-size:9px}
-.new-chat,.primary,.primary-btn,.send{
- border:1px solid var(--gold-dark);
- background:linear-gradient(110deg,var(--gold2),var(--gold-dark));
- color:#171109;font-weight:bold;border-radius:9px
-}
+.new-chat,.primary,.primary-btn,.send{border:1px solid var(--gold-dark);background:linear-gradient(110deg,var(--gold2),var(--gold-dark));color:#171109;font-weight:bold;border-radius:9px}
 .new-chat{width:100%;padding:13px}
 .nav-title{font-size:10px;color:var(--gold);margin:8px}
-.nav-item{
- display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;
- background:transparent;color:#c9c0ae;border:0;border-radius:8px;font-size:13px
-}
+.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#c9c0ae;border:0;border-radius:8px;font-size:13px}
 .nav-item:hover,.nav-item.active{background:#282115;color:var(--gold2)}
 .sidebar-bottom{margin-top:auto}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
-.topbar{
- min-height:66px;border-bottom:1px solid var(--border);display:flex;
- align-items:center;justify-content:space-between;padding:0 22px;
- background:#0d0c0a;gap:10px
-}
+.topbar{min-height:66px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#0d0c0a;gap:10px}
 .top-left,.top-actions{display:flex;align-items:center;gap:10px}
 .topbar h3{font-size:15px;margin:0}
-.small-btn{
- background:#211c13;color:var(--gold2);border:1px solid var(--border);
- padding:9px 12px;border-radius:8px
-}
+.small-btn{background:#211c13;color:var(--gold2);border:1px solid var(--border);padding:9px 12px;border-radius:8px}
 .mobile-menu{display:block}
 .content{width:100%;max-width:1120px;margin:0 auto;padding:27px 22px;flex:1}
 .hero{text-align:center;margin:20px auto 25px}
 .hero h1{font-size:29px;margin:0 0 10px}
-.gradient{
- background:linear-gradient(90deg,var(--gold2),var(--gold),#a77b32);
- -webkit-background-clip:text;background-clip:text;color:transparent
-}
+.gradient{background:linear-gradient(90deg,var(--gold2),var(--gold),#a77b32);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{color:var(--muted);font-size:14px;line-height:1.6}
 .home-prompt{font-size:20px!important;margin:0!important}
 .studio-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
-.studio-card{
- background:linear-gradient(145deg,#191713,#211b10);
- border:1px solid var(--border);padding:17px;border-radius:13px;
- text-align:center;color:var(--text);min-height:110px;transition:.2s
-}
+.studio-card{background:linear-gradient(145deg,#191713,#211b10);border:1px solid var(--border);padding:17px;border-radius:13px;text-align:center;color:var(--text);min-height:110px;transition:.2s}
 .studio-card:hover{border-color:var(--gold);transform:translateY(-2px)}
 .studio-icon{font-size:25px;display:block;margin-bottom:9px;color:var(--gold)}
 .studio-card b{font-size:13px}
-.tool-panel,.page-panel,.membership-card{
- background:var(--panel);border:1px solid var(--border);
- padding:21px;border-radius:14px;margin:17px 0
-}
+.tool-panel,.page-panel,.membership-card{background:var(--panel);border:1px solid var(--border);padding:21px;border-radius:14px;margin:17px 0}
 .tool-panel h2,.page-panel h2{margin:0 0 10px}
-.tool-panel p,.page-panel p,.page-panel li{
- font-size:13px;color:var(--muted);line-height:1.7
-}
+.tool-panel p,.page-panel p,.page-panel li{font-size:13px;color:var(--muted);line-height:1.7}
 .tool-label{display:block;font-size:12px;color:var(--gold2);margin:15px 0 8px}
-.tool-input,.tool-select,.tool-textarea{
- width:100%;padding:12px;background:#0b0b0a;border:1px solid var(--border);
- border-radius:9px;color:white;outline:none
-}
+.tool-input,.tool-select,.tool-textarea{width:100%;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:white;outline:none}
 .tool-textarea{min-height:115px;resize:vertical}
 .tool-input:focus,.tool-select:focus,.tool-textarea:focus{border-color:var(--gold)}
 .tool-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 .primary-btn,.secondary-btn{padding:11px 16px;border-radius:8px}
 .secondary-btn{border:1px solid var(--border);background:#211c13;color:var(--gold2)}
-.tool-status{
- margin-top:14px;padding:12px;background:#0b0b0a;border:1px solid var(--border);
- border-radius:8px;color:var(--gold2);font-size:12px;line-height:1.6;white-space:pre-wrap
-}
+.tool-status{margin-top:14px;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:8px;color:var(--gold2);font-size:12px;line-height:1.6;white-space:pre-wrap}
 .preview{display:none;max-width:100%;max-height:350px;margin-top:14px;border-radius:10px;border:1px solid var(--border)}
 .file-info{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
 .chat-area{display:none;flex-direction:column;gap:15px;margin:23px 0}
 .message{display:flex;gap:10px;align-items:flex-start}
-.avatar{
- flex-shrink:0;width:32px;height:32px;border-radius:9px;
- background:#282115;display:grid;place-items:center;font-size:14px
-}
-.bubble{
- max-width:86%;background:var(--panel);border:1px solid var(--border);
- padding:13px 15px;border-radius:4px 12px 12px 12px;
- line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere
-}
+.avatar{flex-shrink:0;width:32px;height:32px;border-radius:9px;background:#282115;display:grid;place-items:center;font-size:14px}
+.bubble{max-width:86%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 12px 12px 12px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
 .user .bubble{background:#292216;border-color:var(--gold-dark)}
 .user{flex-direction:row-reverse}
 .composer{position:sticky;bottom:0;padding:13px 18px 18px;background:linear-gradient(transparent,var(--bg) 20%)}
-.composer-inner{
- max-width:850px;margin:auto;background:var(--panel);
- border:1px solid var(--gold-dark);border-radius:14px;padding:12px
-}
-.composer textarea{
- width:100%;resize:none;min-height:55px;max-height:150px;background:transparent;
- border:0;outline:0;color:white;padding:8px;font-size:14px
-}
+.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid var(--gold-dark);border-radius:14px;padding:12px}
+.composer textarea{width:100%;resize:none;min-height:55px;max-height:150px;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:14px}
 .composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .composer-bottom small{color:var(--muted);font-size:10px}
 .voice-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.voice-tools button,.speak-btn{
- background:#211c13;color:var(--gold2);border:1px solid var(--border);
- border-radius:7px;padding:8px 10px;font-size:11px
-}
+.voice-tools button,.speak-btn{background:#211c13;color:var(--gold2);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:11px}
 .send{padding:10px 17px}
 .send:disabled{opacity:.5}
 .disclaimer{text-align:center;color:#887d68;font-size:10px;margin:14px;line-height:1.6}
 .footer{text-align:center;color:#887d68;font-size:11px;padding:14px;line-height:1.8}
 .footer a{color:var(--gold2);text-decoration:none;margin:0 5px}
-.modal-bg{
- display:none;position:fixed;inset:0;background:#000d;align-items:center;
- justify-content:center;padding:16px;z-index:20
-}
-.modal{
- width:100%;max-width:430px;max-height:90vh;overflow:auto;
- background:#15130f;border:1px solid var(--gold-dark);border-radius:15px;padding:23px
-}
+.modal-bg{display:none;position:fixed;inset:0;background:#000d;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal{width:100%;max-width:430px;max-height:90vh;overflow:auto;background:#15130f;border:1px solid var(--gold-dark);border-radius:15px;padding:23px}
 .modal h2{margin:0 0 7px}
 .modal p{font-size:12px;color:var(--muted);line-height:1.5}
-.modal input{
- display:block;width:100%;padding:12px;margin:11px 0;background:#0b0b0a;
- border:1px solid var(--border);border-radius:8px;color:white;outline:none
-}
+.modal input{display:block;width:100%;padding:12px;margin:11px 0;background:#0b0b0a;border:1px solid var(--border);border-radius:8px;color:white;outline:none}
 .modal button.primary{width:100%;padding:13px}
 .modal-links{display:flex;justify-content:space-between;gap:8px;margin-top:15px;flex-wrap:wrap}
 .modal-links button{background:none;border:0;color:var(--gold2);font-size:12px}
 .close{float:right;background:none;border:0;color:white;font-size:22px}
 .sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
-.sub-card{
- background:#211c13;border:1px solid var(--border);border-radius:9px;
- padding:13px;color:var(--text);text-align:left;font-size:12px
-}
+.sub-card{background:#211c13;border:1px solid var(--border);border-radius:9px;padding:13px;color:var(--text);text-align:left;font-size:12px}
 .sub-card:hover{border-color:var(--gold)}
 .back-btn{margin-bottom:12px}
 .pdf-tools{margin-top:20px;padding:15px;background:#0b0b0a;border:1px solid var(--border);border-radius:11px}
@@ -183,10 +109,7 @@ button{cursor:pointer}
 .setting-row{margin:14px 0}
 .setting-row label{display:block;font-size:12px;color:var(--gold2);margin-bottom:7px}
 .setting-row select{width:100%;padding:11px;background:#0b0b0a;color:white;border:1px solid var(--border);border-radius:8px}
-@media(max-width:850px){
- .sidebar{width:235px}
- .membership-grid{grid-template-columns:1fr}
-}
+@media(max-width:850px){.sidebar{width:235px}.membership-grid{grid-template-columns:1fr}}
 @media(max-width:720px){
  .sidebar{display:none;position:fixed;z-index:15;inset:0 auto 0 0;width:270px;overflow:auto}
  .sidebar.open{display:flex}
@@ -209,15 +132,12 @@ button{cursor:pointer}
 
 <body>
 <div class="app" id="app">
-
 <aside class="sidebar" id="sidebar">
  <div class="logo">
   <div class="logo-icon">⚖</div>
   <div><h2>NYAYVERSE AI</h2><small>INDIAN LEGAL INTELLIGENCE</small></div>
  </div>
-
  <button class="new-chat" onclick="newChat()">＋ New Chat</button>
-
  <div>
   <div class="nav-title">WORKSPACE</div>
   <button class="nav-item active" onclick="showHome()">⌂ Home</button>
@@ -227,7 +147,6 @@ button{cursor:pointer}
   <button class="nav-item" onclick="openDepartment('ai-chat')">✧ AI Chat</button>
   <button class="nav-item" onclick="openDepartment('projects')">📁 Projects</button>
  </div>
-
  <div>
   <div class="nav-title">LEGAL DEPARTMENTS</div>
   <button class="nav-item" onclick="openDepartment('library')">⚖ Law Library</button>
@@ -238,16 +157,14 @@ button{cursor:pointer}
   <button class="nav-item" onclick="openDepartment('lawhistory')">⌛ Law History</button>
   <button class="nav-item" onclick="openDepartment('evolution')">🌍 Law Origins & Evolution</button>
  </div>
-
  <div>
   <div class="nav-title">ACCOUNT</div>
   <button class="nav-item" onclick="openDepartment('account')">⚙ Account & Security</button>
-  <button class="nav-item" onclick="openModal('login')">⇥ Login / Sign Up</button>
-  <button class="nav-item" onclick="logout()">↪ Sign Out</button>
+  <button class="nav-item" data-auth-type="login" data-auth-label="Login / Sign Up" onclick="openModal('login')">⇥ Login / Sign Up</button>
+  <button class="nav-item" data-auth-type="logout" data-auth-label="Sign Out" onclick="logout()" style="display:none">↪ Sign Out</button>
   <button class="nav-item" onclick="openDepartment('membership')">♛ Membership Plans</button>
   <button class="nav-item" onclick="openDepartment('settings')">⚙ Chat Settings</button>
  </div>
-
  <div class="sidebar-bottom">
   <div class="nav-title">POLICIES</div>
   <button class="nav-item" onclick="openDepartment('terms')">Terms & Conditions</button>
@@ -273,7 +190,6 @@ button{cursor:pointer}
   <h1>Welcome to <span class="gradient">NYAYVERSE AI</span></h1>
   <p class="home-prompt">How can I help you?</p>
  </div>
-
  <div class="composer" id="composer">
   <div class="composer-inner">
    <textarea id="question" placeholder="Ask anything about Indian law..." onkeydown="handleKey(event)"></textarea>
@@ -288,19 +204,11 @@ button{cursor:pointer}
   </div>
   <div class="footer">AI can make mistakes. Verify important legal information with official sources.</div>
  </div>
-
  <div class="studio-grid">
-  <button class="studio-card" onclick="openCreativeTool('image')">
-   <span class="studio-icon">▧</span><b>Create Image</b>
-  </button>
-  <button class="studio-card" onclick="openCreativeTool('video')">
-   <span class="studio-icon">▷</span><b>Create Video</b>
-  </button>
-  <button class="studio-card" onclick="openCreativeTool('checker')">
-   <span class="studio-icon">◈</span><b>Fake Image & Video Checker</b>
-  </button>
+  <button class="studio-card" onclick="openCreativeTool('image')"><span class="studio-icon">▧</span><b>Create Image</b></button>
+  <button class="studio-card" onclick="openCreativeTool('video')"><span class="studio-icon">▷</span><b>Create Video</b></button>
+  <button class="studio-card" onclick="openCreativeTool('checker')"><span class="studio-icon">◈</span><b>Fake Image & Video Checker</b></button>
  </div>
-
  <div class="disclaimer">NYAYVERSE AI provides general legal information for educational purposes, not professional legal advice.</div>
  <div class="footer">© 2026 NYAYVERSE AI · <a href="#" onclick="openDepartment('policies');return false">Policies & Support</a></div>
 </section>
@@ -312,7 +220,6 @@ button{cursor:pointer}
 </main>
 </div>
 
-<!-- AUTHENTICATION MODAL -->
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
  <div class="modal">
   <button class="close" onclick="closeModal()">×</button>
@@ -327,126 +234,48 @@ button{cursor:pointer}
    <button onclick="openModal('forgot')">Forgot Password?</button>
    <button onclick="openModal('signup')">Create Account</button>
   </div>
-  <p id="authNote">Secure authentication will be connected through the backend.</p>
+  <p id="authNote">Secure authentication through NYAYVERSE AI backend.</p>
  </div>
 </div>
 
 <script>
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
+const NYAY_AUTH_KEY="nyayverse_auth_token";
 
-let busy=false;
-let recognition=null;
-let ingestStopRequested=false;
-let currentTool=null;
-let selectedMediaUrl=null;
-let authMode="login";
+let busy=false,recognition=null,ingestStopRequested=false;
+let currentTool=null,selectedMediaUrl=null,authMode="login";
 let responseLength=localStorage.getItem("nyay_response_length")||"Auto";
-let currentUser=null;
+let currentUser=null,nyayAuthToken=localStorage.getItem(NYAY_AUTH_KEY)||"";
+let nyayResetToken="",authBusy=false;
 
-/* LEGAL DEPARTMENTS */
+/* DEPARTMENTS */
 const departments={
- projects:{
-  title:"Projects",
-  desc:"Your legal research and saved workspaces.",
-  items:["Create New Project","My Projects","Shared Projects"]
- },
- library:{
-  title:"Law Library",
-  desc:"Explore Indian central and state laws, legal provisions and official legal documents.",
-  items:["Constitution of India","Central Acts","State Acts","BNS – Bharatiya Nyaya Sanhita","BNSS – Bharatiya Nagarik Suraksha Sanhita","BSA – Bharatiya Sakshya Adhiniyam","Rules & Regulations","Consumer Law","Motor Vehicles Act","Family Law","Labour Laws"]
- },
- academy:{
-  title:"Law Academy",
-  desc:"Explore legal education, academic programmes and learning resources.",
-  items:["3-Year LLB","5-Year Integrated BA LLB","BBA LLB / BCom LLB / BSc LLB","LLM Programmes","PhD in Law","Diploma & Certificate Courses","Colleges & Universities","Admissions & Eligibility","Course Fees","Study Material"]
- },
- exams:{
-  title:"Law Exams",
-  desc:"Prepare for legal entrance, professional qualification and government law examinations.",
-  items:["Judiciary / Civil Judge","APO – Assistant Prosecution Officer","APP / Public Prosecutor","AIBE","UGC NET Law","CLAT PG","Legal Officer","Legal Assistant / Research Officer","Government Legal Jobs","Syllabus & Previous Papers","Mock Tests"]
- },
- news:{
-  title:"Law News",
-  desc:"Legal developments, official notifications and recent updates.",
-  items:["Supreme Court Updates","High Court Updates","Government Legal Updates","New Acts & Amendments","Legal Notifications","Regulatory Updates"]
- },
- cases:{
-  title:"Case Studies",
-  desc:"Study important judgments with case background, legal issues and decisions.",
-  items:["Supreme Court Judgments","High Court Judgments","Landmark Cases","Constitution Bench Decisions","Criminal Cases","Civil Cases","Judgment PDFs & Sources"]
- },
- lawhistory:{
-  title:"Law History",
-  desc:"Explore the historical development of legal institutions and systems.",
-  items:["Ancient Indian Legal Systems","Medieval Legal History","British Era","East India Company Laws","Colonial Judiciary","High Courts in India","Supreme Court History","Constitution-Making History","Modern Legal Reforms","World Legal History"]
- },
- evolution:{
-  title:"Law Origins & Evolution",
-  desc:"Understand how laws, legal ideas, rights and institutions originated and evolved.",
-  items:["Origins of Law","Code of Hammurabi","Roman Law","Manusmriti & Ancient Texts","Vedic Legal Traditions","Evolution of Fundamental Rights","International Law","IPC to BNS","CrPC to BNSS","Evidence Act to BSA","Jurists & Legal Thinkers"]
- },
- "ai-chat":{
-  title:"AI Chat",
-  desc:"Ask Indian legal questions in English, Hindi or Hinglish.",
-  items:["Indian Constitution","BNS / BNSS / BSA","Police & Criminal Law","Consumer Rights","Motor Vehicles","Family & Labour Law"]
- },
- account:{
-  title:"Account & Security",
-  desc:"Manage your account and security preferences.",
-  items:["Login & Sign Up","Email Verification","Forgot / Reset Password","User Profile","Change Email","Change Password","Logout","Logout from All Devices","Chat History","Saved Answers","Recent Searches","Delete Individual Chat","Clear All Chat History","Download My Data","Permanent Account Deletion"]
- },
- terms:{
-  title:"Terms & Conditions",
-  desc:"Terms and conditions for using NYAYVERSE AI. Final policy will be published before launch.",
-  items:["Platform Use","User Responsibilities","Acceptable Use","Limitations of AI Responses"]
- },
- privacy:{
-  title:"Privacy Policy",
-  desc:"Privacy information for NYAYVERSE AI. Final policy will be published before launch.",
-  items:["Information We Collect","How Information Is Used","Data Security","Data Retention","Your Privacy Choices"]
- },
- policies:{
-  title:"Policies & Support",
-  desc:"Platform policies and support information.",
-  items:["About Us","Privacy Policy","Terms & Conditions","User License Agreement","Legal Disclaimer","Cookie Policy","Security Policy","Data Retention & Deletion Policy","Contact & Grievance Redressal","Feedback","Help & Support"]
- },
- membership:{
-  title:"Membership Plans",
-  desc:"Choose the plan that fits your legal research and AI usage requirements.",
-  items:[]
- },
- settings:{
-  title:"Chat Settings",
-  desc:"Customize your NYAYVERSE AI response preferences.",
-  items:[]
- },
- history:{
-  title:"Chat History",
-  desc:"Your previous conversations will appear here after history storage is connected.",
-  items:[]
- },
- saved:{
-  title:"Saved Answers",
-  desc:"Your saved legal answers will appear here after account storage is connected.",
-  items:[]
- },
- recent:{
-  title:"Recent Searches",
-  desc:"Your recent legal searches will appear here after history storage is connected.",
-  items:[]
- }
+ projects:{title:"Projects",desc:"Your legal research and saved workspaces.",items:["Create New Project","My Projects","Shared Projects"]},
+ library:{title:"Law Library",desc:"Explore Indian central and state laws, legal provisions and official legal documents.",items:["Constitution of India","Central Acts","State Acts","BNS – Bharatiya Nyaya Sanhita","BNSS – Bharatiya Nagarik Suraksha Sanhita","BSA – Bharatiya Sakshya Adhiniyam","Rules & Regulations","Consumer Law","Motor Vehicles Act","Family Law","Labour Laws"]},
+ academy:{title:"Law Academy",desc:"Explore legal education, academic programmes and learning resources.",items:["3-Year LLB","5-Year Integrated BA LLB","BBA LLB / BCom LLB / BSc LLB","LLM Programmes","PhD in Law","Diploma & Certificate Courses","Colleges & Universities","Admissions & Eligibility","Course Fees","Study Material"]},
+ exams:{title:"Law Exams",desc:"Prepare for legal entrance, professional qualification and government law examinations.",items:["Judiciary / Civil Judge","APO – Assistant Prosecution Officer","APP / Public Prosecutor","AIBE","UGC NET Law","CLAT PG","Legal Officer","Legal Assistant / Research Officer","Government Legal Jobs","Syllabus & Previous Papers","Mock Tests"]},
+ news:{title:"Law News",desc:"Legal developments, official notifications and recent updates.",items:["Supreme Court Updates","High Court Updates","Government Legal Updates","New Acts & Amendments","Legal Notifications","Regulatory Updates"]},
+ cases:{title:"Case Studies",desc:"Study important judgments with case background, legal issues and decisions.",items:["Supreme Court Judgments","High Court Judgments","Landmark Cases","Constitution Bench Decisions","Criminal Cases","Civil Cases","Judgment PDFs & Sources"]},
+ lawhistory:{title:"Law History",desc:"Explore the historical development of legal institutions and systems.",items:["Ancient Indian Legal Systems","Medieval Legal History","British Era","East India Company Laws","Colonial Judiciary","High Courts in India","Supreme Court History","Constitution-Making History","Modern Legal Reforms","World Legal History"]},
+ evolution:{title:"Law Origins & Evolution",desc:"Understand how laws, legal ideas, rights and institutions originated and evolved.",items:["Origins of Law","Code of Hammurabi","Roman Law","Manusmriti & Ancient Texts","Vedic Legal Traditions","Evolution of Fundamental Rights","International Law","IPC to BNS","CrPC to BNSS","Evidence Act to BSA","Jurists & Legal Thinkers"]},
+ "ai-chat":{title:"AI Chat",desc:"Ask Indian legal questions in English, Hindi or Hinglish.",items:["Indian Constitution","BNS / BNSS / BSA","Police & Criminal Law","Consumer Rights","Motor Vehicles","Family & Labour Law"]},
+ account:{title:"Account & Security",desc:"Manage your account and security preferences.",items:[]},
+ terms:{title:"Terms & Conditions",desc:"Terms and conditions for using NYAYVERSE AI. Final policy will be published before launch.",items:["Platform Use","User Responsibilities","Acceptable Use","Limitations of AI Responses"]},
+ privacy:{title:"Privacy Policy",desc:"Privacy information for NYAYVERSE AI. Final policy will be published before launch.",items:["Information We Collect","How Information Is Used","Data Security","Data Retention","Your Privacy Choices"]},
+ policies:{title:"Policies & Support",desc:"Platform policies and support information.",items:["About Us","Privacy Policy","Terms & Conditions","User License Agreement","Legal Disclaimer","Cookie Policy","Security Policy","Data Retention & Deletion Policy","Contact & Grievance Redressal","Feedback","Help & Support"]},
+ membership:{title:"Membership Plans",desc:"Choose the plan that fits your legal research and AI usage requirements.",items:[]},
+ settings:{title:"Chat Settings",desc:"Customize your NYAYVERSE AI response preferences.",items:[]},
+ history:{title:"Chat History",desc:"Your previous conversations will appear here after history storage is connected.",items:[]},
+ saved:{title:"Saved Answers",desc:"Your saved legal answers will appear here after account storage is connected.",items:[]},
+ recent:{title:"Recent Searches",desc:"Your recent legal searches will appear here after history storage is connected.",items:[]}
 };
 
 /* NAVIGATION */
 function toggleSidebar(){
- if(window.innerWidth<=720){
-  document.getElementById("sidebar").classList.toggle("open");
- }else{
-  document.getElementById("app").classList.toggle("sidebar-collapsed");
- }
+ if(innerWidth<=720)document.getElementById("sidebar").classList.toggle("open");
+ else document.getElementById("app").classList.toggle("sidebar-collapsed");
 }
 function closeMenu(){document.getElementById("sidebar").classList.remove("open")}
-
 function showHome(){
  closeMenu();
  document.getElementById("departmentPage").style.display="none";
@@ -456,181 +285,79 @@ function showHome(){
  composer.style.display="block";
  window.scrollTo({top:0,behavior:"smooth"});
 }
-
 function newChat(){
  document.getElementById("chatArea")?.remove();
  document.getElementById("question").value="";
  stopSpeaking();
  showHome();
 }
-
-function comingSoon(name){
- alert(name+" is not connected yet. This feature will be enabled after backend integration.");
+function comingSoon(name){alert(name+" is not connected yet. This feature will be enabled after backend integration.")}
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 }
 
 function openDepartment(key){
  closeMenu();
- const d=departments[key];
- if(!d)return;
-
+ const d=departments[key];if(!d)return;
  document.getElementById("home").style.display="none";
  document.getElementById("departmentPage").style.display="block";
-
  const composer=document.getElementById("composer");
  document.getElementById("departmentPage").appendChild(composer);
  composer.style.display=["account","terms","privacy","policies","membership","settings","history","saved","recent"].includes(key)?"none":"block";
 
- let html=`<div class="hero" style="text-align:left;margin:8px 0 20px">
- <h1><span class="gradient">${escapeHTML(d.title)}</span></h1>
- <p>${escapeHTML(d.desc)}</p></div>`;
-
- if(key==="membership"){
-  html+=membershipHTML();
- }else if(key==="settings"){
-  html+=settingsHTML();
- }else if(key==="account"){
-  html+=accountHTML();
- }else if(["history","saved","recent"].includes(key)){
+ let html=`<div class="hero" style="text-align:left;margin:8px 0 20px"><h1><span class="gradient">${escapeHTML(d.title)}</span></h1><p>${escapeHTML(d.desc)}</p></div>`;
+ if(key==="membership")html+=membershipHTML();
+ else if(key==="settings")html+=settingsHTML();
+ else if(key==="account")html+=accountHTML();
+ else if(["history","saved","recent"].includes(key)){
   html+=`<div class="page-panel"><h2>${escapeHTML(d.title)}</h2><p>${escapeHTML(d.desc)}</p><button class="primary-btn" onclick="openModal('login')">Login to Continue</button></div>`;
  }else{
   html+=`<div class="page-panel"><h2>Explore ${escapeHTML(d.title)}</h2><div class="sub-grid">`;
-  d.items.forEach(item=>{
-   html+=`<button class="sub-card" onclick="askTopic(${JSON.stringify(item)})">${escapeHTML(item)} →</button>`;
-  });
+  d.items.forEach(item=>{html+=`<button class="sub-card" onclick="askTopic(${JSON.stringify(item)})">${escapeHTML(item)} →</button>`});
   html+="</div></div>";
  }
-
  if(key==="library")html+=pdfIngestionHTML();
-
  document.getElementById("departmentContent").innerHTML=html;
  window.scrollTo({top:0,behavior:"smooth"});
 }
-
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,function(ch){
-  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
- });
-}
-
 function askTopic(topic){
  const q=document.getElementById("question");
  q.value="Please explain "+topic+" under Indian law in clear and structured language. Include relevant legal provisions and official sources where available.";
- const composer=document.getElementById("composer");
- composer.style.display="block";
- q.focus();
- window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+ document.getElementById("composer").style.display="block";
+ q.focus();window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
 }
 
-/* MEMBERSHIP DISPLAY */
+/* MEMBERSHIP */
 function membershipHTML(){
- return `
- <div class="page-panel">
-  <span class="gold-tag">TESTING MODE</span>
-  <h2 style="margin-top:12px">Membership & Usage</h2>
-  <p>Plan display only. Actual usage limits and premium verification will be enforced securely by the backend.</p>
-  <div class="membership-grid">
-   <div class="membership-card">
-    <h3>Guest</h3>
-    <div class="price">Free</div>
-    <ul>
-     <li>5 AI messages total</li>
-     <li>2 image generations total</li>
-     <li>Basic platform preview</li>
-    </ul>
-    <span class="gold-tag">No account</span>
-   </div>
-   <div class="membership-card">
-    <h3>Free Account</h3>
-    <div class="price">₹0</div>
-    <ul>
-     <li>10 AI messages total</li>
-     <li>3 image generations total</li>
-     <li>Personal account interface</li>
-    </ul>
-    <button class="secondary-btn" onclick="openModal('signup')">Create Free Account</button>
-   </div>
-   <div class="membership-card" style="border-color:var(--gold-dark)">
-    <h3>Premium</h3>
-    <div class="price">₹499 <small style="font-size:12px">/ month</small></div>
-    <ul>
-     <li>Unlimited AI Chat Messages</li>
-     <li>50 Image generations / month</li>
-     <li>5 Video generations / month</li>
-     <li>20 Fake Media checks / month</li>
-     <li>Law Library & Legal Research</li>
-     <li>PDF downloads and generation</li>
-     <li>Exam papers and study notes</li>
-     <li>Law Academy & Law Exams</li>
-     <li>Saved projects and workspaces</li>
-    </ul>
-    <button class="primary-btn" onclick="alert('Premium payment is not connected yet. This is Testing Mode.')">Premium · Testing Mode</button>
-   </div>
-  </div>
- </div>
- <div class="page-panel">
-  <h2>Usage Counter</h2>
-  <p>Live account-based usage counters will be displayed after Worker integration.</p>
-  <div class="usage-row"><span>AI Chat Messages</span><span>Backend pending</span></div>
-  <div class="usage-row"><span>Image Generation</span><span>Backend pending</span></div>
-  <div class="usage-row"><span>Video Generation</span><span>Backend pending</span></div>
-  <div class="usage-row"><span>Fake Media Checker</span><span>Backend pending</span></div>
- </div>`;
+ return `<div class="page-panel">
+ <span class="gold-tag">TESTING MODE</span><h2 style="margin-top:12px">Membership & Usage</h2>
+ <p>Plan display only. Actual usage limits and premium verification will be enforced securely by the backend.</p>
+ <div class="membership-grid">
+ <div class="membership-card"><h3>Guest</h3><div class="price">Free</div><ul><li>5 AI messages total</li><li>2 image generations total</li><li>Basic platform preview</li></ul><span class="gold-tag">No account</span></div>
+ <div class="membership-card"><h3>Free Account</h3><div class="price">₹0</div><ul><li>10 AI messages total</li><li>3 image generations total</li><li>Personal account interface</li></ul><button class="secondary-btn" onclick="openModal('signup')">Create Free Account</button></div>
+ <div class="membership-card" style="border-color:var(--gold-dark)"><h3>Premium</h3><div class="price">₹499 <small style="font-size:12px">/ month</small></div><ul><li>Unlimited AI Chat Messages</li><li>50 Image generations / month</li><li>5 Video generations / month</li><li>20 Fake Media checks / month</li><li>Law Library & Legal Research</li><li>PDF downloads and generation</li><li>Exam papers and study notes</li><li>Law Academy & Law Exams</li><li>Saved projects and workspaces</li></ul><button class="primary-btn" onclick="alert('Premium payment is not connected yet. This is Testing Mode.')">Premium · Testing Mode</button></div>
+ </div></div>
+ <div class="page-panel"><h2>Usage Counter</h2><p>Live account-based usage counters will be displayed after Worker integration.</p>
+ <div class="usage-row"><span>AI Chat Messages</span><span>Backend pending</span></div><div class="usage-row"><span>Image Generation</span><span>Backend pending</span></div><div class="usage-row"><span>Video Generation</span><span>Backend pending</span></div><div class="usage-row"><span>Fake Media Checker</span><span>Backend pending</span></div></div>`;
 }
-
 function settingsHTML(){
- return `
- <div class="page-panel">
-  <h2>Response Preferences</h2>
-  <p>Choose how detailed you want AI responses to be. This preference will be sent to the AI backend.</p>
-  <div class="setting-row">
-   <label for="responseLength">Answer Length</label>
-   <select id="responseLength" onchange="saveResponseLength(this.value)">
-    <option value="Auto" ${responseLength==="Auto"?"selected":""}>Auto (Recommended)</option>
-    <option value="Short" ${responseLength==="Short"?"selected":""}>Short</option>
-    <option value="Medium" ${responseLength==="Medium"?"selected":""}>Medium</option>
-    <option value="Detailed" ${responseLength==="Detailed"?"selected":""}>Detailed</option>
-   </select>
-  </div>
-  <div class="setting-row">
-   <label>Response Language</label>
-   <p>Automatic language detection: English, Hindi and Hinglish.</p>
-  </div>
-  <button class="primary-btn" onclick="alert('Your response preference is saved on this device.')">Save Settings</button>
- </div>`;
+ return `<div class="page-panel"><h2>Response Preferences</h2><p>Choose how detailed you want AI responses to be. This preference will be sent to the AI backend.</p>
+ <div class="setting-row"><label for="responseLength">Answer Length</label><select id="responseLength" onchange="saveResponseLength(this.value)">
+ <option value="Auto" ${responseLength==="Auto"?"selected":""}>Auto (Recommended)</option><option value="Short" ${responseLength==="Short"?"selected":""}>Short</option><option value="Medium" ${responseLength==="Medium"?"selected":""}>Medium</option><option value="Detailed" ${responseLength==="Detailed"?"selected":""}>Detailed</option></select></div>
+ <div class="setting-row"><label>Response Language</label><p>Automatic language detection: English, Hindi and Hinglish.</p></div>
+ <button class="primary-btn" onclick="alert('Your response preference is saved on this device.')">Save Settings</button></div>`;
 }
-
-function saveResponseLength(value){
- responseLength=value;
- localStorage.setItem("nyay_response_length",value);
-}
+function saveResponseLength(value){responseLength=value;localStorage.setItem("nyay_response_length",value)}
 
 function accountHTML(){
- return `
- <div class="page-panel">
-  <h2>Account Overview</h2>
-  <p id="accountStatus">You are currently using NYAYVERSE AI as a guest.</p>
-  <button class="primary-btn" onclick="openModal('login')">Login</button>
-  <button class="secondary-btn" onclick="openModal('signup')">Create Account</button>
- </div>
- <div class="page-panel">
-  <h2>Account & Security</h2>
-  <div class="sub-grid">
-   <button class="sub-card" onclick="openModal('signup')">Create Account</button>
-   <button class="sub-card" onclick="openModal('login')">Login</button>
-   <button class="sub-card" onclick="openModal('forgot')">Forgot / Reset Password</button>
-   <button class="sub-card" onclick="comingSoon('Email Verification')">Email Verification</button>
-   <button class="sub-card" onclick="comingSoon('User Profile')">User Profile</button>
-   <button class="sub-card" onclick="comingSoon('Change Email')">Change Email</button>
-   <button class="sub-card" onclick="comingSoon('Change Password')">Change Password</button>
-   <button class="sub-card" onclick="logout()">Logout</button>
-   <button class="sub-card" onclick="comingSoon('Logout from All Devices')">Logout from All Devices</button>
-   <button class="sub-card" onclick="openDepartment('history')">Chat History</button>
-   <button class="sub-card" onclick="openDepartment('saved')">Saved Answers</button>
-   <button class="sub-card" onclick="openDepartment('recent')">Recent Searches</button>
-   <button class="sub-card" onclick="comingSoon('Download My Data')">Download My Data</button>
-   <button class="sub-card" onclick="comingSoon('Permanent Account Deletion')">Permanent Account Deletion</button>
-  </div>
- </div>`;
+ if(!currentUser)return `<div class="page-panel"><h2>Account Overview</h2><p>You are currently using NYAYVERSE AI as a guest.</p><button class="primary-btn" onclick="openModal('login')">Login</button><button class="secondary-btn" onclick="openModal('signup')">Create Account</button></div>
+ <div class="page-panel"><h2>Account & Security</h2><p>Login to manage your account, profile and security settings.</p></div>`;
+ return `<div class="page-panel"><h2>Account & Security</h2>
+ <div class="usage-row"><span>Full Name</span><span>${escapeHTML(currentUser.full_name||"")}</span></div>
+ <div class="usage-row"><span>Email</span><span>${escapeHTML(currentUser.email||"")}</span></div>
+ <div class="usage-row"><span>Email Verification</span><span>${currentUser.email_verified?"Verified":"Not Verified"}</span></div>
+ <div class="usage-row"><span>Plan</span><span>${escapeHTML(currentUser.plan||"free")}</span></div>
+ <div class="tool-actions"><button class="secondary-btn" onclick="nyayRefreshAccount()">Refresh Profile</button><button class="secondary-btn" onclick="nyayLogoutAll()">Logout All Devices</button><button class="secondary-btn" onclick="nyayDeleteAccount()">Delete Account</button><button class="primary-btn" onclick="logout()">Logout</button></div><p id="accountStatus"></p></div>`;
 }
 
 /* CREATIVE STUDIO */
@@ -638,89 +365,30 @@ function openCreativeTool(tool){
  currentTool=tool;
  document.getElementById("home").style.display="none";
  document.getElementById("departmentPage").style.display="block";
-
  const composer=document.getElementById("composer");
  document.getElementById("departmentPage").appendChild(composer);
  composer.style.display="none";
-
  let html="";
  if(tool==="image"){
-  html=`
-  <div class="tool-panel">
-   <h2>🎨 Create Image</h2>
-   <p>Describe the image you want to create. Image generation will use the configured image generation backend.</p>
-   <label class="tool-label" for="imagePrompt">Image Description / Prompt</label>
-   <textarea id="imagePrompt" class="tool-textarea" placeholder="Example: Create a professional Indian legal awareness poster about fundamental rights..."></textarea>
-   <label class="tool-label" for="imageRatio">Image Aspect Ratio</label>
-   <select id="imageRatio" class="tool-select">
-    <option value="1:1">Square (1:1)</option>
-    <option value="9:16">Portrait (9:16)</option>
-    <option value="16:9">Landscape (16:9)</option>
-    <option value="4:5">Social Post (4:5)</option>
-   </select>
-   <div class="tool-actions">
-    <button class="primary-btn" onclick="requestGeneration('image')">Generate Image</button>
-    <button class="secondary-btn" onclick="clearTool()">Clear</button>
-   </div>
-   <div id="toolStatus" class="tool-status">Ready. Image API connection is pending.</div>
-   <img id="toolPreview" class="preview" alt="Generated image preview">
-  </div>`;
+ html=`<div class="tool-panel"><h2>🎨 Create Image</h2><p>Describe the image you want to create. Image generation will use the configured image generation backend.</p>
+ <label class="tool-label" for="imagePrompt">Image Description / Prompt</label><textarea id="imagePrompt" class="tool-textarea" placeholder="Example: Create a professional Indian legal awareness poster about fundamental rights..."></textarea>
+ <label class="tool-label" for="imageRatio">Image Aspect Ratio</label><select id="imageRatio" class="tool-select"><option value="1:1">Square (1:1)</option><option value="9:16">Portrait (9:16)</option><option value="16:9">Landscape (16:9)</option><option value="4:5">Social Post (4:5)</option></select>
+ <div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('image')">Generate Image</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Ready. Image API connection is pending.</div><img id="toolPreview" class="preview" alt="Generated image preview"></div>`;
  }else if(tool==="video"){
-  html=`
-  <div class="tool-panel">
-   <h2>🎬 Create Video</h2>
-   <p>Prepare your video description and select the video format.</p>
-   <label class="tool-label" for="videoPrompt">Video Description / Prompt</label>
-   <textarea id="videoPrompt" class="tool-textarea" placeholder="Describe your video scene, camera movement, subject, style and background..."></textarea>
-   <label class="tool-label" for="videoRatio">Video Aspect Ratio</label>
-   <select id="videoRatio" class="tool-select">
-    <option value="9:16">Portrait (9:16) - Shorts / Reels</option>
-    <option value="16:9">Landscape (16:9) - YouTube</option>
-    <option value="1:1">Square (1:1)</option>
-   </select>
-   <label class="tool-label" for="videoDuration">Video Duration</label>
-   <select id="videoDuration" class="tool-select">
-    <option value="5 seconds">5 seconds</option>
-    <option value="10 seconds">10 seconds</option>
-    <option value="15 seconds">15 seconds</option>
-    <option value="30 seconds">30 seconds</option>
-   </select>
-   <div class="tool-actions">
-    <button class="primary-btn" onclick="requestGeneration('video')">Generate Video</button>
-    <button class="secondary-btn" onclick="clearTool()">Clear</button>
-   </div>
-   <div id="toolStatus" class="tool-status">Ready. Video API connection is pending.</div>
-   <video id="toolPreview" class="preview" controls></video>
-  </div>`;
+ html=`<div class="tool-panel"><h2>🎬 Create Video</h2><p>Prepare your video description and select the video format.</p>
+ <label class="tool-label" for="videoPrompt">Video Description / Prompt</label><textarea id="videoPrompt" class="tool-textarea" placeholder="Describe your video scene, camera movement, subject, style and background..."></textarea>
+ <label class="tool-label" for="videoRatio">Video Aspect Ratio</label><select id="videoRatio" class="tool-select"><option value="9:16">Portrait (9:16) - Shorts / Reels</option><option value="16:9">Landscape (16:9) - YouTube</option><option value="1:1">Square (1:1)</option></select>
+ <label class="tool-label" for="videoDuration">Video Duration</label><select id="videoDuration" class="tool-select"><option value="5 seconds">5 seconds</option><option value="10 seconds">10 seconds</option><option value="15 seconds">15 seconds</option><option value="30 seconds">30 seconds</option></select>
+ <div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('video')">Generate Video</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Ready. Video API connection is pending.</div><video id="toolPreview" class="preview" controls></video></div>`;
  }else{
-  html=`
-  <div class="tool-panel">
-   <h2>🔍 Fake Image & Video Checker</h2>
-   <p>Upload an image or video for authenticity analysis. No verdict will be shown until the detection backend is connected.</p>
-   <label class="tool-label" for="checkerFile">Select Image or Video</label>
-   <input id="checkerFile" class="tool-input" type="file" accept="image/*,video/*" onchange="previewCheckerFile(event)">
-   <div id="checkerFileInfo" class="file-info">No file selected.</div>
-   <img id="checkerImagePreview" class="preview" alt="Selected image preview">
-   <video id="checkerVideoPreview" class="preview" controls></video>
-   <div class="tool-actions">
-    <button class="primary-btn" onclick="checkMedia()">Check Media</button>
-    <button class="secondary-btn" onclick="clearTool()">Clear</button>
-   </div>
-   <div id="toolStatus" class="tool-status">Select an image or video to begin.</div>
-   <p>AI detection is probabilistic and cannot guarantee 100% accuracy.</p>
-  </div>`;
+ html=`<div class="tool-panel"><h2>🔍 Fake Image & Video Checker</h2><p>Upload an image or video for authenticity analysis. No verdict will be shown until the detection backend is connected.</p>
+ <label class="tool-label" for="checkerFile">Select Image or Video</label><input id="checkerFile" class="tool-input" type="file" accept="image/*,video/*" onchange="previewCheckerFile(event)">
+ <div id="checkerFileInfo" class="file-info">No file selected.</div><img id="checkerImagePreview" class="preview" alt="Selected image preview"><video id="checkerVideoPreview" class="preview" controls></video>
+ <div class="tool-actions"><button class="primary-btn" onclick="checkMedia()">Check Media</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Select an image or video to begin.</div><p>AI detection is probabilistic and cannot guarantee 100% accuracy.</p></div>`;
  }
-
- document.getElementById("departmentContent").innerHTML=`
- <button class="small-btn back-btn" onclick="showHome()">← Back to Home</button>
- <div class="hero" style="text-align:left;margin:8px 0 18px">
-  <h1><span class="gradient">Creative Studio</span></h1>
-  <p>Use the selected creative tool.</p>
- </div>${html}`;
-
+ document.getElementById("departmentContent").innerHTML=`<button class="small-btn back-btn" onclick="showHome()">← Back to Home</button><div class="hero" style="text-align:left;margin:8px 0 18px"><h1><span class="gradient">Creative Studio</span></h1><p>Use the selected creative tool.</p></div>${html}`;
  window.scrollTo({top:0,behavior:"smooth"});
 }
-
 function requestGeneration(type){
  const prompt=document.getElementById(type==="image"?"imagePrompt":"videoPrompt")?.value.trim();
  const status=document.getElementById("toolStatus");
@@ -729,68 +397,40 @@ function requestGeneration(type){
  const duration=type==="video"?document.getElementById("videoDuration").value:"Not applicable";
  status.textContent="Your prompt has been prepared.\n\nPrompt: "+prompt+"\nAspect ratio: "+ratio+"\nDuration: "+duration+"\n\nGeneration API is not connected yet. No fake result has been created.";
 }
-
 function previewCheckerFile(event){
- const file=event.target.files?.[0];
- const info=document.getElementById("checkerFileInfo");
- const image=document.getElementById("checkerImagePreview");
- const video=document.getElementById("checkerVideoPreview");
-
+ const file=event.target.files?.[0],info=document.getElementById("checkerFileInfo");
+ const image=document.getElementById("checkerImagePreview"),video=document.getElementById("checkerVideoPreview");
  if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
  image.style.display="none";video.style.display="none";
-
  if(!file){info.textContent="No file selected.";return}
- const isImage=file.type.startsWith("image/");
- const isVideo=file.type.startsWith("video/");
-
- if(!isImage&&!isVideo){
-  event.target.value="";
-  info.textContent="Unsupported file. Please select an image or video.";
-  return;
- }
- if(file.size>100*1024*1024){
-  event.target.value="";
-  info.textContent="File is larger than 100 MB. Please choose a smaller file.";
-  return;
- }
-
+ const isImage=file.type.startsWith("image/"),isVideo=file.type.startsWith("video/");
+ if(!isImage&&!isVideo){event.target.value="";info.textContent="Unsupported file. Please select an image or video.";return}
+ if(file.size>100*1024*1024){event.target.value="";info.textContent="File is larger than 100 MB. Please choose a smaller file.";return}
  selectedMediaUrl=URL.createObjectURL(file);
  info.textContent=file.name+" · "+(file.size/1024/1024).toFixed(2)+" MB · "+file.type;
-
  if(isImage){image.src=selectedMediaUrl;image.style.display="block"}
  else{video.src=selectedMediaUrl;video.style.display="block"}
-
  document.getElementById("toolStatus").textContent="File selected. Detection backend connection is pending.";
 }
-
 function checkMedia(){
- const file=document.getElementById("checkerFile")?.files?.[0];
- const status=document.getElementById("toolStatus");
+ const file=document.getElementById("checkerFile")?.files?.[0],status=document.getElementById("toolStatus");
  if(!file){status.textContent="Please select an image or video first.";return}
  status.textContent="File is selected and ready. Fake Media Checker API is not connected yet, so an authenticity verdict cannot be produced.";
 }
-
 function clearTool(){
  if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
- const panel=document.getElementById("departmentContent");
- if(!panel)return;
+ const panel=document.getElementById("departmentContent");if(!panel)return;
  panel.querySelectorAll("textarea,input[type=file]").forEach(el=>el.value="");
  panel.querySelectorAll(".tool-status").forEach(el=>el.textContent="Cleared. You can start again.");
  panel.querySelectorAll(".preview").forEach(el=>{el.removeAttribute("src");el.style.display="none"});
- const info=document.getElementById("checkerFileInfo");
- if(info)info.textContent="No file selected.";
+ const info=document.getElementById("checkerFileInfo");if(info)info.textContent="No file selected.";
 }
 
-/* LANGUAGE DETECTION */
+/* LANGUAGE */
 function detectLanguage(text){
  if(/[\u0900-\u097F]/.test(text))return "Hindi";
  const words=text.toLowerCase().match(/[a-z]+/g)||[];
- const hinglishWords=[
-  "kya","hai","hain","kaise","kyun","kyu","nahi","nahin","mujhe",
-  "mera","meri","aap","batao","samjhao","kanoon","kanun","dhara",
-  "police","karu","kare","hoga","hogi","karna","chahiye","mein",
-  "me","aur","agar","ka","ki","ke"
- ];
+ const hinglishWords=["kya","hai","hain","kaise","kyun","kyu","nahi","nahin","mujhe","mera","meri","aap","batao","samjhao","kanoon","kanun","dhara","police","karu","kare","hoga","hogi","karna","chahiye","mein","me","aur","agar","ka","ki","ke"];
  const hits=words.filter(w=>hinglishWords.includes(w));
  return hits.length>=2?"Hinglish":"English";
 }
@@ -799,789 +439,289 @@ function detectLanguage(text){
 function addMessage(text,type){
  let area=document.getElementById("chatArea");
  if(!area){
-  area=document.createElement("div");
-  area.id="chatArea";
-  area.className="chat-area";
+  area=document.createElement("div");area.id="chatArea";area.className="chat-area";
   const homeVisible=document.getElementById("home").style.display!=="none";
   const target=homeVisible?document.getElementById("home"):document.getElementById("departmentPage");
   const composer=document.getElementById("composer");
-  if(composer.parentElement===target)target.insertBefore(area,composer);
-  else target.appendChild(area);
+  if(composer.parentElement===target)target.insertBefore(area,composer);else target.appendChild(area);
  }
  area.style.display="flex";
-
- const row=document.createElement("div");
- row.className="message "+type;
-
- const avatar=document.createElement("div");
- avatar.className="avatar";
- avatar.textContent=type==="user"?"👤":"⚖️";
-
- const bubble=document.createElement("div");
- bubble.className="bubble";
- bubble.textContent=text;
-
- row.appendChild(avatar);
- row.appendChild(bubble);
- area.appendChild(row);
- area.scrollIntoView({behavior:"smooth",block:"end"});
- return bubble;
+ const row=document.createElement("div");row.className="message "+type;
+ const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=type==="user"?"👤":"⚖️";
+ const bubble=document.createElement("div");bubble.className="bubble";bubble.textContent=text;
+ row.appendChild(avatar);row.appendChild(bubble);area.appendChild(row);
+ area.scrollIntoView({behavior:"smooth",block:"end"});return bubble;
 }
-
-function handleKey(e){
- if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}
-}
-
+function handleKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}}
 async function sendMessage(){
- const input=document.getElementById("question");
- const question=input.value.trim();
+ const input=document.getElementById("question"),question=input.value.trim();
  if(!question||busy)return;
-
- busy=true;
- const btn=document.getElementById("sendBtn");
- btn.disabled=true;
- input.value="";
-
+ busy=true;const btn=document.getElementById("sendBtn");btn.disabled=true;input.value="";
  addMessage(question,"user");
- const detectedLanguage=detectLanguage(question);
- const answer=addMessage("Thinking... Please wait.","ai");
-
+ const detectedLanguage=detectLanguage(question),answer=addMessage("Thinking... Please wait.","ai");
  try{
-  const response=await fetch(API_URL,{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({
-    message:question,
-    language:detectedLanguage,
-    responseLength:responseLength
-   })
-  });
-
+  const response=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:question,language:detectedLanguage,responseLength:responseLength})});
   const data=await response.json();
   if(!response.ok)throw new Error(data.error||data.message||("Server error: "+response.status));
-
-  const reply=data.reply||data.response||data.answer||
-   (data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("\n");
-
+  const reply=data.reply||data.response||data.answer||(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("\n");
   answer.textContent=reply||"No response received. Please try again.";
-
-  const speakButton=document.createElement("button");
-  speakButton.className="speak-btn";
-  speakButton.type="button";
-  speakButton.textContent="🔊 Listen to Answer";
-  speakButton.onclick=()=>speakText(reply||"No response received.");
-
-  answer.appendChild(document.createElement("br"));
-  answer.appendChild(speakButton);
-
- }catch(error){
-  answer.textContent="Sorry, an error occurred: "+error.message+"\n\nPlease try again after some time.";
- }finally{
-  busy=false;
-  btn.disabled=false;
- }
+  const speakButton=document.createElement("button");speakButton.className="speak-btn";speakButton.type="button";speakButton.textContent="🔊 Listen to Answer";speakButton.onclick=()=>speakText(reply||"No response received.");
+  answer.appendChild(document.createElement("br"));answer.appendChild(speakButton);
+ }catch(error){answer.textContent="Sorry, an error occurred: "+error.message+"\n\nPlease try again after some time."}
+ finally{busy=false;btn.disabled=false}
 }
 
 /* VOICE INPUT AND READ ALOUD */
 function startVoiceInput(){
  const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SpeechRecognition){
-  alert("Voice input is not supported in this browser. Please use an updated Chrome browser.");
-  return;
- }
- stopSpeaking();
- recognition=new SpeechRecognition();
- recognition.lang="hi-IN";
- recognition.interimResults=false;
- recognition.maxAlternatives=1;
-
- recognition.onresult=(event)=>{
-  const transcript=event.results[0][0].transcript;
-  const input=document.getElementById("question");
-  input.value=(input.value+" "+transcript).trim();
-  input.focus();
- };
- recognition.onerror=(event)=>alert("Voice input error: "+event.error);
- recognition.onend=()=>{recognition=null};
- recognition.start();
+ if(!SpeechRecognition){alert("Voice input is not supported in this browser. Please use an updated Chrome browser.");return}
+ stopSpeaking();recognition=new SpeechRecognition();recognition.lang="hi-IN";recognition.interimResults=false;recognition.maxAlternatives=1;
+ recognition.onresult=event=>{const transcript=event.results[0][0].transcript,input=document.getElementById("question");input.value=(input.value+" "+transcript).trim();input.focus()};
+ recognition.onerror=event=>alert("Voice input error: "+event.error);
+ recognition.onend=()=>{recognition=null};recognition.start();
 }
-
 function speakText(text){
- if(!("speechSynthesis" in window)){
-  alert("Text-to-speech is not supported in this browser.");
-  return;
- }
+ if(!("speechSynthesis" in window)){alert("Text-to-speech is not supported in this browser.");return}
  window.speechSynthesis.cancel();
- const utterance=new SpeechSynthesisUtterance(text);
- const language=detectLanguage(text);
- utterance.lang=language==="Hindi"||language==="Hinglish"?"hi-IN":"en-IN";
- utterance.rate=.95;
- window.speechSynthesis.speak(utterance);
+ const utterance=new SpeechSynthesisUtterance(text),language=detectLanguage(text);
+ utterance.lang=language==="Hindi"||language==="Hinglish"?"hi-IN":"en-IN";utterance.rate=.95;window.speechSynthesis.speak(utterance);
 }
-
 function stopSpeaking(){
  if("speechSynthesis" in window)window.speechSynthesis.cancel();
  if(recognition){try{recognition.stop()}catch(e){}recognition=null}
 }
 
-/* PDF INGESTION - EXISTING WORKER ROUTES RETAINED */
+/* PDF INGESTION */
 function pdfIngestionHTML(){
- return `
- <div class="page-panel">
-  <h2>Constitution PDF Ingestion</h2>
-  <p>Extract text from the stored Constitution PDF and save it to the legal database in batches of five pages.</p>
-  <div class="pdf-tools">
-   <label for="adminToken">Admin ingestion token</label>
-   <input id="adminToken" type="password" placeholder="Enter your admin token" autocomplete="off">
-   <button class="primary-btn" onclick="startPdfIngestion()">Start PDF Ingestion</button>
-   <button class="secondary-btn" onclick="stopPdfIngestion()">Stop</button>
-   <div id="pdfStatus" class="pdf-status">Ready. Enter the admin token to begin.</div>
-  </div>
-  <p><b>Security:</b> Do not use your admin token on a shared or untrusted device.</p>
- </div>`;
+ return `<div class="page-panel"><h2>Constitution PDF Ingestion</h2><p>Extract text from the stored Constitution PDF and save it to the legal database in batches of five pages.</p>
+ <div class="pdf-tools"><label for="adminToken">Admin ingestion token</label><input id="adminToken" type="password" placeholder="Enter your admin token" autocomplete="off">
+ <button class="primary-btn" onclick="startPdfIngestion()">Start PDF Ingestion</button><button class="secondary-btn" onclick="stopPdfIngestion()">Stop</button><div id="pdfStatus" class="pdf-status">Ready. Enter the admin token to begin.</div></div>
+ <p><b>Security:</b> Do not use your admin token on a shared or untrusted device.</p></div>`;
 }
-
-function stopPdfIngestion(){
- ingestStopRequested=true;
- const status=document.getElementById("pdfStatus");
- if(status)status.textContent="Stop requested. The current batch will finish first.";
-}
-
+function stopPdfIngestion(){ingestStopRequested=true;const status=document.getElementById("pdfStatus");if(status)status.textContent="Stop requested. The current batch will finish first."}
 async function startPdfIngestion(){
- const token=document.getElementById("adminToken")?.value.trim();
- const status=document.getElementById("pdfStatus");
+ const token=document.getElementById("adminToken")?.value.trim(),status=document.getElementById("pdfStatus");
  if(!token){alert("Please enter your admin ingestion token.");return}
  if(!window.confirm("Start extracting the Constitution PDF and saving its text into the legal database?"))return;
-
- ingestStopRequested=false;
- status.textContent="Loading PDF processing library...";
-
+ ingestStopRequested=false;status.textContent="Loading PDF processing library...";
  try{
   const pdfjs=await import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs");
   pdfjs.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
-
   status.textContent="Downloading Constitution PDF...";
   const pdfResponse=await fetch(API_URL+"library/pdf");
   if(!pdfResponse.ok)throw new Error("PDF download failed: HTTP "+pdfResponse.status);
-
-  const pdfData=await pdfResponse.arrayBuffer();
-  const pdf=await pdfjs.getDocument({data:new Uint8Array(pdfData)}).promise;
-  const totalPages=pdf.numPages;
-  let savedPages=0;
-
+  const pdfData=await pdfResponse.arrayBuffer(),pdf=await pdfjs.getDocument({data:new Uint8Array(pdfData)}).promise;
+  const totalPages=pdf.numPages;let savedPages=0;
   status.textContent=`PDF loaded: ${totalPages} pages. Starting extraction...`;
-
   for(let start=1;start<=totalPages;start+=5){
    if(ingestStopRequested)break;
-   const batch=[];
-   const end=Math.min(start+4,totalPages);
-
+   const batch=[],end=Math.min(start+4,totalPages);
    for(let pageNumber=start;pageNumber<=end;pageNumber++){
     if(ingestStopRequested)break;
     status.textContent=`Extracting page ${pageNumber} of ${totalPages}...`;
-    const page=await pdf.getPage(pageNumber);
-    const textContent=await page.getTextContent();
+    const page=await pdf.getPage(pageNumber),textContent=await page.getTextContent();
     const pageText=textContent.items.map(item=>item.str||"").join(" ").trim();
-
     if(!pageText)throw new Error("No extractable text found on page "+pageNumber+". This page may be scanned.");
     if(pageText.length>50000)throw new Error("Page "+pageNumber+" exceeds the 50,000 character limit.");
     batch.push({pageNumber,text:pageText});
    }
-
    if(!batch.length)break;
-
    status.textContent=`Saving pages ${start}–${end} to legal database...`;
-
-   const saveResponse=await fetch(API_URL+"admin/ingest-chunk",{
-    method:"POST",
-    headers:{"Content-Type":"application/json","x-admin-token":token},
-    body:JSON.stringify({document_id:1,pages:batch})
-   });
-
+   const saveResponse=await fetch(API_URL+"admin/ingest-chunk",{method:"POST",headers:{"Content-Type":"application/json","x-admin-token":token},body:JSON.stringify({document_id:1,pages:batch})});
    const saveData=await saveResponse.json();
    if(!saveResponse.ok||!saveData.success)throw new Error(saveData.error||"Database save failed at page "+start);
-
-   savedPages+=batch.length;
-   status.textContent=`Saved ${savedPages} of ${totalPages} pages successfully.`;
+   savedPages+=batch.length;status.textContent=`Saved ${savedPages} of ${totalPages} pages successfully.`;
    await new Promise(resolve=>setTimeout(resolve,150));
   }
-
-  status.textContent=ingestStopRequested
-   ?`Stopped. ${savedPages} pages were saved. You can restart the process.`
-   :`Completed successfully. ${savedPages} pages saved to legal database.`;
-
- }catch(error){
-  status.textContent="Ingestion error: "+error.message;
- }
+  status.textContent=ingestStopRequested?`Stopped. ${savedPages} pages were saved. You can restart the process.`:`Completed successfully. ${savedPages} pages saved to legal database.`;
+ }catch(error){status.textContent="Ingestion error: "+error.message}
 }
 
-/* AUTHENTICATION INTERFACE */
+/* AUTHENTICATION API */
+async function nyayAuthFetch(path,options={}){
+ const headers={"Content-Type":"application/json",...(options.headers||{})};
+ if(nyayAuthToken)headers.Authorization="Bearer "+nyayAuthToken;
+ const response=await fetch(API_URL.replace(/\/+$/,"")+path,{...options,headers});
+ const data=await response.json().catch(()=>({}));
+ if(!response.ok||data.success===false)throw new Error(data.error||data.message||"Request failed.");
+ return data;
+}
+
+function nyayUpdateAuthUI(){
+ const label=document.getElementById("userLabel");
+ if(label)label.textContent=currentUser?(currentUser.full_name||currentUser.email||"My Account"):"Guest User";
+ const topButton=document.querySelector(".top-actions button");
+ if(topButton){topButton.textContent=currentUser?"Account":"Login";topButton.onclick=()=>currentUser?openDepartment("account"):openModal("login")}
+ document.querySelectorAll(".sidebar .nav-item").forEach(button=>{
+  if(button.dataset.authType==="login"){
+   button.textContent=currentUser?"👤 My Account":"⇥ Login / Sign Up";
+   button.onclick=()=>currentUser?openDepartment("account"):openModal("login");
+  }
+  if(button.dataset.authType==="logout"){
+   button.style.display=currentUser?"block":"none";
+   button.onclick=logout;
+  }
+ });
+}
+
 function openModal(type){
  authMode=type;
-
- const title=document.getElementById("modalTitle");
- const desc=document.getElementById("modalDesc");
- const pass=document.getElementById("authPassword");
- const confirm=document.getElementById("authConfirm");
- const name=document.getElementById("authName");
- const links=document.getElementById("modalLinks");
- const action=document.getElementById("authAction");
- const note=document.getElementById("authNote");
-
- name.style.display="none";
- confirm.style.display="none";
- pass.style.display="block";
- pass.value="";
- confirm.value="";
- name.value="";
- document.getElementById("authEmail").value="";
-
+ const title=document.getElementById("modalTitle"),desc=document.getElementById("modalDesc");
+ const name=document.getElementById("authName"),email=document.getElementById("authEmail");
+ const pass=document.getElementById("authPassword"),confirm=document.getElementById("authConfirm");
+ const links=document.getElementById("modalLinks"),action=document.getElementById("authAction"),note=document.getElementById("authNote");
+ name.style.display="none";email.style.display="block";pass.style.display="block";confirm.style.display="none";
+ name.value="";email.value="";pass.value="";confirm.value="";
+ action.disabled=false;
  if(type==="signup"){
-  title.textContent="Create Account";
-  desc.textContent="Join NYAYVERSE AI and create your free account.";
-  name.style.display="block";
-  confirm.style.display="block";
-  action.textContent="Create Account";
-  links.innerHTML=`<button onclick="openModal('login')">Already registered? Login</button>`;
-  note.textContent="Free account trial: 10 AI messages and 3 image generations. Backend activation is pending.";
+  title.textContent="Create Account";desc.textContent="Create your NYAYVERSE AI account.";
+  name.style.display="block";confirm.style.display="block";action.textContent="Create Account";
+  links.innerHTML='<button onclick="openModal(\'login\')">Already registered? Login</button>';
+  note.textContent="Use a valid email address. Email verification is required.";
  }else if(type==="forgot"){
-  title.textContent="Reset Password";
-  desc.textContent="Enter your email to request a password reset.";
-  pass.style.display="none";
-  action.textContent="Send Reset Link";
-  links.innerHTML=`<button onclick="openModal('login')">Back to Login</button>`;
-  note.textContent="Password reset email service must be configured in the backend.";
+  title.textContent="Forgot Password";desc.textContent="Enter your registered email address.";
+  pass.style.display="none";action.textContent="Send Reset Link";
+  links.innerHTML='<button onclick="openModal(\'login\')">Back to Login</button>';
+  note.textContent="If your account exists, a password reset email will be sent.";
+ }else if(type==="reset"){
+  title.textContent="Create New Password";desc.textContent="Enter and confirm your new password.";
+  email.style.display="none";confirm.style.display="block";action.textContent="Reset Password";
+  links.innerHTML='<button onclick="openModal(\'login\')">Back to Login</button>';
+  note.textContent="Password must be 8 to 128 characters.";
  }else{
-  title.textContent="Welcome Back";
-  desc.textContent="Login to your NYAYVERSE AI account.";
-  action.textContent="Continue";
-  links.innerHTML=`<button onclick="openModal('forgot')">Forgot Password?</button><button onclick="openModal('signup')">Create Account</button>`;
-  note.textContent="Secure authentication will be activated through the backend.";
+  title.textContent="Welcome Back";desc.textContent="Login to your NYAYVERSE AI account.";
+  action.textContent="Login";
+  links.innerHTML='<button onclick="openModal(\'forgot\')">Forgot Password?</button><button onclick="openModal(\'signup\')">Create Account</button>';
+  note.textContent="Login with your verified email address.";
  }
-
  document.getElementById("modalBg").style.display="flex";
 }
+function closeModal(){document.getElementById("modalBg").style.display="none"}
 
-function closeModal(){
- document.getElementById("modalBg").style.display="none";
-}
-
-function authAction(){
+async function authAction(){
+ if(authBusy)return;
  const email=document.getElementById("authEmail").value.trim();
  const password=document.getElementById("authPassword").value;
  const name=document.getElementById("authName").value.trim();
- const confirm=document.getElementById("authConfirm").value;
-
- if(!email){
-  alert("Please enter your email address.");
-  return;
- }
+ const confirmPassword=document.getElementById("authConfirm").value;
+ const action=document.getElementById("authAction"),note=document.getElementById("authNote");
+ if(authMode!=="reset"&&!email){alert("Please enter your email address.");return}
  if(authMode==="signup"){
-  if(!name){alert("Please enter your full name.");return}
-  if(password.length<8){alert("Password must be at least 8 characters.");return}
-  if(password!==confirm){alert("Passwords do not match.");return}
+  if(name.length<2||name.length>100){alert("Full name must be between 2 and 100 characters.");return}
+  if(password.length<8||password.length>128){alert("Password must be 8 to 128 characters.");return}
+  if(password!==confirmPassword){alert("Passwords do not match.");return}
  }
- if(authMode==="login"&&!password){
-  alert("Please enter your password.");
-  return;
+ if(authMode==="login"&&!password){alert("Please enter your password.");return}
+ if(authMode==="reset"){
+  if(!nyayResetToken){alert("Password reset token is missing or invalid.");return}
+  if(password.length<8||password.length>128){alert("Password must be 8 to 128 characters.");return}
+  if(password!==confirmPassword){alert("Passwords do not match.");return}
  }
-
- alert("The "+(authMode==="signup"?"Sign Up":authMode==="forgot"?"Password Reset":"Login")+" interface is ready. The secure authentication API is not connected yet. No account has been created or authenticated.");
+ authBusy=true;action.disabled=true;action.textContent="Please wait...";
+ try{
+  let data;
+  if(authMode==="signup"){
+   data=await nyayAuthFetch("/auth/signup",{method:"POST",body:JSON.stringify({full_name:name,email,password})});
+   note.textContent=data.message||"Account created. Please check your email for verification.";
+   action.textContent="Account Created";
+   setTimeout(()=>openModal("login"),2500);
+   return;
+  }
+  if(authMode==="login"){
+   data=await nyayAuthFetch("/auth/login",{method:"POST",body:JSON.stringify({email,password})});
+   if(!data.token)throw new Error("Login token was not received.");
+   nyayAuthToken=data.token;localStorage.setItem(NYAY_AUTH_KEY,nyayAuthToken);
+   currentUser=data.user||null;nyayUpdateAuthUI();closeModal();
+   alert("Login successful. Welcome to NYAYVERSE AI.");
+   return;
+  }
+  if(authMode==="forgot"){
+   data=await nyayAuthFetch("/auth/forgot-password",{method:"POST",body:JSON.stringify({email})});
+   note.textContent=data.message||"If your account exists, a password reset email has been sent.";
+   action.textContent="Request Submitted";return;
+  }
+  if(authMode==="reset"){
+   data=await nyayAuthFetch("/auth/reset-password",{method:"POST",body:JSON.stringify({token:nyayResetToken,password})});
+   nyayResetToken="";alert(data.message||"Password reset successful. Please login.");
+   openModal("login");return;
+  }
+ }catch(error){alert(error.message||"Authentication failed.")}
+ finally{
+  authBusy=false;action.disabled=false;
+  if(authMode==="signup")action.textContent="Create Account";
+  else if(authMode==="forgot")action.textContent="Send Reset Link";
+  else if(authMode==="reset")action.textContent="Reset Password";
+  else action.textContent="Login";
+ }
 }
 
-function logout(){
- currentUser=null;
- document.getElementById("userLabel").textContent="Guest User";
- alert("No active authenticated session is connected.");
+async function logout(){
+ if(!nyayAuthToken){alert("You are not logged in.");return}
+ try{await nyayAuthFetch("/auth/logout",{method:"POST"})}
+ catch(error){console.warn("Logout request:",error.message)}
+ nyayAuthToken="";currentUser=null;localStorage.removeItem(NYAY_AUTH_KEY);
+ nyayUpdateAuthUI();showHome();alert("You have been logged out.");
 }
 
-/* INITIAL STATE */
-document.getElementById("userLabel").textContent="Guest User";
-</script>
-
-<script>
-/* ==========================================
-   NYAYVERSE AI - AUTHENTICATION INTEGRATION
-   Existing Worker API - Auth-system branch
-========================================== */
-
-const NYAY_AUTH_KEY = "nyayverse_auth_token";
-let nyayAuthToken = localStorage.getItem(NYAY_AUTH_KEY) || "";
-let nyayResetToken = "";
-
-async function nyayAuthFetch(path, options = {}) {
-  const headers = {
-    "Content-Type": "application/json",
-    ...(options.headers || {})
-  };
-
-  if (nyayAuthToken) {
-    headers.Authorization = "Bearer " + nyayAuthToken;
-  }
-
-  const response = await fetch(
-    API_URL.replace(/\/+$/, "") + path,
-    { ...options, headers }
-  );
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok || data.success === false) {
-    throw new Error(data.error || data.message || "Request failed.");
-  }
-
-  return data;
+async function nyayRefreshAccount(){
+ try{
+  const data=await nyayAuthFetch("/auth/me");
+  currentUser=data.user||data;nyayUpdateAuthUI();openDepartment("account");
+ }catch(error){alert(error.message)}
+}
+async function nyayLogoutAll(){
+ if(!confirm("Logout from all devices?"))return;
+ try{await nyayAuthFetch("/auth/logout-all",{method:"POST"})}
+ catch(error){console.warn(error.message)}
+ nyayAuthToken="";currentUser=null;localStorage.removeItem(NYAY_AUTH_KEY);
+ nyayUpdateAuthUI();showHome();alert("All sessions have been logged out.");
+}
+async function nyayDeleteAccount(){
+ const password=prompt("Enter your current password to permanently delete your account.");
+ if(!password)return;
+ if(!confirm("This action is permanent. Delete your account?"))return;
+ try{
+  await nyayAuthFetch("/auth/delete",{method:"POST",body:JSON.stringify({password})});
+  nyayAuthToken="";currentUser=null;localStorage.removeItem(NYAY_AUTH_KEY);
+  nyayUpdateAuthUI();showHome();alert("Your account has been deleted.");
+ }catch(error){alert(error.message)}
 }
 
-/* AUTH UI */
-
-function nyayUpdateAuthUI() {
-  const label = document.getElementById("userLabel");
-  if (label) {
-    label.textContent = currentUser
-      ? (currentUser.full_name || currentUser.email)
-      : "Guest User";
-  }
-
-  const topButton = document.querySelector(".top-actions button");
-  if (topButton) {
-    topButton.textContent = currentUser ? "Account" : "Login";
-    topButton.onclick = () => currentUser
-      ? openDepartment("account")
-      : openModal("login");
-  }
-
-  const navButtons = document.querySelectorAll(".sidebar .nav-item");
-
-  navButtons.forEach(button => {
-    const label = button.textContent.trim();
-
-    if (label.includes("Login / Sign Up")) {
-      button.textContent = currentUser
-        ? "👤 My Account"
-        : "⇥ Login / Sign Up";
-
-      button.onclick = () => currentUser
-        ? openDepartment("account")
-        : openModal("login");
-    }
-
-    if (label.includes("Sign Out")) {
-      button.style.display = currentUser ? "block" : "none";
-      button.onclick = logout;
-    }
-  });
+async function nyayCheckSession(){
+ if(!nyayAuthToken){nyayUpdateAuthUI();return}
+ try{
+  const data=await nyayAuthFetch("/auth/me");
+  currentUser=data.user||data;
+ }catch(error){
+  nyayAuthToken="";currentUser=null;localStorage.removeItem(NYAY_AUTH_KEY);
+ }
+ nyayUpdateAuthUI();
+}
+async function nyayProcessAuthLink(){
+ const params=new URLSearchParams(window.location.search);
+ const verifyToken=params.get("verify"),resetToken=params.get("reset");
+ if(verifyToken){
+  try{
+   const data=await nyayAuthFetch("/auth/verify",{method:"POST",body:JSON.stringify({token:verifyToken})});
+   alert(data.message||"Email verification successful.");openModal("login");
+  }catch(error){alert("Email verification failed: "+error.message)}
+  params.delete("verify");
+ }
+ if(resetToken){
+  nyayResetToken=resetToken;params.delete("reset");openModal("reset");
+ }
+ if(verifyToken||resetToken){
+  const query=params.toString();
+  history.replaceState({},"",location.pathname+(query?"?"+query:"")+location.hash);
+ }
 }
 
-/* LOGIN / SIGNUP / FORGOT / RESET MODAL */
-
-window.openModal = function(type) {
-  authMode = type;
-
-  const title = document.getElementById("modalTitle");
-  const desc = document.getElementById("modalDesc");
-  const name = document.getElementById("authName");
-  const email = document.getElementById("authEmail");
-  const pass = document.getElementById("authPassword");
-  const confirm = document.getElementById("authConfirm");
-  const links = document.getElementById("modalLinks");
-  const action = document.getElementById("authAction");
-  const note = document.getElementById("authNote");
-
-  name.style.display = "none";
-  pass.style.display = "block";
-  confirm.style.display = "none";
-
-  name.value = "";
-  email.value = "";
-  pass.value = "";
-  confirm.value = "";
-
-  if (type === "signup") {
-    title.textContent = "Create Account";
-    desc.textContent = "Create your NYAYVERSE AI account.";
-    name.style.display = "block";
-    confirm.style.display = "block";
-    action.textContent = "Create Account";
-    links.innerHTML =
-      '<button onclick="openModal(\'login\')">Already registered? Login</button>';
-    note.textContent = "Use a valid email address. Email verification is required.";
-  }
-
-  else if (type === "forgot") {
-    title.textContent = "Forgot Password";
-    desc.textContent = "Enter your registered email address.";
-    pass.style.display = "none";
-    action.textContent = "Send Reset Link";
-    links.innerHTML =
-      '<button onclick="openModal(\'login\')">Back to Login</button>';
-    note.textContent = "If your account exists, a reset email will be sent.";
-  }
-
-  else if (type === "reset") {
-    title.textContent = "Create New Password";
-    desc.textContent = "Enter and confirm your new password.";
-    confirm.style.display = "block";
-    action.textContent = "Reset Password";
-    links.innerHTML = "";
-    note.textContent = "Password must be at least 8 characters.";
-  }
-
-  else {
-    title.textContent = "Welcome Back";
-    desc.textContent = "Login to your NYAYVERSE AI account.";
-    action.textContent = "Login";
-    links.innerHTML =
-      '<button onclick="openModal(\'forgot\')">Forgot Password?</button>' +
-      '<button onclick="openModal(\'signup\')">Create Account</button>';
-    note.textContent = "Login with your verified email address.";
-  }
-
-  document.getElementById("modalBg").style.display = "flex";
-};
-
-window.authAction = async function() {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
-  const name = document.getElementById("authName").value.trim();
-  const confirm = document.getElementById("authConfirm").value;
-  const action = document.getElementById("authAction");
-  const note = document.getElementById("authNote");
-
-  if (authMode !== "reset" && !email) {
-    alert("Please enter your email address.");
-    return;
-  }
-
-  if (authMode === "signup") {
-    if (name.length < 2) {
-      alert("Please enter your full name.");
-      return;
-    }
-
-    if (password.length < 8 || password.length > 128) {
-      alert("Password must be 8 to 128 characters.");
-      return;
-    }
-
-    if (password !== confirm) {
-      alert("Passwords do not match.");
-      return;
-    }
-  }
-
-  if (authMode === "login" && !password) {
-    alert("Please enter your password.");
-    return;
-  }
-
-  if (authMode === "reset") {
-    if (password.length < 8 || password.length > 128) {
-      alert("Password must be 8 to 128 characters.");
-      return;
-    }
-
-    if (password !== confirm) {
-      alert("Passwords do not match.");
-      return;
-    }
-
-    if (!nyayResetToken) {
-      alert("Password reset token is missing or invalid.");
-      return;
-    }
-  }
-
-  action.disabled = true;
-  action.textContent = "Please wait...";
-
-  try {
-    let data;
-
-    if (authMode === "signup") {
-      data = await nyayAuthFetch("/auth/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          full_name: name,
-          email,
-          password
-        })
-      });
-
-      note.textContent =
-        data.message || "Account created. Please check your email for verification.";
-
-      action.textContent = "Account Created";
-      setTimeout(() => openModal("login"), 2500);
-      return;
-    }
-
-    if (authMode === "login") {
-      data = await nyayAuthFetch("/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password })
-      });
-
-      if (!data.token) {
-        throw new Error("Login token was not received.");
-      }
-
-      nyayAuthToken = data.token;
-      localStorage.setItem(NYAY_AUTH_KEY, nyayAuthToken);
-      currentUser = data.user || null;
-
-      nyayUpdateAuthUI();
-      closeModal();
-      alert("Login successful. Welcome to NYAYVERSE AI.");
-      return;
-    }
-
-    if (authMode === "forgot") {
-      data = await nyayAuthFetch("/auth/forgot-password", {
-        method: "POST",
-        body: JSON.stringify({ email })
-      });
-
-      note.textContent =
-        data.message || "If your account exists, a password reset email has been sent.";
-
-      action.textContent = "Request Submitted";
-      return;
-    }
-
-    if (authMode === "reset") {
-      data = await nyayAuthFetch("/auth/reset-password", {
-        method: "POST",
-        body: JSON.stringify({
-          token: nyayResetToken,
-          password
-        })
-      });
-
-      nyayResetToken = "";
-      alert(data.message || "Password reset successful. Please login.");
-      openModal("login");
-      return;
-    }
-
-  } catch (error) {
-    alert(error.message || "Authentication failed.");
-  } finally {
-    action.disabled = false;
-    action.textContent =
-      authMode === "signup" ? "Create Account" :
-      authMode === "forgot" ? "Send Reset Link" :
-      authMode === "reset" ? "Reset Password" : "Login";
-  }
-};
-
-/* LOGOUT */
-
-window.logout = async function() {
-  if (!nyayAuthToken) {
-    alert("You are not logged in.");
-    return;
-  }
-
-  try {
-    await nyayAuthFetch("/auth/logout", {
-      method: "POST"
-    });
-  } catch (error) {
-    console.warn("Logout request:", error.message);
-  }
-
-  nyayAuthToken = "";
-  currentUser = null;
-  localStorage.removeItem(NYAY_AUTH_KEY);
-
-  nyayUpdateAuthUI();
-  showHome();
-  alert("You have been logged out.");
-};
-
-/* ACCOUNT & SECURITY */
-
-const nyayOriginalOpenDepartment = window.openDepartment;
-
-window.openDepartment = function(section) {
-  if (section !== "account") {
-    return nyayOriginalOpenDepartment(section);
-  }
-
-  document.getElementById("home").style.display = "none";
-  document.getElementById("departmentPage").style.display = "block";
-
-  const composer = document.getElementById("composer");
-  composer.style.display = "none";
-
-  const target = document.getElementById("departmentContent");
-
-  if (!currentUser) {
-    target.innerHTML = `
-      <div class="page-panel">
-        <h2>Account & Security</h2>
-        <p>Login or create an account to manage your profile.</p>
-        <button class="primary-btn" onclick="openModal('login')">Login</button>
-        <button class="secondary-btn" onclick="openModal('signup')">Create Account</button>
-      </div>`;
-    return;
-  }
-
-  target.innerHTML = `
-    <div class="page-panel">
-      <h2>Account & Security</h2>
-      <div class="usage-row">
-        <span>Full Name</span>
-        <span>${nyayEscape(currentUser.full_name || "")}</span>
-      </div>
-      <div class="usage-row">
-        <span>Email</span>
-        <span>${nyayEscape(currentUser.email || "")}</span>
-      </div>
-      <div class="usage-row">
-        <span>Email Verification</span>
-        <span>${currentUser.email_verified ? "Verified" : "Not Verified"}</span>
-      </div>
-      <div class="usage-row">
-        <span>Plan</span>
-        <span>${nyayEscape(currentUser.plan || "free")}</span>
-      </div>
-      <div class="tool-actions">
-        <button class="secondary-btn" onclick="nyayRefreshAccount()">Refresh Profile</button>
-        <button class="secondary-btn" onclick="nyayLogoutAll()">Logout All Devices</button>
-        <button class="secondary-btn" onclick="nyayDeleteAccount()">Delete Account</button>
-        <button class="primary-btn" onclick="logout()">Logout</button>
-      </div>
-      <p id="accountStatus"></p>
-    </div>`;
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-function nyayEscape(value) {
-  return String(value).replace(/[&<>"']/g, c => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[c]);
-}
-
-async function nyayRefreshAccount() {
-  try {
-    const data = await nyayAuthFetch("/auth/me");
-    currentUser = data.user || data;
-    nyayUpdateAuthUI();
-    openDepartment("account");
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-async function nyayLogoutAll() {
-  if (!confirm("Logout from all devices?")) return;
-
-  try {
-    await nyayAuthFetch("/auth/logout-all", {
-      method: "POST"
-    });
-  } catch (error) {
-    console.warn(error.message);
-  }
-
-  nyayAuthToken = "";
-  currentUser = null;
-  localStorage.removeItem(NYAY_AUTH_KEY);
-  nyayUpdateAuthUI();
-  showHome();
-  alert("All sessions have been logged out.");
-}
-
-async function nyayDeleteAccount() {
-  const password = prompt("Enter your current password to permanently delete your account.");
-  if (!password) return;
-
-  if (!confirm("This action is permanent. Delete your account?")) return;
-
-  try {
-    await nyayAuthFetch("/auth/delete", {
-      method: "POST",
-      body: JSON.stringify({ password })
-    });
-
-    nyayAuthToken = "";
-    currentUser = null;
-    localStorage.removeItem(NYAY_AUTH_KEY);
-    nyayUpdateAuthUI();
-    showHome();
-    alert("Account deletion request completed.");
-  } catch (error) {
-    alert(error.message);
-  }
-}
-
-/* SESSION RESTORE */
-
-async function nyayCheckSession() {
-  if (!nyayAuthToken) {
-    nyayUpdateAuthUI();
-    return;
-  }
-
-  try {
-    const data = await nyayAuthFetch("/auth/me");
-    currentUser = data.user || data;
-    nyayUpdateAuthUI();
-  } catch (error) {
-    nyayAuthToken = "";
-    currentUser = null;
-    localStorage.removeItem(NAY_AUTH_KEY);
-    nyayUpdateAuthUI();
-  }
-}
-
-/* EMAIL VERIFICATION + PASSWORD RESET LINKS */
-
-async function nyayProcessAuthLink() {
-  const params = new URLSearchParams(window.location.search);
-  const verifyToken = params.get("verify");
-  const resetToken = params.get("reset");
-
-  if (verifyToken) {
-    try {
-      const data = await nyayAuthFetch("/auth/verify", {
-        method: "POST",
-        body: JSON.stringify({ token: verifyToken })
-      });
-
-      alert(data.message || "Email verification successful.");
-      openModal("login");
-    } catch (error) {
-      alert("Email verification failed: " + error.message);
-    }
-
-    params.delete("verify");
-    history.replaceState({}, "", location.pathname + (params.toString() ? "?" + params : "") + location.hash);
-  }
-
-  if (resetToken) {
-    nyayResetToken = resetToken;
-    params.delete("reset");
-    history.replaceState({}, "", location.pathname + (params.toString() ? "?" + params : "") + location.hash);
-    openModal("reset");
-  }
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  await nyayCheckSession();
-  await nyayProcessAuthLink();
+/* STARTUP */
+document.addEventListener("DOMContentLoaded",async()=>{
+ await nyayCheckSession();
+ await nyayProcessAuthLink();
 });
-
 nyayUpdateAuthUI();
 </script>
-</body>
-</html>
 </body>
 </html>
