@@ -6,289 +6,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090909">
 <title>NYAYVERSE AI - Your AI Assistant</title>
-
 <style>
-:root{
- --bg:#090909;--panel:#141414;--panel2:#201c14;
- --border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;
- --accent:#c9a44c;--accent2:#e2c477;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.app{display:flex;min-height:100vh}
-.sidebar{width:255px;background:#0d0d0c;border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;gap:20px;flex-shrink:0;transition:width .25s ease,padding .25s ease}
-.app.sidebar-collapsed .sidebar{width:0;min-width:0;padding-left:0;padding-right:0;border:0;overflow:hidden;gap:0}
-.logo{display:flex;align-items:center;gap:11px;padding:5px}
-.logo-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#9c762d,#e3c477);display:grid;place-items:center;font-size:22px;font-weight:bold;color:#111}
-.logo h2{font-size:17px;margin:0;letter-spacing:1px}
-.logo small{color:var(--muted);font-size:10px}
-.sidebar-close{display:none;margin-left:auto;width:34px;height:34px;border:1px solid var(--border);border-radius:8px;background:var(--panel2);color:var(--text);font-size:22px;line-height:1}
-.new-chat{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}
-.nav-title{font-size:11px;color:#a18a5c;margin:8px}
-.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#d5cbb9;border:0;border-radius:9px;font-size:13px}
-.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}
-.sidebar-bottom{margin-top:auto}
-.main{flex:1;min-width:0;display:flex;flex-direction:column}
-.topbar{min-height:68px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 25px;background:#0d0d0c;gap:10px}
-.top-left{display:flex;align-items:center;gap:12px}
-.topbar h3{font-size:15px;margin:0}
-.top-actions{display:flex;gap:9px;align-items:center}
-.small-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}
-.mobile-menu{display:block}
-.sidebar-overlay{display:none}
-.content{width:100%;max-width:1100px;margin:0 auto;padding:30px 22px;flex:1}
-.hero{text-align:center;margin:18px auto 28px}
-.hero-logo{width:65px;height:65px;margin:auto auto 17px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,#9c762d,#e3c477);color:#111;box-shadow:0 8px 35px #c9a44c22}
-.hero h1{font-size:30px;margin:0 0 10px}
-.gradient{background:linear-gradient(90deg,#c9a44c,#f2d990);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{color:var(--muted);font-size:14px;line-height:1.6}
-.section-heading{font-size:17px;margin:28px 0 12px}
-.studio-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:25px 0}
-.studio-card{background:linear-gradient(145deg,#171717,#201b12);border:1px solid var(--border);padding:20px;border-radius:15px;text-align:left;color:var(--text);min-height:175px;transition:.2s}
-.studio-card:hover{border-color:var(--accent);transform:translateY(-3px);background:#242015}
-.studio-icon{font-size:30px;display:block;margin-bottom:15px;color:#d6b45d}
-.studio-card b{display:block;font-size:15px;margin-bottom:8px}
-.studio-card small{color:var(--muted);font-size:12px;line-height:1.6}
-.tool-panel{background:var(--panel);border:1px solid var(--border);padding:22px;border-radius:15px;margin:18px 0}
-.tool-panel h2{margin:0 0 10px}
-.tool-panel p{font-size:13px;color:var(--muted);line-height:1.6}
-.tool-label{display:block;font-size:12px;color:#dfc98e;margin:16px 0 8px}
-.tool-input,.tool-select,.tool-textarea{width:100%;padding:13px;background:#0b0b0a;border:1px solid var(--border);border-radius:10px;color:white;outline:none}
-.tool-textarea{min-height:120px;resize:vertical}
-.tool-input:focus,.tool-select:focus,.tool-textarea:focus{border-color:var(--accent)}
-.tool-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.primary-btn{padding:11px 17px;border:0;border-radius:9px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}
-.secondary-btn{padding:11px 17px;border:1px solid var(--border);border-radius:9px;background:var(--panel2);color:white}
-.tool-status{margin-top:15px;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:#dfc98e;font-size:12px;line-height:1.6;white-space:pre-wrap}
-.preview{display:none;max-width:100%;max-height:360px;margin-top:15px;border-radius:12px;border:1px solid var(--border)}
-.file-info{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
-.chat-area{display:none;flex-direction:column;gap:17px;margin:25px 0}
-.message{display:flex;gap:10px;align-items:flex-start}
-.avatar{flex-shrink:0;width:32px;height:32px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;font-size:14px}
-.bubble{max-width:85%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
-.user .bubble{background:#292316;border-color:#67532a}
-.user{flex-direction:row-reverse}
-.composer{position:sticky;bottom:0;padding:14px 20px 20px;background:linear-gradient(transparent,var(--bg) 20%);z-index:2}
-.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #66532e;border-radius:16px;padding:12px;box-shadow:0 10px 35px #0005}
-.composer textarea{width:100%;resize:none;min-height:55px;max-height:150px;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:14px}
-.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.composer-bottom small{color:var(--muted);font-size:10px}
-.send{border:0;border-radius:10px;padding:10px 18px;color:#111;background:linear-gradient(100deg,#c9a44c,#e6cb83);font-weight:bold}
-.send:disabled{opacity:.55;cursor:not-allowed}
-.disclaimer{text-align:center;color:#938873;font-size:10px;margin:14px}
-.footer{text-align:center;color:#938873;font-size:11px;padding:14px;line-height:1.8}
-.footer a{color:#d7b45d;text-decoration:none;margin:0 5px}
-.modal-bg{display:none;position:fixed;inset:0;background:#000b;align-items:center;justify-content:center;padding:18px;z-index:10}
-.modal{width:100%;max-width:420px;max-height:90vh;overflow:auto;background:#17150f;border:1px solid var(--border);border-radius:18px;padding:25px}
-.modal h2{margin:0 0 7px}
-.modal p{font-size:12px;color:var(--muted);line-height:1.5}
-.modal input{display:block;width:100%;padding:13px;margin:12px 0;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:white;outline:none}
-.modal button.primary{width:100%;padding:13px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;border:0;border-radius:9px;font-weight:bold}
-.modal-links{display:flex;justify-content:space-between;gap:8px;margin-top:17px;flex-wrap:wrap}
-.modal-links button{background:none;border:0;color:#dfc477;font-size:12px}
-.close{float:right;background:none;border:0;color:white;font-size:22px}
-.page-panel{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:22px;margin:18px 0}
-.page-panel h2{margin-top:0}
-.page-panel p,.page-panel li{color:var(--muted);font-size:13px;line-height:1.7}
-.sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
-.sub-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:13px;color:var(--text);text-align:left}
-.back-btn{margin-bottom:12px}
-.policy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.policy-grid button{background:var(--panel2);color:#d5cbb9;border:1px solid var(--border);padding:12px;border-radius:9px;text-align:left;font-size:12px}
-.voice-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.voice-tools button,.speak-btn,.pdf-tools button{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px}
-.speak-btn{margin-top:10px;color:#dfc477}
-.pdf-tools{margin-top:20px;padding:15px;background:#0c0c0b;border:1px solid var(--border);border-radius:12px}
-.pdf-tools input{width:100%;padding:11px;margin:10px 0;background:#090909;border:1px solid var(--border);border-radius:8px;color:white}
-.pdf-tools button{margin:5px 5px 5px 0}
-.pdf-status{font-size:12px;color:#dfc477;white-space:pre-wrap;line-height:1.6;margin-top:10px}
-.source-box{margin-top:14px;padding:12px;background:#0d0d0c;border:1px solid var(--border);border-radius:10px;font-size:12px;white-space:normal}
-.source-heading{color:#dfc477;font-weight:bold;margin-bottom:9px}
-.source-list{display:flex;flex-direction:column;gap:8px}
-.source-link{color:#e2c477;text-decoration:none;overflow-wrap:anywhere;line-height:1.5}
-.source-link:hover{text-decoration:underline;color:#f5d98e}
-.legal-disclaimer{margin-top:13px;padding:12px;background:#211b10;border:1px solid #80632e;border-radius:10px;color:#e5d5ad;font-size:12px;line-height:1.6;white-space:pre-wrap}
-.response-actions{margin-top:10px}
-.home-hero{margin:30px auto 18px}
-.home-hero h1{font-size:29px;margin:0 0 9px}
-.home-prompt{font-size:20px!important;color:var(--muted);margin:0!important}
-#home .composer{position:relative;bottom:auto;padding:8px 0 4px;background:transparent}
-#home .composer-inner{max-width:850px;border-radius:16px}
-#home .composer .footer{display:none}
-#home .studio-grid{margin:18px 0 14px;gap:12px}
-#home .studio-card{min-height:100px;padding:16px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-#home .studio-icon{font-size:24px;margin:0;color:#dfbd66}
-#home .studio-card b{font-size:13px;line-height:1.35;margin:0}
-#home .studio-card.ai-assistant-card{border-color:#8a6b32;background:linear-gradient(145deg,#211c11,#15130e)}
-#home .studio-card.ai-assistant-card .studio-icon{color:#f0d48d}
-
-/* ATTACHMENTS */
-.attach-btn{background:var(--panel2);color:#e2c477;border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px}
-.attachment-list{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 10px}
-.attachment-chip{display:flex;align-items:center;gap:8px;max-width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:9px;background:#201c14;color:#e5d5ad;font-size:11px}
-.attachment-chip span{max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.attachment-chip button{border:0;background:none;color:#e58a7b;font-weight:bold}
-.attachment-note{font-size:10px;color:var(--muted);margin:7px 4px}
-.attachment-display{margin-top:10px;padding:9px;border:1px solid var(--border);border-radius:9px;color:#dfc477;font-size:12px}
-.artifact-list{display:flex;flex-direction:column;gap:8px;margin-top:13px}
-.artifact-item{padding:11px;border:1px solid var(--border);background:#201c14;border-radius:9px}
-.artifact-item a{color:#e2c477;text-decoration:none;font-weight:bold}
-.artifact-preview{display:block;max-width:100%;max-height:360px;margin-top:12px;border-radius:10px;border:1px solid var(--border)}
-.artifact-video{display:block;max-width:100%;max-height:360px;margin-top:12px}
-@media(max-width:850px){.sidebar{width:235px}}
-@media(max-width:720px){
- .sidebar{display:none;position:fixed;z-index:8;inset:0 auto 0 0;width:270px;max-width:85vw;overflow-y:auto;box-shadow:12px 0 35px #0008}
- .sidebar.open{display:flex}
- .sidebar-close{display:block}
- .sidebar-overlay{display:block;position:fixed;inset:0;z-index:7;background:#0009;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
- .sidebar-overlay.open{opacity:1;visibility:visible;pointer-events:auto}
- .app.sidebar-collapsed .sidebar{width:270px;max-width:85vw;padding:22px 16px;border-right:1px solid var(--border)}
- .mobile-menu{display:block}
- .topbar{padding:10px 13px}
- .content{padding:20px 13px}
- .hero h1{font-size:25px}
- .studio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .studio-card{min-height:100px}
- .composer{padding:10px}
- .bubble{max-width:90%;font-size:13px}
- .policy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
- .sub-grid{grid-template-columns:1fr}
- .topbar h3{font-size:13px}
- .top-actions{gap:5px}
- .small-btn{padding:8px 9px;font-size:12px}
- #home .home-hero{margin:24px auto 14px}
- #home .home-hero h1{font-size:24px}
- #home .home-prompt{font-size:18px!important}
- #home .studio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0 10px}
- #home .studio-card{min-height:96px;padding:12px 6px}
- #home .studio-card b{font-size:12px}
- #home .composer{padding:7px 0}
- #home .composer-inner{padding:10px}
-}
-@media(min-width:721px){.mobile-menu{display:block}}
+:root{--bg:#090909;--panel:#141414;--panel2:#201c14;--border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;--accent:#c9a44c;--accent2:#e2c477}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}.sidebar{width:255px;background:#0d0d0c;border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;gap:20px;flex-shrink:0;transition:width .25s ease,padding .25s ease}.app.sidebar-collapsed .sidebar{width:0;min-width:0;padding-left:0;padding-right:0;border:0;overflow:hidden;gap:0}
+.logo{display:flex;align-items:center;gap:11px;padding:5px}.logo-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#9c762d,#e3c477);display:grid;place-items:center;font-size:22px;font-weight:bold;color:#111}.logo h2{font-size:17px;margin:0;letter-spacing:1px}.logo small{color:var(--muted);font-size:10px}.sidebar-close{display:none;margin-left:auto;width:34px;height:34px;border:1px solid var(--border);border-radius:8px;background:var(--panel2);color:var(--text);font-size:22px}
+.new-chat{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}.nav-title{font-size:11px;color:#a18a5c;margin:8px}.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#d5cbb9;border:0;border-radius:9px;font-size:13px}.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}.sidebar-bottom{margin-top:auto}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}.topbar{min-height:68px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 25px;background:#0d0d0c;gap:10px}.top-left{display:flex;align-items:center;gap:12px}.topbar h3{font-size:15px;margin:0}.top-actions{display:flex;gap:9px;align-items:center}.small-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}.mobile-menu{display:block}.sidebar-overlay{display:none}
+.content{width:100%;max-width:1100px;margin:0 auto;padding:30px 22px;flex:1}.hero{text-align:center;margin:18px auto 28px}.hero-logo{width:65px;height:65px;margin:auto auto 17px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,#9c762d,#e3c477);color:#111}.hero h1{font-size:30px;margin:0 0 10px}.gradient{background:linear-gradient(90deg,#c9a44c,#f2d990);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:14px;line-height:1.6}
+.section-heading{font-size:17px;margin:28px 0 12px}.studio-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:25px 0}.studio-card{background:linear-gradient(145deg,#171717,#201b12);border:1px solid var(--border);padding:20px;border-radius:15px;text-align:left;color:var(--text);min-height:175px;transition:.2s}.studio-card:hover{border-color:var(--accent);transform:translateY(-3px);background:#242015}.studio-icon{font-size:30px;display:block;margin-bottom:15px;color:#d6b45d}.studio-card b{display:block;font-size:15px;margin-bottom:8px}.studio-card small{color:var(--muted);font-size:12px;line-height:1.6}
+.tool-panel{background:var(--panel);border:1px solid var(--border);padding:22px;border-radius:15px;margin:18px 0}.tool-panel h2{margin:0 0 10px}.tool-panel p{font-size:13px;color:var(--muted);line-height:1.6}.tool-label{display:block;font-size:12px;color:#dfc98e;margin:16px 0 8px}.tool-input,.tool-select,.tool-textarea{width:100%;padding:13px;background:#0b0b0a;border:1px solid var(--border);border-radius:10px;color:white;outline:none}.tool-textarea{min-height:120px;resize:vertical}.tool-input:focus,.tool-select:focus,.tool-textarea:focus{border-color:var(--accent)}.tool-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.primary-btn{padding:11px 17px;border:0;border-radius:9px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}.secondary-btn{padding:11px 17px;border:1px solid var(--border);border-radius:9px;background:var(--panel2);color:white}.tool-status{margin-top:15px;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:#dfc98e;font-size:12px;line-height:1.6;white-space:pre-wrap}.preview{display:none;max-width:100%;max-height:360px;margin-top:15px;border-radius:12px;border:1px solid var(--border)}.file-info{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
+.chat-area{display:none;flex-direction:column;gap:17px;margin:25px 0}.message{display:flex;gap:10px;align-items:flex-start}.avatar{flex-shrink:0;width:32px;height:32px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;font-size:14px}.bubble{max-width:85%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.user .bubble{background:#292316;border-color:#67532a}.user{flex-direction:row-reverse}
+.composer{position:sticky;bottom:0;padding:14px 20px 20px;background:linear-gradient(transparent,var(--bg) 20%);z-index:2}.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #66532e;border-radius:16px;padding:12px;box-shadow:0 10px 35px #0005}.composer textarea{width:100%;resize:none;min-height:55px;max-height:150px;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:14px}.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.composer-bottom small{color:var(--muted);font-size:10px}.send{border:0;border-radius:10px;padding:10px 18px;color:#111;background:linear-gradient(100deg,#c9a44c,#e6cb83);font-weight:bold}.send:disabled{opacity:.55;cursor:not-allowed}.disclaimer{text-align:center;color:#938873;font-size:10px;margin:14px}.footer{text-align:center;color:#938873;font-size:11px;padding:14px;line-height:1.8}.footer a{color:#d7b45d;text-decoration:none;margin:0 5px}
+.modal-bg{display:none;position:fixed;inset:0;background:#000b;align-items:center;justify-content:center;padding:18px;z-index:10}.modal{width:100%;max-width:420px;max-height:90vh;overflow:auto;background:#17150f;border:1px solid var(--border);border-radius:18px;padding:25px}.modal h2{margin:0 0 7px}.modal p{font-size:12px;color:var(--muted);line-height:1.5}.modal input{display:block;width:100%;padding:13px;margin:12px 0;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:white;outline:none}.modal button.primary{width:100%;padding:13px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;border:0;border-radius:9px;font-weight:bold}.modal-links{display:flex;justify-content:space-between;gap:8px;margin-top:17px;flex-wrap:wrap}.modal-links button{background:none;border:0;color:#dfc477;font-size:12px}.close{float:right;background:none;border:0;color:white;font-size:22px}
+.page-panel{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:22px;margin:18px 0}.page-panel h2{margin-top:0}.page-panel p,.page-panel li{color:var(--muted);font-size:13px;line-height:1.7}.sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}.sub-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:13px;color:var(--text);text-align:left}.back-btn{margin-bottom:12px}.policy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.policy-grid button{background:var(--panel2);color:#d5cbb9;border:1px solid var(--border);padding:12px;border-radius:9px;text-align:left;font-size:12px}
+.voice-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.voice-tools button,.speak-btn,.pdf-tools button{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px}.speak-btn{margin-top:10px;color:#dfc477}.pdf-tools{margin-top:20px;padding:15px;background:#0c0c0b;border:1px solid var(--border);border-radius:12px}.pdf-tools input{width:100%;padding:11px;margin:10px 0;background:#090909;border:1px solid var(--border);border-radius:8px;color:white}.pdf-tools button{margin:5px 5px 5px 0}.pdf-status{font-size:12px;color:#dfc477;white-space:pre-wrap;line-height:1.6;margin-top:10px}.source-box{margin-top:14px;padding:12px;background:#0d0d0c;border:1px solid var(--border);border-radius:10px;font-size:12px}.source-heading{color:#dfc477;font-weight:bold;margin-bottom:9px}.source-list{display:flex;flex-direction:column;gap:8px}.source-link{color:#e2c477;text-decoration:none;overflow-wrap:anywhere;line-height:1.5}.legal-disclaimer{margin-top:13px;padding:12px;background:#211b10;border:1px solid #80632e;border-radius:10px;color:#e5d5ad;font-size:12px;line-height:1.6;white-space:pre-wrap}.response-actions{margin-top:10px}.home-hero{margin:30px auto 18px}.home-hero h1{font-size:29px;margin:0 0 9px}.home-prompt{font-size:20px!important;color:var(--muted);margin:0!important}#home .composer{position:relative;bottom:auto;padding:8px 0 4px;background:transparent}#home .composer-inner{max-width:850px;border-radius:16px}#home .composer .footer{display:none}#home .studio-grid{margin:18px 0 14px;gap:12px}#home .studio-card{min-height:100px;padding:16px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}#home .studio-icon{font-size:24px;margin:0;color:#dfbd66}#home .studio-card b{font-size:13px;line-height:1.35;margin:0}#home .studio-card.ai-assistant-card{border-color:#8a6b32;background:linear-gradient(145deg,#211c11,#15130e)}#home .studio-card.ai-assistant-card .studio-icon{color:#f0d48d}
+.attach-btn{background:var(--panel2);color:#e2c477;border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px}.attachment-list{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 10px}.attachment-chip{display:flex;align-items:center;gap:8px;max-width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:9px;background:#201c14;color:#e5d5ad;font-size:11px}.attachment-chip span{max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.attachment-chip button{border:0;background:none;color:#e58a7b;font-weight:bold}.attachment-note{font-size:10px;color:var(--muted);margin:7px 4px}.artifact-list{display:flex;flex-direction:column;gap:8px;margin-top:13px}.artifact-item{padding:11px;border:1px solid var(--border);background:#201c14;border-radius:9px}.artifact-item a{color:#e2c477;text-decoration:none;font-weight:bold}.artifact-preview{display:block;max-width:100%;max-height:360px;margin-top:12px;border-radius:10px;border:1px solid var(--border)}.artifact-video{display:block;max-width:100%;max-height:360px;margin-top:12px}
+@media(max-width:850px){.sidebar{width:235px}}@media(max-width:720px){.sidebar{display:none;position:fixed;z-index:8;inset:0 auto 0 0;width:270px;max-width:85vw;overflow-y:auto;box-shadow:12px 0 35px #0008}.sidebar.open{display:flex}.sidebar-close{display:block}.sidebar-overlay{display:block;position:fixed;inset:0;z-index:7;background:#0009;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}.sidebar-overlay.open{opacity:1;visibility:visible;pointer-events:auto}.app.sidebar-collapsed .sidebar{width:270px;max-width:85vw;padding:22px 16px;border-right:1px solid var(--border)}.mobile-menu{display:block}.topbar{padding:10px 13px}.content{padding:20px 13px}.hero h1{font-size:25px}.studio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.studio-card{min-height:100px}.composer{padding:10px}.bubble{max-width:90%;font-size:13px}.policy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sub-grid{grid-template-columns:1fr}.topbar h3{font-size:13px}.top-actions{gap:5px}.small-btn{padding:8px 9px;font-size:12px}#home .home-hero{margin:24px auto 14px}#home .home-hero h1{font-size:24px}#home .home-prompt{font-size:18px!important}#home .studio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0 10px}#home .studio-card{min-height:96px;padding:12px 6px}#home .studio-card b{font-size:12px}#home .composer{padding:7px 0}#home .composer-inner{padding:10px}}@media(min-width:721px){.mobile-menu{display:block}}
 </style>
 </head>
-
 <body>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMenu()"></div>
 <div class="app">
 <aside class="sidebar" id="sidebar">
- <div class="logo">
-  <div class="logo-icon">⚖</div>
-  <div><h2>NYAYVERSE AI</h2><small>YOUR AI ASSISTANT</small></div>
-  <button class="sidebar-close" type="button" onclick="closeMenu()" aria-label="Close sidebar">×</button>
- </div>
+ <div class="logo"><div class="logo-icon">⚖</div><div><h2>NYAYVERSE AI</h2><small>YOUR AI ASSISTANT</small></div><button class="sidebar-close" type="button" onclick="closeMenu()">×</button></div>
  <button class="new-chat" onclick="newChat()">＋ New Chat</button>
- <div>
-  <div class="nav-title">WORKSPACE</div>
-  <button class="nav-item active" onclick="showHome()">⌂ Home</button>
-  <button class="nav-item" onclick="comingSoon('Chat History')">◷ Chat History</button>
-  <button class="nav-item" onclick="comingSoon('Saved Answers')">☆ Saved Answers</button>
-  <button class="nav-item" onclick="comingSoon('Recent Searches')">⌕ Recent Searches</button>
-  <button class="nav-item" onclick="openDepartment('ai-chat')">✧ Personal AI Assistant</button>
-  <button class="nav-item" onclick="openDepartment('projects')">📁 Projects</button>
- </div>
- <div>
-  <div class="nav-title">ACCOUNT</div>
-  <button class="nav-item" onclick="openDepartment('account')">⚙ Account & Security</button>
-  <button class="nav-item" onclick="openModal('login')">⇥ Login / Sign Up</button>
-  <button class="nav-item" onclick="comingSoon('Sign Out')">↪ Sign Out</button>
- </div>
- <div class="sidebar-bottom">
-  <div class="nav-title">POLICIES</div>
-  <button class="nav-item" onclick="openDepartment('terms')">Terms & Conditions</button>
-  <button class="nav-item" onclick="openDepartment('privacy')">Privacy Policy</button>
-  <div class="nav-title">NYAYVERSE AI · BETA</div>
- </div>
+ <div><div class="nav-title">WORKSPACE</div>
+ <button class="nav-item active" onclick="showHome()">⌂ Home</button>
+ <button class="nav-item" onclick="comingSoon('Chat History')">◷ Chat History</button>
+ <button class="nav-item" onclick="comingSoon('Saved Answers')">☆ Saved Answers</button>
+ <button class="nav-item" onclick="comingSoon('Recent Searches')">⌕ Recent Searches</button>
+ <button class="nav-item" onclick="openDepartment('ai-chat')">✧ Personal AI Assistant</button>
+ <button class="nav-item" onclick="openDepartment('projects')">📁 Projects</button></div>
+ <div><div class="nav-title">ACCOUNT</div>
+ <button class="nav-item" onclick="openDepartment('account')">⚙ Account & Security</button>
+ <button class="nav-item" onclick="openModal('login')">⇥ Login / Sign Up</button>
+ <button class="nav-item" onclick="authLogout()">↪ Sign Out</button></div>
+ <div class="sidebar-bottom"><div class="nav-title">POLICIES</div><button class="nav-item" onclick="openDepartment('terms')">Terms & Conditions</button><button class="nav-item" onclick="openDepartment('privacy')">Privacy Policy</button><div class="nav-title">NYAYVERSE AI · BETA</div></div>
 </aside>
-
 <main class="main">
-<header class="topbar">
- <div class="top-left">
-  <button class="small-btn mobile-menu" onclick="toggleSidebar()" aria-label="Toggle sidebar">☰</button>
-  <h3>⚖ NYAYVERSE AI</h3>
- </div>
- <div class="top-actions">
-  <span style="font-size:11px;color:var(--muted)">Interface: English</span>
-  <button class="small-btn" onclick="openModal('login')">Login</button>
- </div>
-</header>
-
+<header class="topbar"><div class="top-left"><button class="small-btn mobile-menu" onclick="toggleSidebar()">☰</button><h3>⚖ NYAYVERSE AI</h3></div><div class="top-actions"><span style="font-size:11px;color:var(--muted)">Interface: English</span><button class="small-btn" id="topAuthButton" onclick="openModal('login')">Login</button></div></header>
 <section class="content" id="home">
- <div class="hero home-hero">
-  <h1>Hello! I am <span class="gradient">NYAYVERSE AI</span>, your AI assistant.</h1>
-  <p class="home-prompt">How can I help you?</p>
- </div>
-
- <div class="composer" id="composer">
-  <div class="composer-inner">
-   <textarea id="question" placeholder="Ask me anything..." onkeydown="handleKey(event)"></textarea>
-   <div class="attachment-list" id="attachmentList"></div>
-   <div class="composer-bottom">
-    <small>NYAYVERSE AI · Automatic response language detection</small>
-    <div class="voice-tools">
-     <input type="file" id="attachmentInput" hidden multiple accept="image/*,video/*,application/pdf,.pdf" onchange="handleAttachments(event)">
-     <button class="attach-btn" type="button" onclick="document.getElementById('attachmentInput').click()">＋ Attach</button>
-     <button type="button" onclick="startVoiceInput()">🎙 Voice Input</button>
-     <button type="button" onclick="stopSpeaking()">■ Stop</button>
-     <button class="send" id="sendBtn" onclick="sendMessage()">Send ➤</button>
-    </div>
-   </div>
-  </div>
-  <p class="attachment-note">Images, videos and PDFs · Up to 5 files · 20 MB total. Files are sent to the configured backend when you press Send.</p>
-  <div class="footer">AI can make mistakes. Verify important information using reliable sources.</div>
- </div>
-
+ <div class="hero home-hero"><h1>Hello! I am <span class="gradient">NYAYVERSE AI</span>, your AI assistant.</h1><p class="home-prompt">How can I help you?</p></div>
+ <div class="composer" id="composer"><div class="composer-inner"><textarea id="question" placeholder="Ask me anything..." onkeydown="handleKey(event)"></textarea><div class="attachment-list" id="attachmentList"></div><div class="composer-bottom"><small>NYAYVERSE AI · Automatic response language detection</small><div class="voice-tools">
+ <input type="file" id="attachmentInput" hidden multiple accept="image/*,video/*,application/pdf,.pdf" onchange="handleAttachments(event)">
+ <button class="attach-btn" type="button" onclick="document.getElementById('attachmentInput').click()">＋ Attach</button><button type="button" onclick="startVoiceInput()">🎙 Voice Input</button><button type="button" onclick="stopSpeaking()">■ Stop</button><button class="send" id="sendBtn" onclick="sendMessage()">Send ➤</button></div></div></div><p class="attachment-note">Images, videos and PDFs · Up to 5 files · 20 MB total.</p><div class="footer">AI can make mistakes. Verify important information using reliable sources.</div></div>
  <div class="studio-grid">
-  <button class="studio-card" onclick="openCreativeTool('image')"><span class="studio-icon">▧</span><b>Create Image</b></button>
-  <button class="studio-card" onclick="openCreativeTool('video')"><span class="studio-icon">▷</span><b>Create Video</b></button>
-  <button class="studio-card" onclick="openCreativeTool('checker')"><span class="studio-icon">◈</span><b>Fake Media Checker</b></button>
-  <button class="studio-card ai-assistant-card" onclick="openDepartment('ai-chat')"><span class="studio-icon">✧</span><b>Personal AI Assistant</b></button>
- </div>
-
+ <button class="studio-card" onclick="openCreativeTool('image')"><span class="studio-icon">▧</span><b>Create Image</b></button>
+ <button class="studio-card" onclick="openCreativeTool('video')"><span class="studio-icon">▷</span><b>Create Video</b></button>
+ <button class="studio-card" onclick="openCreativeTool('checker')"><span class="studio-icon">◈</span><b>Fake Media Checker</b></button>
+ <button class="studio-card ai-assistant-card" onclick="openDepartment('ai-chat')"><span class="studio-icon">✧</span><b>Personal AI Assistant</b></button></div>
  <div class="footer">© 2026 NYAYVERSE AI · <a href="#" onclick="openDepartment('policies');return false">Policies & Support</a></div>
 </section>
+<section class="content" id="departmentPage" style="display:none"><button class="small-btn back-btn" onclick="showHome()">← Back to Home</button><div id="departmentContent"></div></section>
+</main></div>
 
-<section class="content" id="departmentPage" style="display:none">
- <button class="small-btn back-btn" onclick="showHome()">← Back to Home</button>
- <div id="departmentContent"></div>
-</section>
-</main>
-</div>
-
-<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
- <div class="modal">
-  <button class="close" onclick="closeModal()">×</button>
-  <h2 id="modalTitle">Welcome Back</h2>
-  <p id="modalDesc">Login to your NYAYVERSE AI account.</p>
-  <input id="authName" type="text" placeholder="Full name" style="display:none">
-  <input id="authEmail" type="email" placeholder="Email address">
-  <input id="authPassword" type="password" placeholder="Password">
-  <input id="authConfirm" type="password" placeholder="Confirm password" style="display:none">
-  <button class="primary" onclick="authNotice()" id="authAction">Continue</button>
-  <div class="modal-links" id="modalLinks">
-   <button onclick="openModal('forgot')">Forgot Password?</button>
-   <button onclick="openModal('signup')">Create Account</button>
-  </div>
-  <p id="authNote">Authentication is a visual preview and is not connected yet.</p>
- </div>
-</div>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal">
+ <button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Welcome Back</h2><p id="modalDesc">Login to your NYAYVERSE AI account.</p>
+ <input id="authName" type="text" placeholder="Full name" style="display:none" autocomplete="name">
+ <input id="authEmail" type="email" placeholder="Email address" autocomplete="email">
+ <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password">
+ <input id="authConfirm" type="password" placeholder="Confirm password" style="display:none" autocomplete="new-password">
+ <button class="primary" onclick="authSubmit()" id="authAction">Continue</button>
+ <div class="modal-links" id="modalLinks"></div><p id="authNote" role="status">Use your NYAYVERSE AI account.</p>
+</div></div>
 
 <script>
 "use strict";
-
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-
-let busy=false;
-let recognition=null;
-let ingestStopRequested=false;
-let currentTool=null;
-let selectedMediaUrl=null;
-let selectedAttachments=[];
-const MAX_FILES=5;
-const MAX_TOTAL_SIZE=20*1024*1024;
+const AUTH_TOKEN_KEY="nyayverse_auth_token";
+const AUTH_USER_KEY="nyayverse_auth_user";
+let busy=false,recognition=null,ingestStopRequested=false,currentTool=null,selectedMediaUrl=null,selectedAttachments=[];
+let authMode="login",pendingResetToken=null;
+const MAX_FILES=5,MAX_TOTAL_SIZE=20*1024*1024;
 
 const departments={
  projects:{title:'Projects',desc:'Your research and saved workspaces. Project management will be connected in a future update.',items:['Create New Project','My Projects','Shared Projects'],soon:true},
@@ -303,519 +93,405 @@ const departments={
  evolution:{title:'Law Origins & Evolution',desc:'Understand how laws, legal ideas, rights and institutions originated and evolved over time.',items:['Origins of Law','Code of Hammurabi','Roman Law','Manusmriti & Ancient Texts','Vedic Legal Traditions','Evolution of Fundamental Rights','International Law','IPC to BNS','CrPC to BNSS','Evidence Act to BSA','Jurists & Legal Thinkers']},
  studio:{title:'Creative Studio',desc:'Use the three creative tools available on the home screen.',items:['Create Image','Create Video','Fake Image & Video Checker']},
  'ai-chat':{title:'Personal AI Assistant',desc:'Your unified NYAYVERSE AI Assistant. Ask naturally about any topic, in your preferred language. The assistant is designed to handle general knowledge, education, career, health information, Indian law, research and everyday conversations through one chat interface.'},
- account:{title:'User Account & Security',desc:'Account-management interface preview. Secure account services will require authentication and database integration.',items:['Login & Sign Up','Email Verification','Forgot / Reset Password','User Profile','Change Email','Change Password','Logout','Logout from All Devices','Chat History','Saved Answers','Recent Searches','Delete Individual Chat','Clear All Chat History','Download My Data','Permanent Account Deletion'],soon:true},
+ account:{title:'User Account & Security',desc:'Manage your NYAYVERSE AI account.',items:['Login & Sign Up','Email Verification','Forgot / Reset Password','User Profile','Logout','Delete Account']},
  policies:{title:'Policies & Support',desc:'Policy pages will be published with accurate terms when the related platform features are implemented.',items:['About Us','Privacy Policy','Terms & Conditions','User License Agreement','Legal Disclaimer','Cookie Policy','Security Policy','Data Retention & Deletion Policy','Contact & Grievance Redressal','Feedback','Help & Support'],soon:true}
 };
+
+/* AUTHENTICATION */
+function getAuthToken(){return localStorage.getItem(AUTH_TOKEN_KEY)}
+function getStoredUser(){try{return JSON.parse(localStorage.getItem(AUTH_USER_KEY)||"null")}catch(e){return null}}
+function saveAuth(token,user){
+ if(token)localStorage.setItem(AUTH_TOKEN_KEY,token);
+ if(user)localStorage.setItem(AUTH_USER_KEY,JSON.stringify(user));
+ updateAuthUI();
+}
+function clearAuth(){
+ localStorage.removeItem(AUTH_TOKEN_KEY);
+ localStorage.removeItem(AUTH_USER_KEY);
+ updateAuthUI();
+}
+async function authRequest(path,body=null,authorized=false){
+ const headers={"Content-Type":"application/json"};
+ const token=getAuthToken();
+ if(authorized&&token)headers.Authorization="Bearer "+token;
+ const response=await fetch(API_URL+"auth/"+path,{
+  method:body===null?"GET":"POST",
+  headers,
+  ...(body===null?{}:{body:JSON.stringify(body)})
+ });
+ let data;
+ try{data=await response.json()}catch(e){throw new Error("Server returned an invalid response.")}
+ if(!response.ok||data.success===false)throw new Error(data.error||data.message||("Request failed ("+response.status+")"));
+ return data;
+}
+function updateAuthUI(){
+ const user=getStoredUser();
+ const button=document.getElementById("topAuthButton");
+ if(button){
+  if(getAuthToken()&&user){
+   button.textContent=user.full_name||user.email||"Account";
+   button.onclick=()=>openDepartment("account");
+  }else{
+   button.textContent="Login";
+   button.onclick=()=>openModal("login");
+  }
+ }
+}
+async function authBootstrap(){
+ if(!getAuthToken()){updateAuthUI();return}
+ try{
+  const result=await authRequest("me",null,true);
+  if(result.user)localStorage.setItem(AUTH_USER_KEY,JSON.stringify(result.user));
+ }catch(error){
+  clearAuth();
+ }
+ updateAuthUI();
+}
+async function authLogout(){
+ const token=getAuthToken();
+ if(!token){clearAuth();alert("You are not logged in.");return}
+ try{await authRequest("logout",{},true)}catch(error){console.warn("Logout request:",error.message)}
+ clearAuth();
+ alert("You have been logged out.");
+}
+function setAuthNote(message,isError=false){
+ const note=document.getElementById("authNote");
+ note.textContent=message;
+ note.style.color=isError?"#ff9b8e":"#dfc477";
+}
+function openModal(type){
+ authMode=type;
+ const title=document.getElementById("modalTitle"),desc=document.getElementById("modalDesc");
+ const pass=document.getElementById("authPassword"),confirm=document.getElementById("authConfirm"),name=document.getElementById("authName");
+ const links=document.getElementById("modalLinks"),action=document.getElementById("authAction");
+ name.style.display="none";confirm.style.display="none";pass.style.display="block";pass.value="";confirm.value="";name.value="";
+ pass.autocomplete="current-password";
+ links.innerHTML="";
+ if(type==="signup"){
+  title.textContent="Create Account";desc.textContent="Join NYAYVERSE AI.";
+  name.style.display="block";confirm.style.display="block";pass.autocomplete="new-password";action.textContent="Create Account";
+  addModalLink(links,"Already registered? Login",()=>openModal("login"));
+ }else if(type==="forgot"){
+  title.textContent="Forgot Password";desc.textContent="Enter your registered email to request a password reset.";
+  pass.style.display="none";action.textContent="Send Reset Link";
+  addModalLink(links,"Back to Login",()=>openModal("login"));
+ }else if(type==="reset"){
+  title.textContent="Create New Password";desc.textContent="Enter and confirm your new password.";
+  pass.autocomplete="new-password";confirm.style.display="block";action.textContent="Reset Password";
+  name.style.display="none";addModalLink(links,"Back to Login",()=>openModal("login"));
+ }else{
+  title.textContent="Welcome Back";desc.textContent="Login to your NYAYVERSE AI account.";
+  action.textContent="Login";
+  addModalLink(links,"Forgot Password?",()=>openModal("forgot"));
+  addModalLink(links,"Create Account",()=>openModal("signup"));
+ }
+ action.disabled=false;action.textContent=type==="signup"?"Create Account":type==="forgot"?"Send Reset Link":type==="reset"?"Reset Password":"Login";
+ setAuthNote("Use your NYAYVERSE AI account.");
+ document.getElementById("modalBg").style.display="flex";
+}
+function addModalLink(container,label,callback){
+ const button=document.createElement("button");button.type="button";button.textContent=label;button.onclick=callback;container.appendChild(button);
+}
+function closeModal(){document.getElementById("modalBg").style.display="none"}
+async function authSubmit(){
+ const button=document.getElementById("authAction");
+ const email=document.getElementById("authEmail").value.trim().toLowerCase();
+ const password=document.getElementById("authPassword").value;
+ const name=document.getElementById("authName").value.trim();
+ const confirm=document.getElementById("authConfirm").value;
+ if(authMode!=="reset"&&!email){setAuthNote("Please enter your email address.",true);return}
+ if(authMode==="signup"&&(!name||name.length<2)){setAuthNote("Please enter your full name.",true);return}
+ if((authMode==="login"||authMode==="signup"||authMode==="reset")&&password.length<8){setAuthNote("Password must be at least 8 characters.",true);return}
+ if((authMode==="signup"||authMode==="reset")&&password!==confirm){setAuthNote("Passwords do not match.",true);return}
+ button.disabled=true;
+ const original=button.textContent;button.textContent="Please wait...";
+ try{
+  if(authMode==="signup"){
+   const result=await authRequest("signup",{full_name:name,email,password});
+   setAuthNote(result.message||"Account created. Please check your email to verify your account.");
+   button.textContent="Email Sent";
+  }else if(authMode==="login"){
+   const result=await authRequest("login",{email,password});
+   if(!result.token)throw new Error("Login response did not contain an authentication token.");
+   saveAuth(result.token,result.user||{email});
+   setAuthNote("Login successful.");
+   closeModal();
+  }else if(authMode==="forgot"){
+   const result=await authRequest("forgot-password",{email});
+   setAuthNote(result.message||"If the account is eligible, a password reset link will be sent.");
+   button.textContent="Request Sent";
+  }else if(authMode==="reset"){
+   if(!pendingResetToken)throw new Error("Password reset token is missing. Open the reset link from your email again.");
+   const result=await authRequest("reset-password",{token:pendingResetToken,password});
+   pendingResetToken=null;
+   setAuthNote(result.message||"Password reset successful. Please log in.");
+   openModal("login");
+   setAuthNote("Password reset successful. Please log in.");
+  }
+ }catch(error){
+  setAuthNote(error.message||"Authentication failed. Please try again.",true);
+  button.disabled=false;button.textContent=original;
+  return;
+ }
+ if(authMode==="login"||authMode==="reset"){button.disabled=false;button.textContent=original}
+}
+async function handleAuthLink(){
+ const params=new URLSearchParams(window.location.search);
+ const verifyToken=params.get("token");
+ if(params.get("auth")==="verify"&&verifyToken){
+  openModal("login");setAuthNote("Verifying your email...");
+  try{
+   const result=await authRequest("verify",{token:verifyToken});
+   setAuthNote(result.message||"Email verified successfully. You can now log in.");
+  }catch(error){setAuthNote(error.message,true)}
+  history.replaceState({},"",window.location.pathname);
+ }else if(params.get("auth")==="reset"&&verifyToken){
+  pendingResetToken=verifyToken;openModal("reset");
+  history.replaceState({},"",window.location.pathname);
+ }
+}
 
 /* SIDEBAR */
 function toggleMenu(){toggleSidebar()}
 function toggleSidebar(){
- const sidebar=document.getElementById('sidebar');
- const overlay=document.getElementById('sidebarOverlay');
- const app=document.querySelector('.app');
+ const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("sidebarOverlay"),app=document.querySelector(".app");
  if(window.innerWidth<=720){
-  if(sidebar.classList.contains('open'))closeMenu();
-  else{sidebar.classList.add('open');overlay.classList.add('open')}
- }else app.classList.toggle('sidebar-collapsed');
+  if(sidebar.classList.contains("open"))closeMenu();
+  else{sidebar.classList.add("open");overlay.classList.add("open")}
+ }else app.classList.toggle("sidebar-collapsed");
 }
-function closeMenu(){
- document.getElementById('sidebar').classList.remove('open');
- document.getElementById('sidebarOverlay').classList.remove('open');
-}
-document.addEventListener('keydown',e=>{
- if(e.key==='Escape'){closeMenu();closeModal()}
-});
-window.addEventListener('resize',()=>{if(window.innerWidth>720)closeMenu()});
+function closeMenu(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebarOverlay").classList.remove("open")}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMenu();closeModal()}});
+window.addEventListener("resize",()=>{if(window.innerWidth>720)closeMenu()});
 
 /* NAVIGATION */
 function showHome(){
- closeMenu();
- document.getElementById('departmentPage').style.display='none';
- document.getElementById('home').style.display='block';
- const composer=document.getElementById('composer');
- document.getElementById('home').insertBefore(composer,document.querySelector('#home .studio-grid'));
- composer.style.display='block';
- window.scrollTo({top:0,behavior:'smooth'});
+ closeMenu();document.getElementById("departmentPage").style.display="none";document.getElementById("home").style.display="block";
+ const composer=document.getElementById("composer");document.getElementById("home").insertBefore(composer,document.querySelector("#home .studio-grid"));composer.style.display="block";window.scrollTo({top:0,behavior:"smooth"});
 }
 function newChat(){
- const area=document.getElementById('chatArea');
- if(area)area.remove();
- document.getElementById('question').value='';
- clearAttachments();
- stopSpeaking();
- showHome();
+ const area=document.getElementById("chatArea");if(area)area.remove();
+ document.getElementById("question").value="";clearAttachments();stopSpeaking();showHome();
 }
-function comingSoon(name){alert(name+' is coming soon. This is currently an interface preview only.')}
+function comingSoon(name){alert(name+" is coming soon.")}
 function openDepartment(key){
- closeMenu();
- const d=departments[key];
- if(!d)return;
- document.getElementById('home').style.display='none';
- document.getElementById('departmentPage').style.display='block';
- const composer=document.getElementById('composer');
- document.getElementById('departmentPage').appendChild(composer);
- composer.style.display=(['account','policies','terms','privacy'].includes(key))?'none':'block';
-
- let html=`<div class="hero" style="text-align:left;margin:8px 0 20px">
- <h1><span class="gradient">${escapeHTML(d.title)}</span></h1><p>${escapeHTML(d.desc)}</p></div>`;
-
- if(key==='ai-chat'){
+ closeMenu();const d=departments[key];if(!d)return;
+ document.getElementById("home").style.display="none";document.getElementById("departmentPage").style.display="block";
+ const composer=document.getElementById("composer");document.getElementById("departmentPage").appendChild(composer);
+ composer.style.display=["account","policies","terms","privacy"].includes(key)?"none":"block";
+ let html=`<div class="hero" style="text-align:left;margin:8px 0 20px"><h1><span class="gradient">${escapeHTML(d.title)}</span></h1><p>${escapeHTML(d.desc)}</p></div>`;
+ if(key==="ai-chat"){
   html+=`<div class="page-panel"><h2>Ask NYAYVERSE AI</h2><p>Ask anything in your preferred language. Continue your conversation naturally through one unified AI Assistant.</p></div>`;
  }else{
-  html+=`<div class="page-panel"><h2>${d.soon?'Available in a future update':'Explore '+escapeHTML(d.title)}</h2><div class="sub-grid">`;
+  html+=`<div class="page-panel"><h2>${d.soon?"Available in a future update":"Explore "+escapeHTML(d.title)}</h2><div class="sub-grid">`;
   (d.items||[]).forEach(item=>{
-   const isPreview=d.soon||['policies','account','terms','privacy'].includes(key);
-   const action=isPreview?`comingSoon(${JSON.stringify(item)})`:`askTopic(${JSON.stringify(item)})`;
-   html+=`<button class="sub-card" onclick="${action}">${escapeHTML(item)} ${d.soon?'· Coming Soon':'→'}</button>`;
+   const preview=d.soon||["account","terms","privacy"].includes(key);
+   let action=preview?`comingSoon(${JSON.stringify(item)})`:`askTopic(${JSON.stringify(item)})`;
+   if(key==="account"&&item==="Login & Sign Up")action="openModal('login')";
+   if(key==="account"&&item==="Logout")action="authLogout()";
+   html+=`<button class="sub-card" onclick="${action}">${escapeHTML(item)} ${d.soon?"· Coming Soon":"→"}</button>`;
   });
-  html+='</div>';
-  if(d.soon)html+='<p><b>Coming Soon:</b> These options are displayed for planning purposes only. No external service or paid API is connected.</p>';
-  html+='</div>';
+  html+="</div>";
+  if(d.soon)html+="<p><b>Coming Soon:</b> These options are displayed for planning purposes only.</p>";
+  html+="</div>";
  }
-
- if(key==='library'){
-  html+=`<div class="page-panel"><h2>Constitution PDF Ingestion</h2>
-  <p>Extract text from the stored Constitution PDF and save it to the NYAYVERSE legal database in batches of five pages.</p>
-  <div class="pdf-tools"><label for="adminToken">Admin ingestion token</label>
-  <input id="adminToken" type="password" placeholder="Enter your admin token" autocomplete="off">
-  <button onclick="startPdfIngestion()">Start PDF Ingestion</button>
-  <button onclick="stopPdfIngestion()">Stop</button>
-  <div id="pdfStatus" class="pdf-status">Ready. Enter the admin token to begin.</div></div>
-  <p><b>Note:</b> The token is sent from your browser to your Worker. Do not use this on a shared or untrusted device.</p></div>`;
+ if(key==="library"){
+  html+=`<div class="page-panel"><h2>Constitution PDF Ingestion</h2><p>Extract text from the stored Constitution PDF and save it to the NYAYVERSE legal database in batches of five pages.</p><div class="pdf-tools"><label for="adminToken">Admin ingestion token</label><input id="adminToken" type="password" placeholder="Enter your admin token" autocomplete="off"><button onclick="startPdfIngestion()">Start PDF Ingestion</button><button onclick="stopPdfIngestion()">Stop</button><div id="pdfStatus" class="pdf-status">Ready. Enter the admin token to begin.</div></div><p><b>Note:</b> Do not use this on a shared or untrusted device.</p></div>`;
  }
- document.getElementById('departmentContent').innerHTML=html;
- window.scrollTo({top:0,behavior:'smooth'});
+ document.getElementById("departmentContent").innerHTML=html;window.scrollTo({top:0,behavior:"smooth"});
 }
 function askTopic(topic){
- const q=document.getElementById('question');
- q.value='Please explain '+topic+' in clear and structured language. Include reliable sources where available.';
- const composer=document.getElementById('composer');
- composer.style.display='block';
- q.focus();
- window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+ const q=document.getElementById("question");q.value="Please explain "+topic+" in clear and structured language. Include reliable sources where available.";
+ const composer=document.getElementById("composer");composer.style.display="block";q.focus();window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
 }
 
 /* ATTACHMENTS */
-function formatSize(bytes){
- return bytes<1024*1024?(bytes/1024).toFixed(0)+' KB':(bytes/1024/1024).toFixed(1)+' MB';
-}
+function formatSize(bytes){return bytes<1024*1024?(bytes/1024).toFixed(0)+" KB":(bytes/1024/1024).toFixed(1)+" MB"}
 function handleAttachments(event){
  const files=Array.from(event.target.files||[]);
  for(const file of files){
-  const isImage=file.type.startsWith('image/');
-  const isVideo=file.type.startsWith('video/');
-  const isPDF=file.type==='application/pdf'||file.name.toLowerCase().endsWith('.pdf');
-  if(!isImage&&!isVideo&&!isPDF){alert('Unsupported file: '+file.name+'. Please select an image, video or PDF.');continue}
-  if(selectedAttachments.length>=MAX_FILES){alert('You can attach a maximum of 5 files.');break}
-  const limit=isVideo?10*1024*1024:15*1024*1024;
-  if(file.size>limit){alert(file.name+' is too large. Maximum size: '+formatSize(limit));continue}
+  const image=file.type.startsWith("image/"),video=file.type.startsWith("video/"),pdf=file.type==="application/pdf"||file.name.toLowerCase().endsWith(".pdf");
+  if(!image&&!video&&!pdf){alert("Unsupported file: "+file.name);continue}
+  if(selectedAttachments.length>=MAX_FILES){alert("Maximum 5 files allowed.");break}
+  const limit=video?10*1024*1024:15*1024*1024;
+  if(file.size>limit){alert(file.name+" is too large. Maximum: "+formatSize(limit));continue}
   const total=selectedAttachments.reduce((sum,item)=>sum+item.file.size,0);
-  if(total+file.size>MAX_TOTAL_SIZE){alert('Total attachment size cannot exceed 20 MB.');break}
+  if(total+file.size>MAX_TOTAL_SIZE){alert("Total attachment size cannot exceed 20 MB.");break}
   selectedAttachments.push({file,previewUrl:URL.createObjectURL(file)});
  }
- event.target.value='';
- renderAttachments();
+ event.target.value="";renderAttachments();
 }
 function renderAttachments(){
- const list=document.getElementById('attachmentList');
- list.innerHTML='';
+ const list=document.getElementById("attachmentList");list.innerHTML="";
  selectedAttachments.forEach((item,index)=>{
-  const chip=document.createElement('div');
-  chip.className='attachment-chip';
-  const icon=item.file.type.startsWith('image/')?'🖼️':item.file.type.startsWith('video/')?'🎬':'📄';
-  const name=document.createElement('span');
-  name.textContent=icon+' '+item.file.name+' ('+formatSize(item.file.size)+')';
-  const remove=document.createElement('button');
-  remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Remove '+item.file.name);
-  remove.onclick=()=>removeAttachment(index);
+  const chip=document.createElement("div");chip.className="attachment-chip";
+  const icon=item.file.type.startsWith("image/")?"🖼️":item.file.type.startsWith("video/")?"🎬":"📄";
+  const name=document.createElement("span");name.textContent=icon+" "+item.file.name+" ("+formatSize(item.file.size)+")";
+  const remove=document.createElement("button");remove.type="button";remove.textContent="×";remove.onclick=()=>removeAttachment(index);
   chip.append(name,remove);list.appendChild(chip);
  });
 }
-function removeAttachment(index){
- const item=selectedAttachments[index];
- if(item)URL.revokeObjectURL(item.previewUrl);
- selectedAttachments.splice(index,1);
- renderAttachments();
-}
-function clearAttachments(){
- selectedAttachments.forEach(item=>URL.revokeObjectURL(item.previewUrl));
- selectedAttachments=[];
- renderAttachments();
- const input=document.getElementById('attachmentInput');
- if(input)input.value='';
-}
-function fileToDataURL(file){
- return new Promise((resolve,reject)=>{
-  const reader=new FileReader();
-  reader.onload=()=>resolve(reader.result);
-  reader.onerror=()=>reject(new Error('Could not read '+file.name));
-  reader.readAsDataURL(file);
- });
-}
+function removeAttachment(index){const item=selectedAttachments[index];if(item)URL.revokeObjectURL(item.previewUrl);selectedAttachments.splice(index,1);renderAttachments()}
+function clearAttachments(){selectedAttachments.forEach(item=>URL.revokeObjectURL(item.previewUrl));selectedAttachments=[];renderAttachments();const input=document.getElementById("attachmentInput");if(input)input.value=""}
+function fileToDataURL(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Could not read "+file.name));reader.readAsDataURL(file)})}
 async function getAttachmentPayload(){
- const payload=[];
- for(const item of selectedAttachments){
-  payload.push({
-   name:item.file.name,
-   type:item.file.type||'application/octet-stream',
-   size:item.file.size,
-   dataUrl:await fileToDataURL(item.file)
-  });
- }
- return payload;
+ const payload=[];for(const item of selectedAttachments)payload.push({name:item.file.name,type:item.file.type||"application/octet-stream",size:item.file.size,dataUrl:await fileToDataURL(item.file)});return payload;
 }
 
 /* CREATIVE STUDIO */
 function openCreativeTool(tool){
- currentTool=tool;
- document.getElementById('home').style.display='none';
- document.getElementById('departmentPage').style.display='block';
- const composer=document.getElementById('composer');
- document.getElementById('departmentPage').appendChild(composer);
- composer.style.display='none';
- let html='';
-
- if(tool==='image'){
-  html=`<div class="tool-panel"><h2>🎨 Create Image</h2>
-  <p>Describe the image you want to create. Image generation will be connected through the backend.</p>
-  <label class="tool-label" for="imagePrompt">Image Description</label>
-  <textarea id="imagePrompt" class="tool-textarea" placeholder="Describe the image you want to create..."></textarea>
-  <label class="tool-label" for="imageRatio">Image Aspect Ratio</label>
-  <select id="imageRatio" class="tool-select">
-   <option value="1:1">Square (1:1)</option><option value="9:16">Portrait (9:16)</option>
-   <option value="16:9">Landscape (16:9)</option><option value="4:5">Social Post (4:5)</option>
-  </select>
-  <div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('image')">Generate Image</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div>
-  <div id="toolStatus" class="tool-status">Ready. Enter your image prompt. Actual generation requires backend integration.</div>
-  <img id="toolPreview" class="preview" alt="Generated image preview"></div>`;
- }else if(tool==='video'){
-  html=`<div class="tool-panel"><h2>🎬 Create Video</h2>
-  <p>Prepare a video description and choose your video format. Video generation will be connected through the backend.</p>
-  <label class="tool-label" for="videoPrompt">Video Description / Prompt</label>
-  <textarea id="videoPrompt" class="tool-textarea" placeholder="Describe your video scene, camera movement, subject, style and background..."></textarea>
-  <label class="tool-label" for="videoRatio">Video Aspect Ratio</label>
-  <select id="videoRatio" class="tool-select"><option value="9:16">Portrait (9:16) - Shorts / Reels</option><option value="16:9">Landscape (16:9) - YouTube</option><option value="1:1">Square (1:1)</option></select>
-  <label class="tool-label" for="videoDuration">Video Duration</label>
-  <select id="videoDuration" class="tool-select"><option value="5 seconds">5 seconds</option><option value="10 seconds">10 seconds</option><option value="15 seconds">15 seconds</option><option value="30 seconds">30 seconds</option></select>
-  <div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('video')">Generate Video</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div>
-  <div id="toolStatus" class="tool-status">Ready. Enter your video prompt. Actual generation requires backend integration.</div>
-  <video id="toolPreview" class="preview" controls></video></div>`;
+ currentTool=tool;document.getElementById("home").style.display="none";document.getElementById("departmentPage").style.display="block";
+ const composer=document.getElementById("composer");document.getElementById("departmentPage").appendChild(composer);composer.style.display="none";
+ let html="";
+ if(tool==="image"){
+  html=`<div class="tool-panel"><h2>🎨 Create Image</h2><p>Describe the image you want to create.</p><label class="tool-label" for="imagePrompt">Image Description</label><textarea id="imagePrompt" class="tool-textarea" placeholder="Describe the image you want to create..."></textarea><label class="tool-label" for="imageRatio">Image Aspect Ratio</label><select id="imageRatio" class="tool-select"><option value="1:1">Square (1:1)</option><option value="9:16">Portrait (9:16)</option><option value="16:9">Landscape (16:9)</option><option value="4:5">Social Post (4:5)</option></select><div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('image')">Generate Image</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Ready. Image generation requires backend integration.</div><img id="toolPreview" class="preview" alt="Generated image preview"></div>`;
+ }else if(tool==="video"){
+  html=`<div class="tool-panel"><h2>🎬 Create Video</h2><p>Prepare a video description and choose your video format.</p><label class="tool-label" for="videoPrompt">Video Description / Prompt</label><textarea id="videoPrompt" class="tool-textarea" placeholder="Describe your video scene, camera movement, subject, style and background..."></textarea><label class="tool-label" for="videoRatio">Video Aspect Ratio</label><select id="videoRatio" class="tool-select"><option value="9:16">Portrait (9:16) - Shorts / Reels</option><option value="16:9">Landscape (16:9) - YouTube</option><option value="1:1">Square (1:1)</option></select><label class="tool-label" for="videoDuration">Video Duration</label><select id="videoDuration" class="tool-select"><option value="5 seconds">5 seconds</option><option value="10 seconds">10 seconds</option><option value="15 seconds">15 seconds</option><option value="30 seconds">30 seconds</option></select><div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('video')">Generate Video</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Ready. Video generation requires backend integration.</div><video id="toolPreview" class="preview" controls></video></div>`;
  }else{
-  html=`<div class="tool-panel"><h2>🔍 Fake Image & Video Checker</h2>
-  <p>Upload an image or video file to prepare it for authenticity analysis.</p>
-  <label class="tool-label" for="checkerFile">Select Image or Video</label>
-  <input id="checkerFile" class="tool-input" type="file" accept="image/*,video/*" onchange="previewCheckerFile(event)">
-  <div id="checkerFileInfo" class="file-info">No file selected.</div>
-  <img id="checkerImagePreview" class="preview" alt="Selected image preview">
-  <video id="checkerVideoPreview" class="preview" controls></video>
-  <div class="tool-actions"><button class="primary-btn" onclick="checkMedia()">Check Media</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div>
-  <div id="toolStatus" class="tool-status">Select an image or video. Authenticity analysis requires backend integration.</div>
-  <p>Important: AI-media detection is probabilistic and cannot guarantee 100% accuracy. An inconclusive result may be necessary.</p></div>`;
+  html=`<div class="tool-panel"><h2>🔍 Fake Image & Video Checker</h2><p>Upload an image or video file to prepare it for authenticity analysis.</p><label class="tool-label" for="checkerFile">Select Image or Video</label><input id="checkerFile" class="tool-input" type="file" accept="image/*,video/*" onchange="previewCheckerFile(event)"><div id="checkerFileInfo" class="file-info">No file selected.</div><img id="checkerImagePreview" class="preview" alt="Selected image preview"><video id="checkerVideoPreview" class="preview" controls></video><div class="tool-actions"><button class="primary-btn" onclick="checkMedia()">Check Media</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Select an image or video.</div><p>AI-media detection is probabilistic and cannot guarantee 100% accuracy.</p></div>`;
  }
-
- document.getElementById('departmentContent').innerHTML=`
- <div class="hero" style="text-align:left;margin:8px 0 18px"><h1><span class="gradient">Creative Studio</span></h1><p>Use the selected tool below.</p></div>${html}`;
- window.scrollTo({top:0,behavior:'smooth'});
+ document.getElementById("departmentContent").innerHTML=`<div class="hero" style="text-align:left;margin:8px 0 18px"><h1><span class="gradient">Creative Studio</span></h1><p>Use the selected tool below.</p></div>${html}`;
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 function requestGeneration(type){
- const prompt=document.getElementById(type==='image'?'imagePrompt':'videoPrompt')?.value.trim();
- const status=document.getElementById('toolStatus');
- if(!prompt){status.textContent='Please enter a description before continuing.';return}
- const ratio=document.getElementById(type==='image'?'imageRatio':'videoRatio').value;
- const duration=type==='video'?document.getElementById('videoDuration').value:'Not applicable';
- status.textContent='Your prompt has been prepared successfully.\n\nPrompt: '+prompt+'\nAspect ratio: '+ratio+'\nDuration: '+duration+'\n\nGeneration service is not connected yet. No fake result has been created.';
+ const prompt=document.getElementById(type==="image"?"imagePrompt":"videoPrompt")?.value.trim(),status=document.getElementById("toolStatus");
+ if(!prompt){status.textContent="Please enter a description before continuing.";return}
+ const ratio=document.getElementById(type==="image"?"imageRatio":"videoRatio").value,duration=type==="video"?document.getElementById("videoDuration").value:"Not applicable";
+ status.textContent="Prompt prepared.\n\nPrompt: "+prompt+"\nAspect ratio: "+ratio+"\nDuration: "+duration+"\n\nGeneration endpoint is not connected in this frontend version.";
 }
 function previewCheckerFile(event){
- const file=event.target.files?.[0];
- const info=document.getElementById('checkerFileInfo');
- const image=document.getElementById('checkerImagePreview');
- const video=document.getElementById('checkerVideoPreview');
+ const file=event.target.files?.[0],info=document.getElementById("checkerFileInfo"),image=document.getElementById("checkerImagePreview"),video=document.getElementById("checkerVideoPreview");
  if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
- image.style.display='none';video.style.display='none';
- if(!file){info.textContent='No file selected.';return}
- const isImage=file.type.startsWith('image/'),isVideo=file.type.startsWith('video/');
- if(!isImage&&!isVideo){event.target.value='';info.textContent='Unsupported file. Please select an image or video.';return}
- if(file.size>100*1024*1024){event.target.value='';info.textContent='File is larger than 100 MB. Please choose a smaller file.';return}
- selectedMediaUrl=URL.createObjectURL(file);
- info.textContent=file.name+' · '+(file.size/1024/1024).toFixed(2)+' MB · '+file.type;
- if(isImage){image.src=selectedMediaUrl;image.style.display='block'}
- else{video.src=selectedMediaUrl;video.style.display='block'}
- document.getElementById('toolStatus').textContent='File selected and preview loaded. Detection requires backend integration.';
+ image.style.display="none";video.style.display="none";
+ if(!file){info.textContent="No file selected.";return}
+ const isImage=file.type.startsWith("image/"),isVideo=file.type.startsWith("video/");
+ if(!isImage&&!isVideo){event.target.value="";info.textContent="Unsupported file.";return}
+ if(file.size>100*1024*1024){event.target.value="";info.textContent="File is larger than 100 MB.";return}
+ selectedMediaUrl=URL.createObjectURL(file);info.textContent=file.name+" · "+(file.size/1024/1024).toFixed(2)+" MB · "+file.type;
+ if(isImage){image.src=selectedMediaUrl;image.style.display="block"}else{video.src=selectedMediaUrl;video.style.display="block"}
+ document.getElementById("toolStatus").textContent="File selected. Detection API is not connected in this frontend version.";
 }
-function checkMedia(){
- const file=document.getElementById('checkerFile')?.files?.[0];
- const status=document.getElementById('toolStatus');
- if(!file){status.textContent='Please select an image or video first.';return}
- status.textContent='File is selected and ready for analysis. The Fake Media Checker API is not connected yet, so no authenticity verdict can be produced at this stage.';
-}
+function checkMedia(){const file=document.getElementById("checkerFile")?.files?.[0],status=document.getElementById("toolStatus");status.textContent=file?"File selected. The Fake Media Checker API is not connected in this frontend version.":"Please select an image or video first."}
 function clearTool(){
  if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
- const panel=document.getElementById('departmentContent');
- if(!panel)return;
- panel.querySelectorAll('textarea,input[type="file"]').forEach(el=>el.value='');
- panel.querySelectorAll('.tool-status').forEach(el=>el.textContent='Cleared. You can start again.');
- panel.querySelectorAll('.preview').forEach(el=>{el.removeAttribute('src');el.style.display='none'});
- const info=document.getElementById('checkerFileInfo');
- if(info)info.textContent='No file selected.';
+ const panel=document.getElementById("departmentContent");if(!panel)return;
+ panel.querySelectorAll("textarea,input[type=file]").forEach(el=>el.value="");
+ panel.querySelectorAll(".tool-status").forEach(el=>el.textContent="Cleared. You can start again.");
+ panel.querySelectorAll(".preview").forEach(el=>{el.removeAttribute("src");el.style.display="none"});
+ const info=document.getElementById("checkerFileInfo");if(info)info.textContent="No file selected.";
 }
 
 /* LANGUAGE AND SAFETY */
 function detectLanguage(text){
- if(/[\u0900-\u097F]/.test(text))return 'Hindi';
+ if(/[\u0900-\u097F]/.test(text))return "Hindi";
  const words=text.toLowerCase().match(/[a-z]+/g)||[];
- const hinglishWords=['kya','hai','hain','kaise','kyun','kyu','nahi','nahin','mujhe','mera','meri','aap','batao','samjhao','kanoon','kanun','dhara','police','karu','kare','hoga','hogi','karna','chahiye','mein','me','aur','agar','ka','ki','ke'];
- return words.filter(w=>hinglishWords.includes(w)).length>=2?'Hinglish':'English';
+ const hinglishWords=["kya","hai","hain","kaise","kyun","kyu","nahi","nahin","mujhe","mera","meri","aap","batao","samjhao","kanoon","kanun","dhara","police","karu","kare","hoga","hogi","karna","chahiye","mein","me","aur","agar","ka","ki","ke"];
+ return words.filter(w=>hinglishWords.includes(w)).length>=2?"Hinglish":"English";
 }
-function escapeHTML(value){
- return String(value??'').replace(/[&<>"']/g,char=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
- })[char]);
-}
+function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
 function getSafeHttpUrl(value){
- if(typeof value!=='string')return null;
- try{
-  const url=new URL(value,window.location.href);
-  if(url.protocol!=='https:'&&url.protocol!=='http:')return null;
-  return url.href;
- }catch(error){return null}
+ if(typeof value!=="string")return null;
+ try{const url=new URL(value,window.location.href);if(url.protocol!=="https:"&&url.protocol!=="http:")return null;return url.href}catch(e){return null}
 }
 
 /* GENERATED FILES AND AI RESPONSE */
 function renderArtifact(bubble,artifact){
- if(!artifact||typeof artifact!=='object')return;
- const safeUrl=getSafeHttpUrl(artifact.url||artifact.downloadUrl||artifact.fileUrl);
- if(!safeUrl)return;
- let list=bubble.querySelector('.artifact-list');
- if(!list){list=document.createElement('div');list.className='artifact-list';bubble.appendChild(list)}
- const item=document.createElement('div');item.className='artifact-item';
- const link=document.createElement('a');
- link.href=safeUrl;link.target='_blank';link.rel='noopener noreferrer';
- link.textContent='📥 Download '+(artifact.name||artifact.filename||'Generated File');
- item.appendChild(link);list.appendChild(item);
-
- const mime=String(artifact.mimeType||'').toLowerCase();
- if(mime.startsWith('image/')){
-  const img=document.createElement('img');img.className='artifact-preview';img.src=safeUrl;img.alt=artifact.name||'Generated image';img.loading='lazy';bubble.appendChild(img);
- }else if(mime.startsWith('video/')){
-  const video=document.createElement('video');video.className='artifact-video';video.src=safeUrl;video.controls=true;bubble.appendChild(video);
- }
+ if(!artifact||typeof artifact!=="object")return;
+ const safeUrl=getSafeHttpUrl(artifact.url||artifact.downloadUrl||artifact.fileUrl);if(!safeUrl)return;
+ let list=bubble.querySelector(".artifact-list");if(!list){list=document.createElement("div");list.className="artifact-list";bubble.appendChild(list)}
+ const item=document.createElement("div");item.className="artifact-item";const link=document.createElement("a");link.href=safeUrl;link.target="_blank";link.rel="noopener noreferrer";link.textContent="📥 Download "+(artifact.name||artifact.filename||"Generated File");item.appendChild(link);list.appendChild(item);
+ const mime=String(artifact.mimeType||"").toLowerCase();
+ if(mime.startsWith("image/")){const img=document.createElement("img");img.className="artifact-preview";img.src=safeUrl;img.alt=artifact.name||"Generated image";img.loading="lazy";bubble.appendChild(img)}
+ else if(mime.startsWith("video/")){const video=document.createElement("video");video.className="artifact-video";video.src=safeUrl;video.controls=true;bubble.appendChild(video)}
 }
 function renderAIResponse(bubble,data,reply){
- bubble.textContent=reply||'No response received. Please try again.';
- const sourceItems=Array.isArray(data.sources)?data.sources:Array.isArray(data.citations)?data.citations:[];
- const validSources=[];
- sourceItems.forEach(source=>{
-  if(!source||typeof source!=='object')return;
-  const url=getSafeHttpUrl(source.url||source.link||source.href);
-  if(url)validSources.push({name:String(source.name||source.title||source.source||source.label||'Source'),url});
- });
- if(validSources.length){
-  const box=document.createElement('div');box.className='source-box';
-  const heading=document.createElement('div');heading.className='source-heading';heading.textContent='Sources & References';
-  const list=document.createElement('div');list.className='source-list';
-  validSources.forEach(source=>{
-   const a=document.createElement('a');a.className='source-link';a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=source.name;list.appendChild(a);
-  });
-  box.append(heading,list);bubble.appendChild(box);
- }
- if(data.showLegalDisclaimer===true){
-  const text=typeof data.legalDisclaimer==='string'&&data.legalDisclaimer.trim()?data.legalDisclaimer.trim():'This response provides general legal information and is not a substitute for advice from a qualified legal professional. Consider consulting a lawyer before taking legal action.';
-  const box=document.createElement('div');box.className='legal-disclaimer';box.textContent=text;bubble.appendChild(box);
- }
+ bubble.textContent=reply||"No response received. Please try again.";
+ const sources=Array.isArray(data.sources)?data.sources:Array.isArray(data.citations)?data.citations:[];
+ const valid=[];sources.forEach(source=>{if(!source||typeof source!=="object")return;const url=getSafeHttpUrl(source.url||source.link||source.href);if(url)valid.push({name:String(source.name||source.title||source.source||source.label||"Source"),url})});
+ if(valid.length){const box=document.createElement("div");box.className="source-box";const heading=document.createElement("div");heading.className="source-heading";heading.textContent="Sources & References";const list=document.createElement("div");list.className="source-list";valid.forEach(source=>{const a=document.createElement("a");a.className="source-link";a.href=source.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=source.name;list.appendChild(a)});box.append(heading,list);bubble.appendChild(box)}
+ if(data.showLegalDisclaimer===true){const text=typeof data.legalDisclaimer==="string"&&data.legalDisclaimer.trim()?data.legalDisclaimer.trim():"This response provides general legal information and is not a substitute for advice from a qualified legal professional.";const box=document.createElement("div");box.className="legal-disclaimer";box.textContent=text;bubble.appendChild(box)}
  if(Array.isArray(data.artifacts))data.artifacts.forEach(item=>renderArtifact(bubble,item));
- const directFile=data.fileUrl||data.downloadUrl||data.generatedFileUrl;
- if(directFile)renderArtifact(bubble,{name:data.filename||'Generated File',url:directFile,mimeType:data.mimeType});
- const imageUrl=data.imageUrl||data.generatedImageUrl;
- if(imageUrl)renderArtifact(bubble,{name:'Generated Image',url:imageUrl,mimeType:'image/png'});
- const actions=document.createElement('div');actions.className='response-actions';
- const speak=document.createElement('button');speak.className='speak-btn';speak.type='button';speak.textContent='🔊 Listen to Answer';
- speak.onclick=()=>speakText(reply||'No response received.');
- actions.appendChild(speak);bubble.appendChild(actions);
+ const direct=data.fileUrl||data.downloadUrl||data.generatedFileUrl;if(direct)renderArtifact(bubble,{name:data.filename||"Generated File",url:direct,mimeType:data.mimeType});
+ const image=data.imageUrl||data.generatedImageUrl;if(image)renderArtifact(bubble,{name:"Generated Image",url:image,mimeType:"image/png"});
+ const actions=document.createElement("div");actions.className="response-actions";const speak=document.createElement("button");speak.className="speak-btn";speak.type="button";speak.textContent="🔊 Listen to Answer";speak.onclick=()=>speakText(reply||"No response received.");actions.appendChild(speak);bubble.appendChild(actions);
 }
 
 /* CHAT */
 function addMessage(text,type){
- let area=document.getElementById('chatArea');
- if(!area){
-  area=document.createElement('div');area.id='chatArea';area.className='chat-area';
-  const homeVisible=document.getElementById('home').style.display!=='none';
-  const target=homeVisible?document.getElementById('home'):document.getElementById('departmentPage');
-  const composer=document.getElementById('composer');
-  if(composer.parentElement===target)target.insertBefore(area,composer);
-  else target.appendChild(area);
- }
- area.style.display='flex';
- const row=document.createElement('div');row.className='message '+type;
- const avatar=document.createElement('div');avatar.className='avatar';avatar.textContent=type==='user'?'👤':'✧';
- const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=text;
- row.append(avatar,bubble);area.appendChild(row);
- row.scrollIntoView({behavior:'smooth',block:'end'});
- return bubble;
+ let area=document.getElementById("chatArea");
+ if(!area){area=document.createElement("div");area.id="chatArea";area.className="chat-area";const homeVisible=document.getElementById("home").style.display!=="none";const target=homeVisible?document.getElementById("home"):document.getElementById("departmentPage");const composer=document.getElementById("composer");if(composer.parentElement===target)target.insertBefore(area,composer);else target.appendChild(area)}
+ area.style.display="flex";const row=document.createElement("div");row.className="message "+type;const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=type==="user"?"👤":"✧";const bubble=document.createElement("div");bubble.className="bubble";bubble.textContent=text;row.append(avatar,bubble);area.appendChild(row);row.scrollIntoView({behavior:"smooth",block:"end"});return bubble;
 }
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}}
+function handleKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}}
 async function sendMessage(){
- const input=document.getElementById('question');
- const question=input.value.trim();
- if(busy)return;
- if(!question&&!selectedAttachments.length){input.focus();return}
- busy=true;
- const btn=document.getElementById('sendBtn');
- btn.disabled=true;
- const attachmentNames=selectedAttachments.map(item=>item.file.name);
- const userText=question||'Please analyze the attached file(s) and explain their contents.';
- addMessage(userText+(attachmentNames.length?'\n\nAttachments: '+attachmentNames.join(', '):''),'user');
- input.value='';
- const answer=addMessage('Preparing your request...','ai');
+ const input=document.getElementById("question"),question=input.value.trim();if(busy)return;if(!question&&!selectedAttachments.length){input.focus();return}
+ busy=true;const btn=document.getElementById("sendBtn");btn.disabled=true;
+ const names=selectedAttachments.map(item=>item.file.name),userText=question||"Please analyze the attached file(s) and explain their contents.";
+ addMessage(userText+(names.length?"\n\nAttachments: "+names.join(", "):""),"user");input.value="";
+ const answer=addMessage("Preparing your request...","ai");
  try{
-  const attachments=await getAttachmentPayload();
-  clearAttachments();
-  answer.textContent='Thinking... Please wait.';
-  const response=await fetch(API_URL,{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({
-    message:userText,
-    language:detectLanguage(userText),
-    attachments:attachments
-   })
-  });
-  let data;
-  try{data=await response.json()}
-  catch(e){throw new Error('The server returned an invalid response. Please try again.')}
-  if(!response.ok)throw new Error(data.error||data.message||('Server error: '+response.status));
-  const reply=data.reply||data.response||data.answer||data.text||
-   (data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('\n');
-  if(!reply&&!data.artifacts&&!data.imageUrl&&!data.fileUrl&&!data.downloadUrl){
-   answer.textContent='No response received. Please try again.';
-  }else{
-   renderAIResponse(answer,data,String(reply||'Your requested file is ready.'));
-  }
- }catch(error){
-  answer.textContent='Sorry, an error occurred: '+error.message+'\n\nPlease try again after some time. If you attached files, your backend must support the attachments field to analyze them.';
- }finally{
-  busy=false;btn.disabled=false;
- }
+  const attachments=await getAttachmentPayload();clearAttachments();answer.textContent="Thinking...";
+  const response=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:userText,language:detectLanguage(userText),attachments})});
+  let data;try{data=await response.json()}catch(e){throw new Error("The server returned an invalid response.")}
+  if(!response.ok)throw new Error(data.error||data.message||("Server error: "+response.status));
+  const reply=data.reply||data.response||data.answer||data.text||(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("\n");
+  if(!reply&&!data.artifacts&&!data.imageUrl&&!data.fileUrl&&!data.downloadUrl)answer.textContent="No response received. Please try again.";
+  else renderAIResponse(answer,data,String(reply||"Your requested file is ready."));
+ }catch(error){answer.textContent="Sorry, an error occurred: "+error.message+"\n\nIf you attached files, your backend must support the attachments field to analyze them."}
+ finally{busy=false;btn.disabled=false}
 }
 
 /* VOICE */
 function startVoiceInput(){
- const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SpeechRecognition){alert('Voice input is not supported in this browser. Please use an updated Chrome browser.');return}
- stopSpeaking();
- recognition=new SpeechRecognition();
- recognition.lang='hi-IN';recognition.interimResults=false;recognition.maxAlternatives=1;
- recognition.onresult=event=>{
-  const transcript=event.results[0][0].transcript;
-  const input=document.getElementById('question');
-  input.value=(input.value+' '+transcript).trim();input.focus();
- };
- recognition.onerror=event=>alert('Voice input error: '+event.error);
- recognition.onend=()=>{recognition=null};
- recognition.start();
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("Voice input is not supported in this browser.");return}
+ stopSpeaking();recognition=new SR();recognition.lang="hi-IN";recognition.interimResults=false;recognition.maxAlternatives=1;
+ recognition.onresult=event=>{const transcript=event.results[0][0].transcript,input=document.getElementById("question");input.value=(input.value+" "+transcript).trim();input.focus()};
+ recognition.onerror=event=>alert("Voice input error: "+event.error);recognition.onend=()=>{recognition=null};recognition.start();
 }
 function speakText(text){
- if(!('speechSynthesis'in window)){alert('Text-to-speech is not supported in this browser.');return}
- window.speechSynthesis.cancel();
- const utterance=new SpeechSynthesisUtterance(text);
- const language=detectLanguage(text);
- utterance.lang=language==='Hindi'||language==='Hinglish'?'hi-IN':'en-IN';
- utterance.rate=.95;window.speechSynthesis.speak(utterance);
+ if(!("speechSynthesis"in window)){alert("Text-to-speech is not supported.");return}
+ window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);const language=detectLanguage(text);utterance.lang=language==="Hindi"||language==="Hinglish"?"hi-IN":"en-IN";utterance.rate=.95;window.speechSynthesis.speak(utterance);
 }
-function stopSpeaking(){
- if('speechSynthesis'in window)window.speechSynthesis.cancel();
- if(recognition){try{recognition.stop()}catch(e){}recognition=null}
-}
+function stopSpeaking(){if("speechSynthesis"in window)window.speechSynthesis.cancel();if(recognition){try{recognition.stop()}catch(e){}recognition=null}}
 
 /* PDF INGESTION */
-function stopPdfIngestion(){
- ingestStopRequested=true;
- const status=document.getElementById('pdfStatus');
- if(status)status.textContent='Stop requested. The current batch will finish first.';
-}
+function stopPdfIngestion(){ingestStopRequested=true;const status=document.getElementById("pdfStatus");if(status)status.textContent="Stop requested. The current batch will finish first."}
 async function startPdfIngestion(){
- const token=document.getElementById('adminToken')?.value.trim();
- const status=document.getElementById('pdfStatus');
- if(!token){alert('Please enter your admin ingestion token.');return}
- if(!window.confirm('Start extracting the Constitution PDF and saving its text into the legal database?'))return;
- ingestStopRequested=false;
- status.textContent='Loading PDF processing library...';
+ const token=document.getElementById("adminToken")?.value.trim(),status=document.getElementById("pdfStatus");if(!token){alert("Please enter your admin ingestion token.");return}
+ if(!window.confirm("Start extracting the Constitution PDF and saving its text into the legal database?"))return;
+ ingestStopRequested=false;status.textContent="Loading PDF processing library...";
  try{
-  const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
-  pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
-  status.textContent='Downloading Constitution PDF...';
-  const pdfResponse=await fetch(API_URL+'library/pdf');
-  if(!pdfResponse.ok)throw new Error('PDF download failed: HTTP '+pdfResponse.status);
-  const pdfData=await pdfResponse.arrayBuffer();
-  const pdf=await pdfjs.getDocument({data:new Uint8Array(pdfData)}).promise;
-  const totalPages=pdf.numPages;
-  let savedPages=0;
+  const pdfjs=await import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs");pdfjs.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
+  status.textContent="Downloading Constitution PDF...";const pdfResponse=await fetch(API_URL+"library/pdf");if(!pdfResponse.ok)throw new Error("PDF download failed: HTTP "+pdfResponse.status);
+  const pdfData=await pdfResponse.arrayBuffer(),pdf=await pdfjs.getDocument({data:new Uint8Array(pdfData)}).promise,totalPages=pdf.numPages;let savedPages=0;
   status.textContent=`PDF loaded: ${totalPages} pages. Starting extraction...`;
   for(let start=1;start<=totalPages;start+=5){
-   if(ingestStopRequested)break;
-   const batch=[];
-   const end=Math.min(start+4,totalPages);
+   if(ingestStopRequested)break;const batch=[],end=Math.min(start+4,totalPages);
    for(let pageNumber=start;pageNumber<=end;pageNumber++){
-    if(ingestStopRequested)break;
-    status.textContent=`Extracting page ${pageNumber} of ${totalPages}...`;
-    const page=await pdf.getPage(pageNumber);
-    const textContent=await page.getTextContent();
-    const pageText=textContent.items.map(item=>item.str||'').join(' ').trim();
-    if(!pageText)throw new Error('No extractable text found on page '+pageNumber+'. This page may be scanned.');
-    if(pageText.length>50000)throw new Error('Page '+pageNumber+' exceeds the 50,000 character limit.');
+    if(ingestStopRequested)break;status.textContent=`Extracting page ${pageNumber} of ${totalPages}...`;
+    const page=await pdf.getPage(pageNumber),content=await page.getTextContent(),pageText=content.items.map(item=>item.str||"").join(" ").trim();
+    if(!pageText)throw new Error("No extractable text found on page "+pageNumber+".");if(pageText.length>50000)throw new Error("Page "+pageNumber+" exceeds 50,000 characters.");
     batch.push({pageNumber,text:pageText});
    }
-   if(!batch.length)break;
-   status.textContent=`Saving pages ${start}–${end} to legal database...`;
-   const saveResponse=await fetch(API_URL+'admin/ingest-chunk',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','x-admin-token':token},
-    body:JSON.stringify({document_id:1,pages:batch})
-   });
-   const saveData=await saveResponse.json();
-   if(!saveResponse.ok||!saveData.success)throw new Error(saveData.error||'Database save failed at page '+start);
-   savedPages+=batch.length;
-   status.textContent=`Saved ${savedPages} of ${totalPages} pages successfully.`;
-   await new Promise(resolve=>setTimeout(resolve,150));
+   if(!batch.length)break;status.textContent=`Saving pages ${start}–${end} to legal database...`;
+   const saveResponse=await fetch(API_URL+"admin/ingest-chunk",{method:"POST",headers:{"Content-Type":"application/json","x-admin-token":token},body:JSON.stringify({document_id:1,pages:batch})});
+   const saveData=await saveResponse.json();if(!saveResponse.ok||!saveData.success)throw new Error(saveData.error||"Database save failed at page "+start);
+   savedPages+=batch.length;status.textContent=`Saved ${savedPages} of ${totalPages} pages successfully.`;await new Promise(resolve=>setTimeout(resolve,150));
   }
-  status.textContent=ingestStopRequested
-   ?`Stopped. ${savedPages} pages were saved. You can restart the process.`
-   :`Completed successfully. ${savedPages} pages saved to the legal database.`;
- }catch(error){status.textContent='Ingestion error: '+error.message}
+  status.textContent=ingestStopRequested?`Stopped. ${savedPages} pages were saved.`:`Completed successfully. ${savedPages} pages saved to the legal database.`;
+ }catch(error){status.textContent="Ingestion error: "+error.message}
 }
 
-/* LOGIN PREVIEW */
-function openModal(type){
- const title=document.getElementById('modalTitle');
- const desc=document.getElementById('modalDesc');
- const pass=document.getElementById('authPassword');
- const confirm=document.getElementById('authConfirm');
- const name=document.getElementById('authName');
- const links=document.getElementById('modalLinks');
- const action=document.getElementById('authAction');
- name.style.display='none';confirm.style.display='none';pass.style.display='block';
-
- if(type==='signup'){
-  title.textContent='Create Account';desc.textContent='Join NYAYVERSE AI.';
-  name.style.display='block';confirm.style.display='block';action.textContent='Create Account';
-  links.innerHTML='';
-  const login=document.createElement('button');login.textContent='Already registered? Login';login.onclick=()=>openModal('login');links.appendChild(login);
- }else if(type==='forgot'){
-  title.textContent='Reset Password';desc.textContent='Enter your email to request a password reset.';
-  pass.style.display='none';action.textContent='Send Reset Link';
-  links.innerHTML='';
-  const back=document.createElement('button');back.textContent='Back to Login';back.onclick=()=>openModal('login');links.appendChild(back);
- }else{
-  title.textContent='Welcome Back';desc.textContent='Login to your NYAYVERSE AI account.';
-  action.textContent='Continue';links.innerHTML='';
-  const forgot=document.createElement('button');forgot.textContent='Forgot Password?';forgot.onclick=()=>openModal('forgot');
-  const signup=document.createElement('button');signup.textContent='Create Account';signup.onclick=()=>openModal('signup');
-  links.append(forgot,signup);
- }
- document.getElementById('modalBg').style.display='flex';
-}
-function closeModal(){document.getElementById('modalBg').style.display='none'}
-function authNotice(){
- alert('This is the Login / Signup interface preview. Secure authentication, email verification and password reset require backend integration.');
+/* STARTUP */
+document.addEventListener("DOMContentLoaded",()=>{
+ updateAuthUI();
+ authBootstrap();
+ handleAuthLink();
+});
+if(document.readyState!=="loading"){
+ updateAuthUI();
+ authBootstrap();
+ handleAuthLink();
 }
 </script>
 </body>
