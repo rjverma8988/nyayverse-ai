@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,281 +6,52 @@
 <meta name="theme-color" content="#090909">
 <meta name="description" content="NYAYVERSE AI - Your unified AI platform">
 <title>NYAYVERSE AI</title>
-
 <style>
-:root{
- --bg:#090909;--panel:#141414;--panel2:#201c14;
- --border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;
- --accent:#c9a44c;--accent2:#e2c477;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.app{display:flex;min-height:100vh}
-.sidebar{
- width:250px;min-width:250px;flex-basis:250px;
- background:#0d0d0c;border-right:1px solid var(--border);
- padding:20px 14px;display:flex;flex-direction:column;gap:17px;
- flex-shrink:0;
- transition:width .25s ease, min-width .25s ease, flex-basis .25s ease, padding .25s ease, transform .25s ease;
- overflow-x:hidden;
-}
-.logo{display:flex;align-items:center;gap:10px;padding:6px}
-.logo-icon,.hero-logo{
- background:linear-gradient(135deg,#9c762d,#e3c477);
- color:#111;display:grid;place-items:center;font-weight:bold
-}
-.logo-icon{width:42px;height:42px;border-radius:13px;font-size:22px}
-.logo h2{font-size:16px;margin:0;letter-spacing:1px}
-.logo small{font-size:10px;color:var(--muted)}
-.sidebar-head{display:flex;align-items:center;justify-content:space-between}
-.sidebar-close{display:none;background:none;border:0;color:white;font-size:25px}
-.nav-title{font-size:10px;color:#a18a5c;margin:10px 8px 5px}
-.nav-item{
- display:block;width:100%;padding:11px 12px;margin:3px 0;
- text-align:left;background:transparent;color:#d5cbb9;
- border:0;border-radius:9px;font-size:13px
-}
-.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}
-.sidebar-bottom{margin-top:auto}
-.main{flex:1;min-width:0;display:flex;flex-direction:column}
-.topbar{
- min-height:65px;border-bottom:1px solid var(--border);
- display:flex;align-items:center;justify-content:space-between;
- padding:10px 22px;background:#0d0d0c;gap:10px
-}
-.topbar h3{font-size:15px;margin:0}
-.top-actions{display:flex;gap:8px;align-items:center}
-.small-btn,.secondary-btn{
- background:var(--panel2);color:var(--text);
- border:1px solid var(--border);padding:9px 12px;border-radius:9px
-}
-
-/* MENU BUTTON: MOBILE + DESKTOP */
-.mobile-menu{display:block}
-.sidebar-backdrop{display:none}
-
-/* DESKTOP SIDEBAR COLLAPSE */
-@media(min-width:701px){
- .sidebar.desktop-closed{
-  width:0!important;
-  min-width:0!important;
-  flex-basis:0!important;
-  padding-left:0!important;
-  padding-right:0!important;
-  border-right:0!important;
-  overflow:hidden!important;
- }
-}
-
-.content{width:100%;max-width:1150px;margin:auto;padding:25px 20px;flex:1}
-.hero{text-align:center;margin:18px auto 25px}
-.hero h1{font-size:29px;margin:0 0 10px}
-.hero p{color:var(--muted);font-size:15px;line-height:1.6}
-.gradient{
- background:linear-gradient(90deg,#c9a44c,#f2d990);
- -webkit-background-clip:text;background-clip:text;color:transparent
-}
-.hero-logo{width:60px;height:60px;margin:auto auto 15px;border-radius:18px;font-size:28px}
-.section-heading{font-size:17px;margin:25px 0 12px}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
-.card{
- background:linear-gradient(145deg,#171717,#201b12);
- border:1px solid var(--border);padding:18px;border-radius:14px;
- color:var(--text);text-align:left;min-height:115px
-}
-.card:hover{border-color:var(--accent)}
-.card .ico{font-size:25px;display:block;margin-bottom:10px}
-.card b{display:block;font-size:14px;margin-bottom:6px}
-.card small{color:var(--muted);font-size:11px;line-height:1.5}
-.panel{background:var(--panel);border:1px solid var(--border);padding:20px;border-radius:14px;margin:15px 0}
-.panel h2,.panel h3{margin-top:0}
-.panel p,.muted{color:var(--muted);font-size:13px;line-height:1.6}
-.label{display:block;font-size:12px;color:#dfc98e;margin:14px 0 7px}
-.field,textarea,select{
- width:100%;padding:12px;background:#0b0b0a;
- border:1px solid var(--border);border-radius:9px;color:white;outline:none
-}
-textarea{min-height:110px;resize:vertical}
-.field:focus,textarea:focus,select:focus{border-color:var(--accent)}
-.primary-btn{
- padding:11px 17px;border:0;border-radius:9px;
- background:linear-gradient(100deg,#a47b2f,#d7b45d);
- color:#111;font-weight:bold
-}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-.status{
- margin-top:13px;padding:12px;background:#0b0b0a;
- border:1px solid var(--border);border-radius:9px;
- color:#dfc98e;font-size:12px;line-height:1.6;
- white-space:pre-wrap;overflow-wrap:anywhere
-}
-.chat-area{display:flex;flex-direction:column;gap:15px;margin:20px 0}
-.message{display:flex;gap:10px;align-items:flex-start}
-.message.user{flex-direction:row-reverse}
-.avatar{
- width:32px;height:32px;flex-shrink:0;border-radius:10px;
- background:var(--panel2);display:grid;place-items:center
-}
-.bubble{
- max-width:85%;background:var(--panel);border:1px solid var(--border);
- padding:13px 15px;border-radius:4px 13px 13px 13px;
- line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere
-}
-.user .bubble{background:#292316;border-color:#67532a}
-.composer{position:sticky;bottom:0;padding:12px;background:var(--bg);z-index:2}
-.composer-inner{
- max-width:850px;margin:auto;background:var(--panel);
- border:1px solid #66532e;border-radius:15px;padding:12px
-}
-.composer textarea{border:0;background:transparent;min-height:55px}
-.composer-bottom{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.composer-bottom small{color:var(--muted);font-size:10px}
-.send{border:0;border-radius:9px;padding:10px 17px;background:var(--accent2);font-weight:bold}
-.send:disabled{opacity:.5}
-.tool-preview{display:none;max-width:100%;max-height:350px;margin-top:12px}
-.footer{text-align:center;color:#938873;font-size:10px;padding:16px}
-.badge{display:inline-block;padding:5px 9px;border:1px solid var(--border);border-radius:20px;font-size:10px;color:#dfc477;margin:3px}
-.modal-bg{
- display:none;position:fixed;inset:0;background:#000c;z-index:30;
- align-items:center;justify-content:center;padding:15px
-}
-.modal{
- width:100%;max-width:430px;max-height:90vh;overflow:auto;
- background:#17150f;border:1px solid var(--border);
- border-radius:16px;padding:23px
-}
-.modal input{margin:8px 0}
-.close{float:right;background:none;border:0;color:white;font-size:22px}
-.hidden{display:none!important}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12px}
-td,th{padding:11px;border-bottom:1px solid var(--border);text-align:left}
-th{color:#dfc477}
-.link{color:#dfc477;text-decoration:none}
-
-@media(max-width:850px){.sidebar{width:215px;min-width:215px;flex-basis:215px}}
-
-@media(max-width:700px){
- .sidebar{
-  display:flex;position:fixed;z-index:25;top:0;bottom:0;left:0;
-  width:280px;min-width:0;max-width:85vw;flex-basis:280px;
-  overflow-y:auto;
-  transform:translateX(-110%);box-shadow:10px 0 30px #0008;
-  padding:20px 14px;
- }
- .sidebar.open{transform:translateX(0)}
- .sidebar-close{display:block}
- .sidebar-backdrop{
-  display:block;position:fixed;inset:0;background:#0009;
-  z-index:24;opacity:0;visibility:hidden;transition:.2s
- }
- .sidebar-backdrop.open{opacity:1;visibility:visible}
- .topbar{padding:10px 12px}
- .content{padding:18px 12px}
- .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .card{padding:13px;min-height:105px}
- .hero h1{font-size:23px}
- .bubble{max-width:90%;font-size:13px}
-}
+:root{--bg:#090909;--panel:#141414;--panel2:#201c14;--border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;--accent:#c9a44c;--accent2:#e2c477}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}
+.sidebar{width:250px;min-width:250px;flex-basis:250px;background:#0d0d0c;border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;gap:17px;flex-shrink:0;transition:.25s;overflow-x:hidden}
+.logo{display:flex;align-items:center;gap:10px;padding:6px}.logo-icon,.hero-logo{background:linear-gradient(135deg,#9c762d,#e3c477);color:#111;display:grid;place-items:center;font-weight:bold}.logo-icon{width:42px;height:42px;border-radius:13px;font-size:22px}.logo h2{font-size:16px;margin:0;letter-spacing:1px}.logo small{font-size:10px;color:var(--muted)}.sidebar-head{display:flex;align-items:center;justify-content:space-between}.sidebar-close{display:none;background:none;border:0;color:white;font-size:25px}.nav-title{font-size:10px;color:#a18a5c;margin:10px 8px 5px}.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#d5cbb9;border:0;border-radius:9px;font-size:13px}.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}.sidebar-bottom{margin-top:auto}.main{flex:1;min-width:0;display:flex;flex-direction:column}.topbar{min-height:65px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 22px;background:#0d0d0c;gap:10px}.topbar h3{font-size:15px;margin:0}.top-actions{display:flex;gap:8px;align-items:center}.small-btn,.secondary-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}.mobile-menu{display:block}.sidebar-backdrop{display:none}
+@media(min-width:701px){.sidebar.desktop-closed{width:0!important;min-width:0!important;flex-basis:0!important;padding-left:0!important;padding-right:0!important;border-right:0!important;overflow:hidden!important}}
+.content{width:100%;max-width:1150px;margin:auto;padding:25px 20px;flex:1}.hero{text-align:center;margin:18px auto 25px}.hero h1{font-size:29px;margin:0 0 10px}.hero p{color:var(--muted);font-size:15px;line-height:1.6}.gradient{background:linear-gradient(90deg,#c9a44c,#f2d990);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-logo{width:60px;height:60px;margin:auto auto 15px;border-radius:18px;font-size:28px}.section-heading{font-size:17px;margin:25px 0 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}.card{background:linear-gradient(145deg,#171717,#201b12);border:1px solid var(--border);padding:18px;border-radius:14px;color:var(--text);text-align:left;min-height:115px}.card:hover{border-color:var(--accent);transform:translateY(-2px)}.card .ico{font-size:25px;display:block;margin-bottom:10px}.card b{display:block;font-size:14px;margin-bottom:6px}.card small{color:var(--muted);font-size:11px;line-height:1.5}.panel{background:var(--panel);border:1px solid var(--border);padding:20px;border-radius:14px;margin:15px 0}.panel h2,.panel h3{margin-top:0}.panel p,.muted{color:var(--muted);font-size:13px;line-height:1.6}.label{display:block;font-size:12px;color:#dfc98e;margin:14px 0 7px}.field,textarea,select{width:100%;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:white;outline:none}textarea{min-height:110px;resize:vertical}.field:focus,textarea:focus,select:focus{border-color:var(--accent)}.primary-btn{padding:11px 17px;border:0;border-radius:9px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.status{margin-top:13px;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:#dfc98e;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.chat-area{display:flex;flex-direction:column;gap:15px;margin:20px 0}.message{display:flex;gap:10px;align-items:flex-start}.message.user{flex-direction:row-reverse}.avatar{width:32px;height:32px;flex-shrink:0;border-radius:10px;background:var(--panel2);display:grid;place-items:center}.bubble{max-width:85%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.user .bubble{background:#292316;border-color:#67532a}.composer{position:sticky;bottom:0;padding:12px;background:var(--bg);z-index:2}.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #66532e;border-radius:15px;padding:12px}.composer textarea{border:0;background:transparent;min-height:55px}.composer-bottom{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.composer-bottom small{color:var(--muted);font-size:10px}.send{border:0;border-radius:9px;padding:10px 17px;background:var(--accent2);font-weight:bold}.send:disabled{opacity:.5}.footer{text-align:center;color:#938873;font-size:10px;padding:16px}.badge{display:inline-block;padding:5px 9px;border:1px solid var(--border);border-radius:20px;font-size:10px;color:#dfc477;margin:3px}.modal-bg{display:none;position:fixed;inset:0;background:#000c;z-index:50;align-items:center;justify-content:center;padding:15px}.modal{width:100%;max-width:430px;max-height:90vh;overflow:auto;background:#17150f;border:1px solid var(--border);border-radius:16px;padding:23px}.modal input{margin:8px 0}.close{float:right;background:none;border:0;color:white;font-size:22px}.hidden{display:none!important}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:11px;border-bottom:1px solid var(--border);text-align:left}th{color:#dfc477}.link{color:#dfc477;text-decoration:none}
+.module-shell{--m-bg:#101018;--m-panel:#191925;--m-border:#37304f;--m-accent:#a78bfa;--m-accent2:#e9d5ff;background:radial-gradient(ellipse at 80% 0%,color-mix(in srgb,var(--m-accent) 15%,transparent),transparent 45%),var(--m-bg);border:1px solid var(--m-border);border-radius:20px;padding:22px;min-height:70vh}.module-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--m-border);padding-bottom:16px}.module-top h1{font-size:25px;margin:5px 0}.module-top p{color:#bcb9c9;font-size:13px;margin:4px 0}.module-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;margin-top:18px}.module-nav{background:color-mix(in srgb,var(--m-panel) 88%,transparent);border:1px solid var(--m-border);border-radius:14px;padding:12px;height:max-content}.module-nav details{border-bottom:1px solid var(--m-border);padding:7px 2px}.module-nav details:last-child{border:0}.module-nav summary{cursor:pointer;color:var(--m-accent2);font-size:12px;font-weight:bold;padding:7px;list-style:none}.module-nav summary:after{content:"＋";float:right}.module-nav details[open] summary:after{content:"−"}.module-nav button{display:block;width:100%;text-align:left;background:transparent;border:0;color:#d8d5e2;padding:9px;border-radius:8px;font-size:12px}.module-nav button:hover,.module-nav button.selected{background:color-mix(in srgb,var(--m-accent) 18%,transparent);color:white}.module-work{min-width:0}.module-work .panel{background:var(--m-panel);border-color:var(--m-border)}.module-work .primary-btn{background:linear-gradient(100deg,var(--m-accent),var(--m-accent2));color:#101018}.module-work .label{color:var(--m-accent2)}.module-work .field,.module-work textarea,.module-work select{border-color:var(--m-border)}.module-work .status{border-color:var(--m-border)}.module-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}.kpi{padding:14px;border:1px solid var(--m-border);background:var(--m-panel);border-radius:12px}.kpi b{display:block;font-size:17px;color:var(--m-accent2)}.kpi small{font-size:10px;color:#bcb9c9}.module-home-card{border:1px solid var(--m-border);background:var(--m-panel);padding:17px;border-radius:13px}.module-home-card b{display:block;margin-bottom:6px}.module-home-card small{color:#bcb9c9;line-height:1.5}.google-btn,.auth-choice{width:100%;padding:12px;margin:7px 0;background:#242018;border:1px solid #51452c;border-radius:10px;color:#f5f1e8;text-align:center}.auth-choice:hover,.google-btn:hover{border-color:var(--accent2)}.auth-divider{display:flex;align-items:center;gap:10px;color:#938873;font-size:11px;margin:12px 0}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:var(--border);flex:1}
+@media(max-width:850px){.sidebar{width:215px;min-width:215px;flex-basis:215px}}@media(max-width:700px){.sidebar{display:flex;position:fixed;z-index:25;top:0;bottom:0;left:0;width:280px;min-width:0;max-width:85vw;flex-basis:280px;overflow-y:auto;transform:translateX(-110%);box-shadow:10px 0 30px #0008;padding:20px 14px}.sidebar.open{transform:translateX(0)}.sidebar-close{display:block}.sidebar-backdrop{display:block;position:fixed;inset:0;background:#0009;z-index:24;opacity:0;visibility:hidden;transition:.2s}.sidebar-backdrop.open{opacity:1;visibility:visible}.topbar{padding:10px 12px}.content{padding:18px 12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.card{padding:13px;min-height:105px}.hero h1{font-size:23px}.bubble{max-width:90%;font-size:13px}.module-layout{grid-template-columns:1fr}.module-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.module-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.module-shell{padding:13px}}
 </style>
 </head>
-
 <body>
 <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMenu()"></div>
 <div class="app">
-
 <aside class="sidebar" id="sidebar">
- <div class="sidebar-head">
-  <div class="logo">
-   <div class="logo-icon">⚖</div>
-   <div><h2>NYAYVERSE AI</h2><small>YOUR AI PLATFORM</small></div>
-  </div>
-  <button class="sidebar-close" onclick="closeMenu()" aria-label="Close menu">×</button>
- </div>
-
+ <div class="sidebar-head"><div class="logo"><div class="logo-icon">⚖</div><div><h2>NYAYVERSE AI</h2><small>YOUR AI PLATFORM</small></div></div><button class="sidebar-close" onclick="closeMenu()">×</button></div>
  <button class="primary-btn" style="width:100%" onclick="newChat()">＋ New Chat</button>
-
- <div>
-  <div class="nav-title">WORKSPACE</div>
-  <button class="nav-item active" onclick="showPage('home',this)">⌂ Home</button>
-  <button class="nav-item" onclick="showPage('history',this)">◷ Chat History</button>
-  <button class="nav-item" onclick="showPage('saved',this)">☆ Saved Answers</button>
-  <button class="nav-item" onclick="showPage('projects',this)">📁 Projects</button>
-  <button class="nav-item" onclick="showPage('assistant',this)">✧ Personal AI Assistant</button>
- </div>
-
- <div>
-  <div class="nav-title">AI SERVICES</div>
-  <button class="nav-item" onclick="showPage('medical',this)">🩺 Medical & Healthcare AI</button>
-  <button class="nav-item" onclick="showPage('english',this)">📚 English Learning</button>
-  <button class="nav-item" onclick="showPage('image',this)">🎨 Create Image</button>
-  <button class="nav-item" onclick="showPage('video',this)">🎬 Create Video</button>
-  <button class="nav-item" onclick="showPage('checker',this)">🔍 Fake Media Checker</button>
- </div>
-
- <div>
-  <div class="nav-title">ACCOUNT</div>
-  <button class="nav-item" onclick="showPage('membership',this)">⭐ Membership & Plans</button>
-  <button class="nav-item" onclick="showPage('credits',this)">🪙 Credits & Usage</button>
-  <button class="nav-item" onclick="showPage('account',this)">⚙ Account & Security</button>
-  <button class="nav-item" onclick="openAuth('login')">⇥ Login / Sign Up</button>
-  <button class="nav-item" onclick="logout()">↪ Sign Out</button>
- </div>
-
- <div>
-  <div class="nav-title">POLICIES & SUPPORT</div>
-  <button class="nav-item" onclick="showPage('policies',this)">Policies & Support</button>
- </div>
-
- <div class="sidebar-bottom">
-  <div class="nav-title">ADMINISTRATION</div>
-  <button class="nav-item hidden" id="adminNav" onclick="showPage('admin',this)">🛡 Admin Control Panel</button>
-  <button class="nav-item hidden" id="securityNav" onclick="showPage('security',this)">🔐 Security Operations</button>
-  <div class="nav-title">NYAYVERSE AI · BETA</div>
- </div>
+ <div><div class="nav-title">WORKSPACE</div>
+ <button class="nav-item active" onclick="showPage('home',this)">⌂ Home</button>
+ <button class="nav-item" onclick="showPage('history',this)">◷ Chat History</button>
+ <button class="nav-item" onclick="showPage('saved',this)">☆ Saved Answers</button>
+ <button class="nav-item" onclick="showPage('projects',this)">📁 Projects</button></div>
+ <div><div class="nav-title">AI SERVICES</div>
+ <button class="nav-item" onclick="showPage('assistant',this)">✧ Personal AI Assistant</button>
+ <button class="nav-item" onclick="showPage('medical',this)">🩺 Medical & Healthcare AI</button>
+ <button class="nav-item" onclick="showPage('english',this)">📚 English Learning</button>
+ <button class="nav-item" onclick="showPage('image',this)">🎨 Create Image</button>
+ <button class="nav-item" onclick="showPage('video',this)">🎬 Create Video</button>
+ <button class="nav-item" onclick="showPage('checker',this)">🔍 Fake Media Checker</button>
+ <button class="nav-item" onclick="showPage('soulsphere',this)">🪷 SoulSphere</button></div>
+ <div><div class="nav-title">ACCOUNT</div>
+ <button class="nav-item" onclick="showPage('membership',this)">⭐ Membership & Plans</button>
+ <button class="nav-item" onclick="showPage('credits',this)">🪙 Credits & Usage</button>
+ <button class="nav-item" onclick="showPage('account',this)">⚙ Account & Security</button>
+ <button class="nav-item" onclick="openAuth('welcome')">⇥ Login / Sign Up</button>
+ <button class="nav-item" onclick="logout()">↪ Sign Out</button></div>
+ <div><div class="nav-title">POLICIES & SUPPORT</div><button class="nav-item" onclick="showPage('policies',this)">Policies & Support</button></div>
+ <div class="sidebar-bottom"><div class="nav-title">ADMINISTRATION</div><button class="nav-item hidden" id="adminNav" onclick="showPage('admin',this)">🛡 Admin Control Panel</button><button class="nav-item hidden" id="securityNav" onclick="showPage('security',this)">🔐 Security Operations</button><div class="nav-title">NYAYVERSE AI · BETA</div></div>
 </aside>
-
 <main class="main">
-<header class="topbar">
- <div style="display:flex;align-items:center;gap:12px">
-  <button class="small-btn mobile-menu" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
-  <h3>⚖ NYAYVERSE AI</h3>
- </div>
- <div class="top-actions">
-  <span class="muted" style="font-size:10px">AI Platform</span>
-  <button class="small-btn" id="authTop" onclick="openAuth('login')">Login</button>
- </div>
-</header>
-
+<header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="small-btn mobile-menu" onclick="toggleMenu()">☰</button><h3>⚖ NYAYVERSE AI</h3></div><div class="top-actions"><span class="muted" style="font-size:10px">AI Platform</span><button class="small-btn" id="authTop" onclick="openAuth('welcome')">Login</button></div></header>
 <section class="content" id="page">
 <div id="homePage">
- <div class="hero">
-  <div class="hero-logo">⚖</div>
-  <h1>Hello! I am <span class="gradient">NYAYVERSE AI</span></h1>
-  <p>How can I help you?</p>
- </div>
-
- <div class="composer" id="mainComposer">
-  <div class="composer-inner">
-   <textarea id="question" placeholder="Ask me anything..."></textarea>
-   <div class="composer-bottom">
-    <small>Automatic response language detection</small>
-    <div class="actions">
-     <input type="file" id="chatFiles" hidden multiple accept="image/*,video/*,application/pdf">
-     <button class="secondary-btn" onclick="document.getElementById('chatFiles').click()">＋ Attach</button>
-     <button class="secondary-btn" onclick="voiceInput()">🎙 Voice</button>
-     <button class="send" id="sendBtn" onclick="sendChat()">Send ➤</button>
-    </div>
-   </div>
-   <div id="fileNames" class="muted"></div>
-  </div>
-  <div class="footer">AI can make mistakes. Verify important information.</div>
- </div>
-
+ <div class="hero"><div class="hero-logo">⚖</div><h1>Hello! I am <span class="gradient">NYAYVERSE AI</span></h1><p>How can I help you?</p></div>
+ <div class="composer" id="mainComposer"><div class="composer-inner"><textarea id="question" placeholder="Ask me anything..."></textarea><div class="composer-bottom"><small>Automatic response language detection</small><div class="actions"><input type="file" id="chatFiles" hidden multiple accept="image/*,video/*,application/pdf"><button class="secondary-btn" onclick="document.getElementById('chatFiles').click()">＋ Attach</button><button class="secondary-btn" onclick="voiceInput()">🎙 Voice</button><button class="send" id="sendBtn" onclick="sendChat()">Send ➤</button></div></div><div id="fileNames" class="muted"></div></div><div class="footer">AI can make mistakes. Verify important information.</div></div>
  <div id="chatArea" class="chat-area"></div>
-
  <h3 class="section-heading">Explore NYAYVERSE AI</h3>
  <div class="grid">
   <button class="card" onclick="showPage('image')"><span class="ico">🎨</span><b>Create Image</b><small>AI image generation</small></button>
@@ -290,764 +60,117 @@ th{color:#dfc477}
   <button class="card" onclick="showPage('assistant')"><span class="ico">✧</span><b>Personal AI Assistant</b><small>Your personalized AI companion</small></button>
   <button class="card" onclick="showPage('medical')"><span class="ico">🩺</span><b>Medical & Healthcare AI</b><small>Reports and prescription understanding</small></button>
   <button class="card" onclick="showPage('english')"><span class="ico">📚</span><b>English Learning</b><small>Speaking and learning practice</small></button>
+  <button class="card" onclick="showPage('soulsphere')"><span class="ico">🪷</span><b>SoulSphere</b><small>Spiritual Guidance</small></button>
  </div>
 </div>
 <div id="otherPage" class="hidden"></div>
 </section>
-</main>
-</div>
+</main></div>
 
-<!-- AUTHENTICATION MODAL -->
-<div class="modal-bg" id="authModal">
- <div class="modal">
-  <button class="close" onclick="closeAuth()">×</button>
-  <h2 id="authTitle">Login</h2>
-  <p class="muted" id="authDescription">Access your NYAYVERSE AI account.</p>
-
-  <div id="signupFields" class="hidden">
-   <label class="label">Full Name *</label>
-   <input class="field" id="authName" autocomplete="name" placeholder="Enter your full name">
-
-   <label class="label">Email Address (Optional)</label>
-   <input class="field" id="authEmail" type="email" autocomplete="email" placeholder="Enter email address">
-
-   <label class="label">Mobile Number (Optional)</label>
-   <input class="field" id="authMobile" type="tel" inputmode="numeric" autocomplete="tel" maxlength="15" placeholder="Enter mobile number">
-
-   <p class="muted">Email या Mobile Number में से कम-से-कम एक भरना अनिवार्य है। दोनों भरना भी संभव है।</p>
-
-   <label class="label">Gender *</label>
-   <select class="field" id="authGender">
-    <option value="">Select Gender</option>
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-   </select>
-  </div>
-
-  <div id="loginIdentifierField">
-   <label class="label">Email Address or Mobile Number *</label>
-   <input class="field" id="authIdentifier" autocomplete="username" placeholder="Enter email or mobile number">
-  </div>
-
-  <label class="label" id="passwordLabel">Password *</label>
-  <input class="field" id="authPassword" type="password" autocomplete="current-password" placeholder="Enter password">
-
-  <div id="confirmField" class="hidden">
-   <label class="label">Confirm Password *</label>
-   <input class="field" id="authConfirm" type="password" autocomplete="new-password" placeholder="Re-enter password">
-  </div>
-
-  <button class="primary-btn" style="width:100%;margin-top:15px" id="authSubmit" onclick="submitAuth()">Continue</button>
-
-  <div class="actions">
-   <button class="secondary-btn" onclick="openAuth('login')">Login</button>
-   <button class="secondary-btn" onclick="openAuth('signup')">Sign Up</button>
-   <button class="secondary-btn" onclick="openAuth('forgot')">Forgot Password</button>
-  </div>
-  <p id="authStatus" class="muted" role="status"></p>
+<!-- ChatGPT-style authentication -->
+<div class="modal-bg" id="authModal"><div class="modal">
+ <button class="close" onclick="closeAuth()">×</button>
+ <div id="authWelcome"><h2 style="text-align:center;margin:12px 0">Welcome to NYAYVERSE AI</h2><p class="muted" style="text-align:center">Log in or create an account to continue</p>
+  <button class="google-btn" onclick="googleLogin()">🌐 Continue with Google</button>
+  <div class="auth-divider">OR</div>
+  <button class="auth-choice" onclick="openAuth('emailLogin')">✉ Continue with Email</button>
+  <button class="auth-choice" onclick="openAuth('mobileLogin')">▣ Continue with Mobile</button>
+  <button class="primary-btn" style="width:100%;margin-top:12px" onclick="openAuth('signup')">Create Account / Sign Up</button>
+  <p style="text-align:center"><button class="link" style="background:none;border:0" onclick="openAuth('forgot')">Forgot password?</button></p>
  </div>
-</div>
+ <div id="authForm" class="hidden"><h2 id="authTitle">Login</h2><p class="muted" id="authDescription"></p>
+  <div id="signupFields" class="hidden">
+   <label class="label">Full Name *</label><input class="field" id="authName" autocomplete="name" placeholder="Enter your full name">
+   <label class="label">Email Address (Optional)</label><input class="field" id="authEmail" type="email" autocomplete="email" placeholder="Enter email address">
+   <label class="label">Mobile Number (Optional)</label><input class="field" id="authMobile" type="tel" inputmode="numeric" autocomplete="tel" maxlength="15" placeholder="Enter mobile number">
+   <p class="muted">Email या Mobile Number में से कम-से-कम एक भरना अनिवार्य है। दोनों भरना भी संभव है।</p>
+   <label class="label">Gender *</label><select class="field" id="authGender"><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
+  </div>
+  <label class="label" id="identifierLabel">Email Address *</label><input class="field" id="authIdentifier" autocomplete="username" placeholder="Enter email address">
+  <label class="label" id="passwordLabel">Password *</label><input class="field" id="authPassword" type="password" autocomplete="current-password" placeholder="Enter password">
+  <div id="confirmField" class="hidden"><label class="label">Confirm Password *</label><input class="field" id="authConfirm" type="password" autocomplete="new-password" placeholder="Re-enter password"></div>
+  <button class="primary-btn" style="width:100%;margin-top:15px" id="authSubmit" onclick="submitAuth()">Continue</button>
+  <div class="actions"><button class="secondary-btn" onclick="openAuth('welcome')">← Back</button><button class="secondary-btn" onclick="openAuth('signup')">Sign Up</button><button class="secondary-btn" onclick="openAuth('forgot')">Forgot Password</button></div>
+ </div><p id="authStatus" class="status" role="status" style="display:none"></p>
+</div></div>
 
 <script>
 "use strict";
-
-/* BACKEND CONNECTION */
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-const TOKEN_KEY="nyayverse_auth_token";
-const USER_KEY="nyayverse_auth_user";
-
-let currentPage="home";
-let selectedFiles=[];
-let busy=false;
-let authMode="login";
-
+const TOKEN_KEY="nyayverse_auth_token",USER_KEY="nyayverse_auth_user",GUEST_KEY="nyayverse_guest_messages";
+let currentPage="home",selectedFiles=[],busy=false,authMode="welcome",moduleKey=null;
 const $=id=>document.getElementById(id);
-
-/* BASIC HELPERS */
-function escapeHTML(value){
- return String(value??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
+function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function token(){return localStorage.getItem(TOKEN_KEY)}
-function user(){
- try{return JSON.parse(localStorage.getItem(USER_KEY)||"null")}
- catch(e){return null}
-}
-function getHeaders(){
- const h={"Content-Type":"application/json"};
- if(token())h.Authorization="Bearer "+token();
- return h;
-}
-async function api(path,body,method="POST"){
- const response=await fetch(API_URL+path,{
-  method,headers:getHeaders(),
-  ...(body===undefined?{}:{body:JSON.stringify(body)})
- });
- const data=await response.json().catch(()=>({}));
- if(!response.ok||data.success===false){
-  throw new Error(data.error||data.message||"Request failed");
- }
- return data;
-}
-function setStatus(id,message){
- const el=$(id);
- if(el)el.textContent=message;
-}
-function language(text){
- if(/[\u0900-\u097F]/.test(text))return "Hindi";
- const words=(text.toLowerCase().match(/[a-z]+/g)||[]);
- const hints=["hai","hain","kya","kaise","kyun","nahi","mujhe","mera","meri","aap","batao","samjhao","karna","chahiye"];
- return words.filter(x=>hints.includes(x)).length>=2?"Hinglish":"English";
-}
-
-/* SIDEBAR OPEN AND CLOSE - MOBILE + DESKTOP */
-function toggleMenu(){
- const sidebar=$("sidebar");
- const backdrop=$("sidebarBackdrop");
-
- if(window.innerWidth<=700){
-  if(sidebar.classList.contains("open")){
-   closeMenu();
-  }else{
-   sidebar.classList.add("open");
-   backdrop.classList.add("open");
-  }
- }else{
-  sidebar.classList.toggle("desktop-closed");
- }
-}
-
-function closeMenu(){
- const sidebar=$("sidebar");
- const backdrop=$("sidebarBackdrop");
-
- if(window.innerWidth<=700){
-  sidebar.classList.remove("open");
-  backdrop.classList.remove("open");
- }else{
-  sidebar.classList.add("desktop-closed");
-  sidebar.classList.remove("open");
-  backdrop.classList.remove("open");
- }
-}
-
-/* OUTSIDE CLICK CLOSE - MOBILE + DESKTOP */
-document.addEventListener("click",function(e){
- const sidebar=$("sidebar");
- const menuButton=document.querySelector(".mobile-menu");
-
- if(!sidebar||!menuButton)return;
-
- if(sidebar.contains(e.target)||menuButton.contains(e.target))return;
-
- if(window.innerWidth<=700){
-  if(sidebar.classList.contains("open"))closeMenu();
- }else{
-  if(!sidebar.classList.contains("desktop-closed"))closeMenu();
- }
-});
-
-/* ESCAPE KEY */
-document.addEventListener("keydown",e=>{
- if(e.key==="Escape"){
-  closeMenu();
-  closeAuth();
- }
-});
-
-/* RESPONSIVE MODE CHANGE */
-window.addEventListener("resize",()=>{
- const sidebar=$("sidebar");
- const backdrop=$("sidebarBackdrop");
-
- if(window.innerWidth>700){
-  sidebar.classList.remove("open");
-  backdrop.classList.remove("open");
- }else{
-  sidebar.classList.remove("desktop-closed");
-  backdrop.classList.remove("open");
- }
-});
-
-/* NAVIGATION */
-function showPage(page,button){
- currentPage=page;
- $("homePage").classList.toggle("hidden",page!=="home");
- $("otherPage").classList.toggle("hidden",page==="home");
- if(page!=="home")renderPage(page);
- document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));
- if(button)button.classList.add("active");
- closeMenu();
- window.scrollTo({top:0,behavior:"smooth"});
-}
-function newChat(){
- $("chatArea").innerHTML="";
- $("question").value="";
- $("chatFiles").value="";
- selectedFiles=[];
- $("fileNames").textContent="";
- showPage("home");
- $("question").focus();
-}
-
-/* CHAT */
-function addMessage(text,type){
- const row=document.createElement("div");
- row.className="message "+type;
- const avatar=document.createElement("div");
- avatar.className="avatar";
- avatar.textContent=type==="user"?"👤":"⚖";
- const bubble=document.createElement("div");
- bubble.className="bubble";
- bubble.textContent=text;
- row.append(avatar,bubble);
- $("chatArea").appendChild(row);
- row.scrollIntoView({behavior:"smooth",block:"end"});
- return bubble;
-}
-$("question").addEventListener("keydown",e=>{
- if(e.key==="Enter"&&!e.shiftKey){
-  e.preventDefault();sendChat();
- }
-});
-$("chatFiles").addEventListener("change",e=>{
- selectedFiles=Array.from(e.target.files||[]);
- if(selectedFiles.length>5)selectedFiles=selectedFiles.slice(0,5);
- const total=selectedFiles.reduce((n,f)=>n+f.size,0);
- if(total>20*1024*1024){
-  selectedFiles=[];e.target.value="";
-  alert("Maximum total attachment size is 20 MB.");
- }
- $("fileNames").textContent=selectedFiles.map(f=>f.name).join(", ");
-});
-async function sendChat(){
- if(busy)return;
- const question=$("question").value.trim();
- if(!question&&!selectedFiles.length)return;
- if(!token()){
-  openAuth("login");
-  setStatus("authStatus","Please login to continue.");
-  return;
- }
- busy=true;$("sendBtn").disabled=true;
- const prompt=question||"Please analyze my attached files.";
- addMessage(prompt,"user");
- $("question").value="";
- const bubble=addMessage("Thinking...","ai");
- try{
-  const attachments=[];
-  for(const file of selectedFiles){
-   const dataUrl=await new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=()=>resolve(reader.result);
-    reader.onerror=()=>reject(new Error("File reading failed"));
-    reader.readAsDataURL(file);
-   });
-   attachments.push({name:file.name,type:file.type,size:file.size,dataUrl});
-  }
-  selectedFiles=[];$("chatFiles").value="";$("fileNames").textContent="";
-  const result=await fetch(API_URL,{
-   method:"POST",headers:getHeaders(),
-   body:JSON.stringify({message:prompt,language:language(prompt),attachments})
-  });
-  const data=await result.json();
-  if(!result.ok)throw new Error(data.error||"Chat request failed");
-  const reply=data.reply||data.response||data.answer||data.text||"No response received.";
-  bubble.textContent=reply;
-  if(Array.isArray(data.sources)&&data.sources.length){
-   const sourceBox=document.createElement("div");
-   sourceBox.className="status";
-   sourceBox.textContent="Sources:\n"+data.sources.map(s=>s.title||s.name||s.url).join("\n");
-   bubble.appendChild(sourceBox);
-  }
- }catch(e){bubble.textContent="Error: "+e.message}
- finally{busy=false;$("sendBtn").disabled=false}
-}
-
-/* AUTHENTICATION */
-function openAuth(mode="login"){
- authMode=mode;
- const signup=mode==="signup";
- const forgot=mode==="forgot";
- $("authModal").style.display="flex";
- $("signupFields").classList.toggle("hidden",!signup);
- $("confirmField").classList.toggle("hidden",!signup);
- $("loginIdentifierField").classList.toggle("hidden",signup);
- $("authPassword").classList.toggle("hidden",forgot);
- $("passwordLabel").classList.toggle("hidden",forgot);
- $("authTitle").textContent=signup?"Create Account":forgot?"Forgot Password":"Login";
- $("authDescription").textContent=signup?
-  "Create your NYAYVERSE AI account.":
-  forgot?"Enter your registered email or mobile number.":
-  "Login using your registered email or mobile number.";
- $("authSubmit").textContent=signup?"Create Account":forgot?"Reset Password":"Login";
- $("authStatus").textContent="";
-}
+function user(){try{return JSON.parse(localStorage.getItem(USER_KEY)||"null")}catch(e){return null}}
+function getHeaders(){const h={"Content-Type":"application/json"};if(token())h.Authorization="Bearer "+token();return h}
+async function api(path,body,method="POST"){const r=await fetch(API_URL+path,{method,headers:getHeaders(),...(body===undefined?{}:{body:JSON.stringify(body)})});const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw new Error(d.error||d.message||"Request failed");return d}
+function setStatus(id,msg){const el=$(id);if(el){el.textContent=msg;el.style.display="block"}}
+function language(t){if(/[\u0900-\u097F]/.test(t))return" Hindi";const w=(t.toLowerCase().match(/[a-z]+/g)||[]),h=["hai","hain","kya","kaise","kyun","nahi","mujhe","mera","meri","aap","batao","samjhao","karna","chahiye"];return w.filter(x=>h.includes(x)).length>=2?"Hinglish":"English"}
+function toggleMenu(){const s=$("sidebar"),b=$("sidebarBackdrop");if(innerWidth<=700){s.classList.toggle("open");b.classList.toggle("open",s.classList.contains("open"))}else s.classList.toggle("desktop-closed")}
+function closeMenu(){const s=$("sidebar"),b=$("sidebarBackdrop");s.classList.remove("open");b.classList.remove("open");if(innerWidth>700)s.classList.add("desktop-closed")}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMenu();closeAuth()}});
+window.addEventListener("resize",()=>{if(innerWidth>700){$("sidebar").classList.remove("open");$("sidebarBackdrop").classList.remove("open")}else $("sidebar").classList.remove("desktop-closed")});
+function showPage(page,button){currentPage=page;moduleKey=modules[page]?page:null;$("homePage").classList.toggle("hidden",page!=="home");$("otherPage").classList.toggle("hidden",page==="home");if(page!=="home")renderPage(page);document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));if(button)button.classList.add("active");closeMenu();scrollTo({top:0,behavior:"smooth"})}
+function newChat(){$("chatArea").innerHTML="";$("question").value="";selectedFiles=[];$("chatFiles").value="";$("fileNames").textContent="";showPage("home")}
+function addMessage(text,type){const row=document.createElement("div");row.className="message "+type;const a=document.createElement("div");a.className="avatar";a.textContent=type==="user"?"👤":"⚖";const b=document.createElement("div");b.className="bubble";b.textContent=text;row.append(a,b);$("chatArea").append(row);row.scrollIntoView({behavior:"smooth",block:"end"});return b}
+$("question").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat()}});
+$("chatFiles").addEventListener("change",e=>{selectedFiles=Array.from(e.target.files||[]).slice(0,5);const total=selectedFiles.reduce((n,f)=>n+f.size,0);if(total>20*1024*1024){selectedFiles=[];e.target.value="";alert("Maximum total attachment size is 20 MB.")}$("fileNames").textContent=selectedFiles.map(f=>f.name).join(", ")});
+async function sendChat(){if(busy)return;const q=$("question").value.trim();if(!q&&!selectedFiles.length)return;if(!token()){const count=Number(localStorage.getItem(GUEST_KEY)||0);if(count>=10){openAuth("welcome");setStatus("authStatus","Your 10 guest messages are used. Please log in or create an account.");return}busy=true;$("sendBtn").disabled=true;const prompt=q||"Please analyze my attached files.";addMessage(prompt,"user");$("question").value="";const b=addMessage("Guest chat access is ready. Connect the Main AI Chat Worker to receive AI responses.","ai");localStorage.setItem(GUEST_KEY,String(count+1));b.textContent="Guest message "+(count+1)+" of 10. The guest counter is stored in this browser for this prototype. AI response requires the authenticated/guest Worker endpoint.";busy=false;$("sendBtn").disabled=false;return}
+busy=true;$("sendBtn").disabled=true;const prompt=q||"Please analyze my attached files.";addMessage(prompt,"user");$("question").value="";const bubble=addMessage("Thinking...","ai");try{const attachments=[];for(const f of selectedFiles){const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error("File reading failed"));r.readAsDataURL(f)});attachments.push({name:f.name,type:f.type,size:f.size,dataUrl})}selectedFiles=[];$("chatFiles").value="";$("fileNames").textContent="";const r=await fetch(API_URL,{method:"POST",headers:getHeaders(),body:JSON.stringify({message:prompt,language:language(prompt),attachments})});const d=await r.json();if(!r.ok)throw new Error(d.error||"Chat request failed");bubble.textContent=d.reply||d.response||d.answer||d.text||"No response received."}catch(e){bubble.textContent="Error: "+e.message}finally{busy=false;$("sendBtn").disabled=false}}
+function openAuth(mode="welcome"){authMode=mode;$("authModal").style.display="flex";$("authWelcome").classList.toggle("hidden",mode!=="welcome");$("authForm").classList.toggle("hidden",mode==="welcome");$("authStatus").style.display="none";if(mode==="welcome")return;const signup=mode==="signup",forgot=mode==="forgot";$("signupFields").classList.toggle("hidden",!signup);$("confirmField").classList.toggle("hidden",!signup);$("identifierLabel").classList.toggle("hidden",signup);$("authIdentifier").classList.toggle("hidden",signup);$("authPassword").classList.toggle("hidden",forgot);$("passwordLabel").classList.toggle("hidden",forgot);$("authTitle").textContent=signup?"Create your account":forgot?"Reset password":"Log in";$("authDescription").textContent=signup?"Enter your details to create your NYAYVERSE AI account.":forgot?"Enter your registered email or mobile number.":"Continue with your registered credentials.";if(mode==="emailLogin"){$("identifierLabel").textContent="Email Address *";$("authIdentifier").placeholder="name@example.com";$("authIdentifier").type="email"}else if(mode==="mobileLogin"){$("identifierLabel").textContent="Mobile Number *";$("authIdentifier").placeholder="Enter mobile number";$("authIdentifier").type="tel"}else{$("identifierLabel").textContent="Email Address or Mobile Number *";$("authIdentifier").placeholder="Enter email or mobile number";$("authIdentifier").type="text"}$("authSubmit").textContent=signup?"Create Account":forgot?"Send reset instructions":"Continue"}
 function closeAuth(){$("authModal").style.display="none"}
-
-async function submitAuth(){
- const name=$("authName").value.trim();
- const email=$("authEmail").value.trim();
- const mobile=$("authMobile").value.trim();
- const gender=$("authGender").value;
- const identifier=$("authIdentifier").value.trim();
- const password=$("authPassword").value;
- const confirm=$("authConfirm").value;
-
- if(authMode==="signup"){
-  if(!name){
-   setStatus("authStatus","Please enter your full name.");return;
-  }
-  if(!email&&!mobile){
-   setStatus("authStatus","Email या Mobile Number में से कम-से-कम एक भरें।");return;
-  }
-  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-   setStatus("authStatus","Please enter a valid email address.");return;
-  }
-  if(mobile&&!/^\+?[0-9]{10,15}$/.test(mobile)){
-   setStatus("authStatus","Please enter a valid mobile number.");return;
-  }
-  if(!gender){
-   setStatus("authStatus","Please select Male or Female.");return;
-  }
-  if(password.length<8){
-   setStatus("authStatus","Password must be at least 8 characters.");return;
-  }
-  if(password!==confirm){
-   setStatus("authStatus","Passwords do not match.");return;
-  }
- }
- if(authMode==="login"){
-  if(!identifier){
-   setStatus("authStatus","Enter your email or mobile number.");return;
-  }
-  if(password.length<8){
-   setStatus("authStatus","Password must be at least 8 characters.");return;
-  }
- }
- if(authMode==="forgot"&&!identifier){
-  setStatus("authStatus","Enter your registered email or mobile number.");return;
- }
-
- const button=$("authSubmit");
- button.disabled=true;
- setStatus("authStatus","Please wait...");
- try{
-  let result;
-  if(authMode==="signup"){
-   result=await api("auth/signup",{
-    full_name:name,
-    identifier:email||mobile,
-    email:email||null,
-    mobile:mobile||null,
-    gender:gender,
-    password:password
-   });
-   setStatus("authStatus",result.message||"Registration request submitted.");
-  }else if(authMode==="login"){
-   result=await api("auth/login",{identifier,password});
-   if(!result.token)throw new Error("Login token missing.");
-   localStorage.setItem(TOKEN_KEY,result.token);
-   localStorage.setItem(USER_KEY,JSON.stringify(result.user||{}));
-   closeAuth();
-   updateAuthUI();
-  }else{
-   result=await api("auth/forgot-password",{identifier});
-   setStatus("authStatus",result.message||"Password reset request submitted.");
-  }
- }catch(e){
-  setStatus("authStatus",e.message);
- }finally{
-  button.disabled=false;
- }
-}
-
-function updateAuthUI(){
- const u=user();
- $("authTop").textContent=token()?(u?.full_name||"My Account"):"Login";
- const role=String(u?.role||"").toLowerCase();
- const isAdmin=["owner","admin"].includes(role);
- $("adminNav").classList.toggle("hidden",!isAdmin);
- $("securityNav").classList.toggle("hidden",!isAdmin);
-}
-async function logout(){
- try{if(token())await api("auth/logout",{})}catch(e){}
- localStorage.removeItem(TOKEN_KEY);
- localStorage.removeItem(USER_KEY);
- updateAuthUI();
- closeMenu();
- alert("Signed out.");
-}
-
-/* PAGE RENDERER */
-function shell(title,description,content){
- $("otherPage").innerHTML=`
- <button class="secondary-btn" onclick="showPage('home')">← Home</button>
- <div class="hero" style="text-align:left">
- <h1><span class="gradient">${escapeHTML(title)}</span></h1>
- <p>${escapeHTML(description)}</p></div>${content}`;
-}
-
-const pages={
- history:["Chat History","Your previous conversations",`
- <div class="panel"><p id="historyStatus">Your previous conversations.</p>
- <button class="primary-btn" onclick="loadResource('history','historyStatus')">Refresh</button></div>`],
-
- saved:["Saved Answers","Your saved AI responses",`
- <div class="panel"><p id="savedStatus">Your saved answers.</p>
- <button class="primary-btn" onclick="loadResource('saved','savedStatus')">Refresh</button></div>`],
-
- projects:["Projects","Organize your research and workspaces",`
- <div class="panel"><p>Project storage and sharing will be connected through the backend.</p>
- <button class="primary-btn" onclick="comingSoon('Projects')">Create Project</button></div>`],
-
- assistant:["Personal AI Assistant","Your personal AI assistant",`
- <div class="panel">
- <label class="label">Your message</label>
- <textarea id="assistantMessage" placeholder="Talk to your personal AI assistant..."></textarea>
- <div class="actions"><button class="primary-btn" onclick="sendPersonalAI()">Send</button></div>
- <div id="assistantStatus" class="status">Personal AI Assistant.</div>
- </div>`],
-
- medical:["Medical & Healthcare AI","Understand medical reports and prescriptions",`
- <div class="panel">
- <p>Upload a medical report or prescription for explanation. This service does not replace a qualified medical professional.</p>
- <label class="label">Upload report</label>
- <input class="field" id="medicalFile" type="file" accept="image/*,application/pdf">
- <label class="label">Your question</label>
- <textarea id="medicalQuestion" placeholder="Explain my report in simple language..."></textarea>
- <div class="actions"><button class="primary-btn" onclick="sendMedical()">Analyze Report</button></div>
- <div id="medicalStatus" class="status">Medical AI service.</div>
- </div>`],
-
- english:["English Learning","Complete English learning with a structured AI learning plan",`
- <div class="panel">
- <h3>Build Your English Learning Plan</h3>
- <p>Select your learning goal and current level. Your AI tutor can guide your daily practice.</p>
- <label class="label">Your Learning Goal *</label>
- <select id="englishGoal">
-  <option value="Complete English Grammar">Complete English Grammar</option>
-  <option value="Complete English Learning">Complete English Learning</option>
-  <option value="Spoken English & Fluency">Spoken English & Fluency</option>
- </select>
- <label class="label">Your Current Level *</label>
- <select id="englishLevel">
-  <option value="Beginner">Beginner</option>
-  <option value="Intermediate">Intermediate</option>
-  <option value="Advanced">Advanced</option>
- </select>
- <div class="actions">
-  <button class="primary-btn" onclick="createEnglishPlan()">Create My Learning Plan</button>
-  <button class="secondary-btn" onclick="startDailyPractice()">Start Daily Practice</button>
- </div>
- <div id="englishPlanStatus" class="status">Choose your goal and level to begin.</div>
- <h3 style="margin-top:22px">Daily English Practice</h3>
- <label class="label">Write your answer or practice message</label>
- <textarea id="englishText" placeholder="Write your English answer here..."></textarea>
- <div class="actions">
-  <button class="primary-btn" onclick="submitEnglishPractice()">Check My English</button>
-  <button class="secondary-btn" onclick="voiceInput()">🎙 Voice Input</button>
- </div>
- <div id="englishPracticeStatus" class="status">Your AI tutor will provide corrections, explanations and practice feedback.</div>
- </div>`],
-
- image:["Create Image","Generate images from your description",`
- <div class="panel">
- <label class="label">Image description</label>
- <textarea id="imagePrompt" placeholder="Describe the image..."></textarea>
- <label class="label">Aspect ratio</label>
- <select id="imageRatio"><option>1:1</option><option>9:16</option><option>16:9</option><option>4:5</option></select>
- <label class="label">Resolution</label>
- <select id="imageResolution"><option>1K</option><option>2K</option><option>4K</option></select>
- <div class="actions"><button class="primary-btn" onclick="generateMedia('image')">Generate Image</button></div>
- <div id="imageStatus" class="status">Image generation service.</div>
- <img id="imagePreview" class="tool-preview" alt="Generated image">
- </div>`],
-
- video:["Create Video","Generate videos from your prompt",`
- <div class="panel">
- <label class="label">Video description</label>
- <textarea id="videoPrompt" placeholder="Describe scenes, subject, movement and style..."></textarea>
- <label class="label">Aspect ratio</label>
- <select id="videoRatio"><option>9:16</option><option>16:9</option><option>1:1</option></select>
- <label class="label">Duration</label>
- <select id="videoDuration"><option>5</option><option>8</option><option>10</option><option>15</option><option>30</option></select>
- <div class="actions"><button class="primary-btn" onclick="generateMedia('video')">Generate Video</button></div>
- <div id="videoStatus" class="status">Video generation service.</div>
- <video id="videoPreview" class="tool-preview" controls></video>
- </div>`],
-
- checker:["Fake Image & Video Checker","Analyze media for possible manipulation or AI generation",`
- <div class="panel">
- <label class="label">Select image or video</label>
- <input class="field" id="checkerFile" type="file" accept="image/*,video/*">
- <div class="actions"><button class="primary-btn" onclick="checkMedia()">Analyze Media</button></div>
- <div id="checkerStatus" class="status">Media authenticity analysis. Results are probabilistic.</div>
- </div>`],
-
- membership:["Membership & Plans","Choose a suitable NYAYVERSE AI membership",`
- <div class="grid">
-  <div class="card"><b>Core AI Pro</b><h2>₹2,999/year</h2><small>Working proposed annual price</small><button class="primary-btn" onclick="requestPlan('Core AI Pro')">Choose Plan</button></div>
-  <div class="card"><b>Core AI Ultra</b><h2>₹7,999/year</h2><small>Working proposed annual price</small><button class="primary-btn" onclick="requestPlan('Core AI Ultra')">Choose Plan</button></div>
-  <div class="card"><b>Personal AI</b><h2>₹1,999/year</h2><button class="primary-btn" onclick="requestPlan('Personal AI')">Choose Plan</button></div>
-  <div class="card"><b>Medical AI</b><h2>₹2,499/year</h2><button class="primary-btn" onclick="requestPlan('Medical AI')">Choose Plan</button></div>
-  <div class="card"><b>English Learning</b><h2>₹999/year</h2><button class="primary-btn" onclick="requestPlan('English Learning')">Choose Plan</button></div>
- </div>
- <div class="panel"><p>These are working blueprint prices, not final cost-validated launch prices. Payment and subscription activation require verified backend integration and explicit user consent. No automatic renewal without consent.</p></div>`],
-
- credits:["Credits & Usage","View your available credits and usage",`
- <div class="panel"><p id="creditsStatus">Credit balance will be loaded from the backend.</p>
- <button class="primary-btn" onclick="loadResource('credits','creditsStatus')">Refresh Credits</button></div>`],
-
- account:["Account & Security","Manage your account and security settings",`
- <div class="panel">
- <p id="accountStatus">Account information requires login.</p>
- <div class="actions">
- <button class="secondary-btn" onclick="loadResource('account','accountStatus')">Refresh Profile</button>
- <button class="secondary-btn" onclick="logout()">Sign Out</button>
- </div>
- <p>Security options: active sessions, MFA, passkeys, account recovery and privacy controls will be enforced through the backend.</p>
- </div>`],
-
- policies:["Policies & Support","Platform policies and support",`
- <div class="panel">
- <p>Publish final reviewed policy documents before public launch.</p>
- <div class="grid">
- <div class="card"><b>About Us</b><small>Platform information</small></div>
- <div class="card"><b>Privacy Policy</b><small>Data use and privacy</small></div>
- <div class="card"><b>Terms & Conditions</b><small>Platform terms</small></div>
- <div class="card"><b>Refund & Cancellation</b><small>Refund policy</small></div>
- <div class="card"><b>Security Policy</b><small>Security and protection</small></div>
- <div class="card"><b>Contact & Grievance</b><small>Support details</small></div>
- </div></div>`],
-
- admin:["Admin Control Panel","Restricted administration interface",`
- <div class="panel"><p>Owner/Admin access must be verified by the Worker on every request. Hiding this page in HTML is not security authorization.</p></div>
- <div class="grid">
- <div class="card"><b>API & Provider Cost Control</b><small>Providers, model routing, API usage and cost limits</small></div>
- <div class="card"><b>Membership & Pricing</b><small>Plans, trials, renewals and entitlements</small></div>
- <div class="card"><b>Credits & Usage Limits</b><small>Credit ledger, quotas and usage controls</small></div>
- <div class="card"><b>Revenue & Expenses</b><small>Payment records, revenue and profit/loss</small></div>
- <div class="card"><b>Feature Management</b><small>Feature switches, maintenance and configuration</small></div>
- <div class="card"><b>System Management</b><small>Service status, settings and audit history</small></div>
- </div>
- <div class="panel"><p id="adminStatus">Admin data requires protected backend APIs and Owner/Admin authorization.</p>
- <button class="primary-btn" onclick="loadResource('admin','adminStatus')">Load Admin Data</button></div>`],
-
- security:["Security Operations","Private Owner Security Operations interface",`
- <div class="panel"><p>Security actions are not executed by this HTML. Every action must be verified, logged and authorized by the Worker with mandatory MFA for Owner/Admin.</p></div>
- <div class="grid">
- <div class="card"><b>Security Status</b><small>Threat and service monitoring</small></div>
- <div class="card"><b>Login Sessions</b><small>Session monitoring and revocation</small></div>
- <div class="card"><b>Threat Detection</b><small>Suspicious logins and access attempts</small></div>
- <div class="card"><b>Owner Alerts</b><small>Email, push and SMS delivery logs</small></div>
- <div class="card"><b>Database & Storage</b><small>D1 and R2 access monitoring</small></div>
- <div class="card"><b>Backup & Recovery</b><small>Backup status and recovery controls</small></div>
- </div>
- <div class="panel">
- <h3>Security Event Log</h3>
- <p id="securityStatus">Security monitoring API integration pending.</p>
- <button class="primary-btn" onclick="loadResource('security','securityStatus')">Refresh Security Status</button>
- </div>`]
+function googleLogin(){setStatus("authStatus","Google OAuth needs the Worker-side OAuth start/callback routes and configured Google Client ID. It is not enabled by this HTML alone.")}
+async function submitAuth(){const name=$("authName").value.trim(),email=$("authEmail").value.trim(),mobile=$("authMobile").value.trim(),gender=$("authGender").value,id=$("authIdentifier").value.trim(),pw=$("authPassword").value,confirm=$("authConfirm").value;const status=m=>setStatus("authStatus",m);
+if(authMode==="signup"){if(!name)return status("Please enter your full name.");if(!email&&!mobile)return status("Enter at least an email address or mobile number.");if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return status("Enter a valid email address.");if(mobile&&!/^\+?[0-9]{10,15}$/.test(mobile))return status("Enter a valid mobile number.");if(!gender)return status("Please select Male or Female.");if(pw.length<8)return status("Password must be at least 8 characters.");if(pw!==confirm)return status("Passwords do not match.");}
+if(!["signup"].includes(authMode)&&!id)return status("Please enter your registered identifier.");if(!["forgot"].includes(authMode)&&pw.length<8)return status("Password must be at least 8 characters.");
+const btn=$("authSubmit");btn.disabled=true;status("Please wait...");
+try{let d;if(authMode==="signup"){d=await api("auth/signup",{full_name:name,identifier:email||mobile,email:email||null,mobile:mobile||null,gender,password:pw});status(d.message||"Registration request submitted. Verify your account as instructed.");}
+else if(authMode==="forgot"){d=await api("auth/forgot-password",{identifier:id});status(d.message||"If the account exists, reset instructions will be sent.");}
+else{d=await api("auth/login",{identifier:id,password:pw});if(!d.token)throw new Error("Login token missing.");localStorage.setItem(TOKEN_KEY,d.token);localStorage.setItem(USER_KEY,JSON.stringify(d.user||{}));closeAuth();updateAuthUI();} }catch(e){status(e.message)}finally{btn.disabled=false}}
+function updateAuthUI(){const u=user(),logged=!!token();$("authTop").textContent=logged?(u?.full_name||"My Account"):"Login";const role=String(u?.role||"").toLowerCase(),admin=["owner","admin"].includes(role);$("adminNav").classList.toggle("hidden",!admin);$("securityNav").classList.toggle("hidden",!admin)}
+async function logout(){try{if(token())await api("auth/logout",{})}catch(e){}localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);updateAuthUI();closeMenu();alert("Signed out.")}
+function shell(title,desc,content){$("otherPage").innerHTML=`<button class="secondary-btn" onclick="showPage('home')">← Home</button><div class="hero" style="text-align:left"><h1><span class="gradient">${escapeHTML(title)}</span></h1><p>${escapeHTML(desc)}</p></div>${content}`}
+const palettes={
+ image:{name:"Create Image",tag:"LUXURY CREATIVE STUDIO",desc:"Create, edit and enhance original visuals in one creative workspace.",colors:["#111018","#241b35","#9d73ff","#f0d8a8"],groups:{"Image Creation":["Create New Image","Text to Image","Image to Image"],"Editing Studio":["Edit Image","Remove Background","Replace Background","Object Removal"],"Enhancement":["HD Upscale","Image Restoration","Face Enhancement","Color Correction"],"Creative Tools":["AI Portrait","Logo Maker","Poster Maker","Thumbnail Maker","Social Media Design"],"Style Studio":["Realistic","3D","Anime","Cinematic","Illustration"],"My Workspace":["My Creations","Recent Images","Favorites","Saved Prompts"],"Export":["Download","Format Selection","Share"]}},
+ video:{name:"Create Video",tag:"CINEMATIC AI STUDIO",desc:"Plan scenes, generate motion and prepare creator-ready videos.",colors:["#071323","#102b48","#36a4ff","#d5e2f1"],groups:{"Video Creation":["Text to Video","Image to Video","Video to Video"],"Video Editing":["Trim","Crop","Merge","Split","Extend Video"],"AI Effects":["Animation","Cinematic Effects","Motion Effects","Transitions"],"Audio Studio":["Voiceover","AI Voice","Background Music","Sound Effects"],"Creator Studio":["YouTube Shorts","Reels","Explainer Videos","Advertisements"],"Workspace":["My Videos","Drafts","Generation History","Favorites"],"Export":["Download","Export Settings","Share"]}},
+ checker:{name:"Fake Media Checker",tag:"CYBER FORENSICS",desc:"Inspect media for signs of manipulation. Results are probabilistic, not absolute proof.",colors:["#090f12","#10231f","#36d6a0","#b9f5ed"],groups:{"Media Analysis":["Image Analysis","Video Analysis","Audio Analysis"],"Deepfake Detection":["Face Swap Detection","AI Face Detection","Voice Cloning Detection"],"Manipulation Detection":["Image Editing Detection","Video Tampering","Audio Manipulation"],"Verification":["Metadata Analysis","Source Verification","Digital Provenance"],"Fraud Detection":["Fake Video Call","Impersonation Media","Scam Media"],"Evidence Report":["Authenticity Score","Detection Indicators","Detailed Report"],"Workspace & Privacy":["Previous Checks","Saved Reports","Export Report","Delete Uploaded Files"]}},
+ assistant:{name:"Personal AI Assistant",tag:"PERSONAL INTELLIGENCE",desc:"A personal space for conversations, planning, routines and productivity.",colors:["#1b1022","#30203c","#b99ae8","#e9b8c9"],groups:{"Personal Assistant":["Personal AI Chat","Voice Conversation"],"Daily Life":["Daily Planner","Routine Manager","To-Do List","Goals"],"Reminders":["Daily Reminders","Important Dates","Notifications"],"Personal Memory":["Personal Memory","Saved Information","Memory Controls"],"Communication":["Message Drafts","Email Drafts","Conversation Help"],"Productivity":["Task Management","Time Management","Smart Suggestions"],"Personalization":["AI Personality","Voice Style","Language","Conversation Style"],"Privacy & History":["Chat History","Saved Conversations","Memory Permissions","Data Controls"]}},
+ medical:{name:"Medical & Healthcare AI",tag:"MEDICAL INTELLIGENCE",desc:"Understand health information and prepare for informed conversations with clinicians.",colors:["#f5fbff","#e5f4fa","#4abecb","#b9e8ed"],groups:{"Medical Assistant":["Medical AI Chat","Health Questions"],"Report Intelligence":["Blood Test Analysis","Lab Report Analysis","Medical Document Analysis"],"Medicine Information":["Medicine Details","Uses","Side Effects","Interactions"],"Health Records":["Medical History","Saved Reports","Health Documents"],"Health Monitoring":["Health Metrics","Symptom Journal","Wellness Tracking"],"Medical Knowledge":["Diseases","Symptoms","Treatments","Medical Research"],"Healthcare Support":["Doctor Visit Preparation","Questions for Doctor"],"Privacy":["Medical Data Permissions","Secure Records","Delete Records"]}},
+ english:{name:"English Learning",tag:"GLOBAL LANGUAGE ACADEMY",desc:"Build practical English skills through guided speaking, lessons and feedback.",colors:["#101d39","#1e3562","#e4ad48","#fff0c9"],groups:{"Learning Dashboard":["My Learning","Daily Goals","Learning Progress"],"Speaking":["AI Speaking Practice","Free Conversation","Roleplay"],"Pronunciation":["Pronunciation Practice","Accent Training","Speech Feedback"],"Grammar":["Grammar Lessons","Sentence Correction","Common Mistakes"],"Vocabulary":["Daily Vocabulary","Word Practice","Vocabulary Tests"],"Professional English":["Interview English","Office English","Business Communication"],"Practical English":["Travel English","Banking English","Customer Handling"],"Assessments":["Speaking Test","Grammar Test","Mock Interview"],"Personal Progress":["Performance Report","Weak Areas","Learning History"]}},
+ soulsphere:{name:"SoulSphere",tag:"SPIRITUAL GUIDANCE",desc:"Explore spiritual traditions, calendars and reflective practices with respect for all faiths.",colors:["#24170b","#422b12","#e3a33b","#f7e5bd"],groups:{"Spiritual Dashboard":["Daily Spiritual Guidance","Daily Calendar"],"Astrology":["Kundli","Horoscope","Birth Chart","Planetary Positions"],"Panchang":["Daily Panchang","Tithi","Nakshatra","Vrat","Festivals"],"Muhurat":["Marriage Muhurat","Griha Pravesh","Travel Muhurat"],"Religious Knowledge":["Hinduism","Islam","Christianity","Sikhism","Buddhism","Jainism","Other Traditions"],"Sacred Learning":["Bhagavad Gita","Ramayana","Quran","Bible","Guru Granth Sahib","Other Scriptures"],"Spiritual Wellness":["Meditation","Prayer","Mindfulness","Peace Practices"],"Life Guidance":["Personal Reflection","Values","Life Planning"],"My Spiritual Space":["Saved Readings","Favorites","History"]}}
 };
-
-function renderPage(page){
- const p=pages[page];
- if(!p){
-  shell("NYAYVERSE AI","Page unavailable","<div class='panel'>Page not found.</div>");
-  return;
- }
- shell(p[0],p[1],p[2]);
-}
-
-/* BACKEND-DEPENDENT FEATURES */
-function comingSoon(name){
- alert(name+" will be available after backend integration.");
-}
-async function loadResource(name,statusId){
- if(!token()){setStatus(statusId,"Please login first.");return}
- setStatus(statusId,"Loading...");
- try{
-  const data=await api("user/"+name,undefined,"GET");
-  setStatus(statusId,JSON.stringify(data,null,2));
- }catch(e){
-  setStatus(statusId,"Backend endpoint not yet connected: "+e.message);
- }
-}
-async function sendSpecial(service,inputId,statusId){
- if(!token()){openAuth("login");return}
- const message=$(inputId).value.trim();
- if(!message){setStatus(statusId,"Please enter your message.");return}
- setStatus(statusId,"Sending request...");
- try{
-  const data=await api(service+"/chat",{message,language:language(message)});
-  setStatus(statusId,data.reply||data.response||JSON.stringify(data));
- }catch(e){
-  setStatus(statusId,"Service integration pending: "+e.message);
- }
-}
-
-/* PERSONAL AI */
-async function sendPersonalAI(){
- if(!token()){openAuth("login");return}
- const message=$("assistantMessage").value.trim();
- if(!message){setStatus("assistantStatus","Please enter your message.");return}
- setStatus("assistantStatus","Sending...");
- try{
-  const data=await api("assistant/chat",{
-   message,
-   language:language(message)
-  });
-  setStatus("assistantStatus",data.reply||data.response||JSON.stringify(data));
- }catch(e){
-  setStatus("assistantStatus","Personal AI service: "+e.message);
- }
-}
-
-/* ENGLISH LEARNING */
-function getEnglishSettings(){
- return {
-  goal:$("englishGoal").value,
-  level:$("englishLevel").value
- };
-}
-async function createEnglishPlan(){
- if(!token()){openAuth("login");return}
- setStatus("englishPlanStatus","Preparing your learning plan...");
- try{
-  const settings=getEnglishSettings();
-  const message="Create a structured English learning plan for me. Learning goal: "+settings.goal+". Current level: "+settings.level+". Include a step-by-step curriculum, daily lessons, exercises, revision and progress milestones. Explain how I should practise every day.";
-  const data=await api("english/chat",{
-   message,
-   goal:settings.goal,
-   level:settings.level,
-   task:"create_learning_plan",
-   action:"create_plan",
-   language:"English"
-  });
-  setStatus("englishPlanStatus",data.reply||data.response||data.answer||JSON.stringify(data));
- }catch(e){
-  setStatus("englishPlanStatus","English Learning backend response: "+e.message);
- }
-}
-async function startDailyPractice(){
- if(!token()){openAuth("login");return}
- setStatus("englishPracticeStatus","Preparing your daily practice...");
- try{
-  const settings=getEnglishSettings();
-  const message="Start my daily English learning practice. Goal: "+settings.goal+". Level: "+settings.level+". Give me today's lesson, practical exercises and questions. Wait for my answers and correct my mistakes.";
-  const data=await api("english/chat",{
-   message,
-   goal:settings.goal,
-   level:settings.level,
-   task:"daily_practice",
-   action:"start_daily_practice",
-   language:"English"
-  });
-  setStatus("englishPracticeStatus",data.reply||data.response||data.answer||JSON.stringify(data));
- }catch(e){
-  setStatus("englishPracticeStatus","English Learning backend response: "+e.message);
- }
-}
-async function submitEnglishPractice(){
- if(!token()){openAuth("login");return}
- const text=$("englishText").value.trim();
- if(!text){setStatus("englishPracticeStatus","Please write your practice answer first.");return}
- setStatus("englishPracticeStatus","Checking your English...");
- try{
-  const settings=getEnglishSettings();
-  const message="Check and correct my English. Explain grammar mistakes, provide a natural corrected version, give a score and suggest improvements. My answer: "+text;
-  const data=await api("english/chat",{
-   message,
-   goal:settings.goal,
-   level:settings.level,
-   task:"check_practice",
-   action:"correct_and_explain",
-   language:"English"
-  });
-  setStatus("englishPracticeStatus",data.reply||data.response||data.answer||JSON.stringify(data));
- }catch(e){
-  setStatus("englishPracticeStatus","English Learning backend response: "+e.message);
- }
-}
-
-/* MEDICAL AI */
-async function sendMedical(){
- if(!token()){openAuth("login");return}
- const file=$("medicalFile").files[0];
- const question=$("medicalQuestion").value.trim();
- if(!file&&!question){
-  setStatus("medicalStatus","Upload a report or enter a question.");return;
- }
- setStatus("medicalStatus","Medical AI request requires secure backend file upload integration.");
-}
-
-/* IMAGE AND VIDEO */
-async function generateMedia(type){
- if(!token()){openAuth("login");return}
- const prompt=$(type+"Prompt").value.trim();
- if(!prompt){setStatus(type+"Status","Enter a prompt first.");return}
- setStatus(type+"Status","Generation request is prepared. Provider API, credit reservation and cost validation must be connected in Worker.js.");
-}
-
-/* FAKE MEDIA CHECKER */
-async function checkMedia(){
- if(!token()){openAuth("login");return}
- const file=$("checkerFile").files[0];
- if(!file){setStatus("checkerStatus","Select an image or video.");return}
- if(file.size>100*1024*1024){
-  setStatus("checkerStatus","Maximum file size is 100 MB.");return;
- }
- setStatus("checkerStatus","Media detection requires secure upload and Reality Defender backend integration.");
-}
-
-/* MEMBERSHIP */
-async function requestPlan(plan){
- if(!token()){openAuth("login");return}
- if(!confirm("Submit a request for "+plan+"? No payment will be taken yet."))return;
- try{
-  const result=await api("membership/request",{plan});
-  alert(result.message||"Membership request submitted.");
- }catch(e){
-  alert("Membership backend integration pending: "+e.message);
- }
-}
-
-/* VOICE INPUT */
-function voiceInput(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){alert("Voice input is not supported in this browser.");return}
- const recognition=new SR();
- recognition.lang="hi-IN";
- recognition.interimResults=false;
- recognition.onresult=e=>{
-  const text=e.results[0][0].transcript;
-  if(currentPage==="home"){
-   $("question").value+=(" "+text).trim();
-  }else{
-   const field=document.querySelector("#otherPage textarea");
-   if(field)field.value+=(" "+text).trim();
-  }
- };
- recognition.onerror=e=>alert("Voice input error: "+e.error);
- recognition.start();
-}
-
-/* STARTUP */
-document.addEventListener("DOMContentLoaded",()=>{
- updateAuthUI();
- if(token()){
-  api("auth/me",undefined,"GET").then(data=>{
-   if(data.user)localStorage.setItem(USER_KEY,JSON.stringify(data.user));
-   updateAuthUI();
-  }).catch(()=>{
-   localStorage.removeItem(TOKEN_KEY);
-   localStorage.removeItem(USER_KEY);
-   updateAuthUI();
-  });
- }
-});
+const modules=palettes;
+function renderModule(key){const m=modules[key],c=m.colors;const nav=Object.entries(m.groups).map(([g,items])=>`<details><summary>${escapeHTML(g)}</summary>${items.map((x,i)=>`<button onclick="moduleAction('${key}',${JSON.stringify(x).replace(/'/g,"&#39;")},this)">${escapeHTML(x)}</button>`).join("")}</details>`).join("");
+const tiles=Object.entries(m.groups).flatMap(([g,items])=>items.slice(0,2).map(x=>`<div class="module-home-card"><b>${escapeHTML(x)}</b><small>${escapeHTML(g)} · Open this workspace function</small></div>`)).slice(0,6).join("");
+$("otherPage").innerHTML=`<div class="module-shell" style="--m-bg:${c[0]};--m-panel:${c[1]};--m-border:${c[2]}66;--m-accent:${c[2]};--m-accent2:${c[3]};color:${key==='medical'?'#17333a':'#f7f3ff'}">
+<div class="module-top"><div><span class="badge">${escapeHTML(m.tag)}</span><h1>${escapeHTML(m.name)}</h1><p>${escapeHTML(m.desc)}</p></div><button class="secondary-btn" onclick="showPage('home')">⌂ Homepage</button></div>
+<div class="module-kpis"><div class="kpi"><b>${Object.values(m.groups).flat().length}</b><small>Workspace functions</small></div><div class="kpi"><b>01</b><small>Dedicated module</small></div><div class="kpi"><b>AI</b><small>Backend-powered</small></div></div>
+<div class="module-layout"><aside class="module-nav"><b style="font-size:12px;padding:8px;display:block;color:var(--m-accent2)">MODULE NAVIGATION</b>${nav}</aside><div class="module-work" id="moduleWork"><div class="panel"><h2>Welcome to ${escapeHTML(m.name)}</h2><p>Select a function from the expandable navigation, or start with one of the workspace shortcuts below.</p><div class="grid">${tiles}</div><p class="muted">Your module-specific workspace is ready in the interface. Feature execution, generation, uploads, account permissions and saved records require the matching Worker endpoints.</p></div></div></div></div>`}
+function moduleAction(key,action,btn){document.querySelectorAll(".module-nav button").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");const m=modules[key];let controls="";
+if(key==="image"||key==="video"){const isV=key==="video";controls=`<label class="label">${isV?"Video":"Image"} description</label><textarea id="modulePrompt" placeholder="Describe what you want to create..."></textarea><label class="label">Aspect ratio</label><select id="moduleRatio">${(isV?["9:16","16:9","1:1"]:["1:1","9:16","16:9","4:5"]).map(x=>`<option>${x}</option>`).join("")}</select><div class="actions"><button class="primary-btn" onclick="moduleGenerate('${key}','${escapeHTML(action)}')">Continue</button></div>`}
+else if(key==="checker"||key==="medical"){controls=`<label class="label">Select file</label><input class="field" type="file" id="moduleFile" ${key==="checker"?'accept="image/*,video/*,audio/*"':'accept="image/*,application/pdf"'}><label class="label">Question or analysis instructions</label><textarea id="modulePrompt" placeholder="What would you like checked or explained?"></textarea><div class="actions"><button class="primary-btn" onclick="moduleUpload('${key}','${escapeHTML(action)}')">Analyze</button></div>`}
+else{controls=`<label class="label">Your message / details</label><textarea id="modulePrompt" placeholder="Tell NYAYVERSE AI what you need..."></textarea><div class="actions"><button class="primary-btn" onclick="moduleMessage('${key}','${escapeHTML(action)}')">Continue</button></div>`}
+$("moduleWork").innerHTML=`<div class="panel"><span class="badge">${escapeHTML(m.tag)}</span><h2>${escapeHTML(action)}</h2><p>${escapeHTML(m.desc)}</p>${controls}<div class="status" id="moduleStatus">This workspace action will connect to its protected backend service. ${key==="checker"?"Detection scores must include confidence and uncertainty.":""}</div>${key==="medical"?'<p class="muted">Medical AI is informational and does not replace a qualified clinician. For emergencies, seek urgent medical care.</p>':""}${key==="soulsphere"?'<p class="muted">Astrology is presented as traditional guidance, not scientifically guaranteed prediction. No fear-based or coercive remedies.</p>':""}</div>`}
+async function moduleGenerate(key,action){const p=$("modulePrompt").value.trim();if(!p)return setStatus("moduleStatus","Please enter a description.");if(!token())return openAuth("welcome");setStatus("moduleStatus","Request prepared. Worker endpoint, provider routing, credit reservation and cost validation will be connected in the matching Worker.js update.")}
+async function moduleUpload(key,action){const f=$("moduleFile").files[0];if(!f)return setStatus("moduleStatus","Please select a file.");if(f.size>20*1024*1024)return setStatus("moduleStatus","File exceeds the current 20 MB frontend limit.");if(!token())return openAuth("welcome");setStatus("moduleStatus","Secure upload and analysis endpoint will be connected in the Worker.js update.")}
+async function moduleMessage(key,action){const p=$("modulePrompt").value.trim();if(!p)return setStatus("moduleStatus","Please enter your message.");if(!token())return openAuth("welcome");setStatus("moduleStatus","This action's service endpoint will be connected in the Worker.js update.")}
+const pages={
+ history:["Chat History","Your previous conversations",`<div class="panel"><p id="historyStatus">Your previous conversations.</p><button class="primary-btn" onclick="loadResource('history','historyStatus')">Refresh</button></div>`],
+ saved:["Saved Answers","Your saved AI responses",`<div class="panel"><p id="savedStatus">Your saved answers.</p><button class="primary-btn" onclick="loadResource('saved','savedStatus')">Refresh</button></div>`],
+ projects:["Projects","Organize your research and workspaces",`<div class="panel"><p>Project storage and sharing will be connected through the backend.</p><button class="primary-btn" onclick="comingSoon('Projects')">Create Project</button></div>`],
+ membership:["Membership & Plans","Choose a suitable NYAYVERSE AI membership",`<div class="grid"><div class="card"><b>Core AI Pro</b><h2>₹2,999/year</h2><small>Proposed annual price</small></div><div class="card"><b>Core AI Ultra</b><h2>₹7,999/year</h2><small>Proposed annual price</small></div><div class="card"><b>Personal AI Assistant</b><h2>₹1,999/year</h2></div><div class="card"><b>Medical AI</b><h2>₹2,499/year</h2></div><div class="card"><b>English Learning</b><h2>₹999/year</h2></div></div><div class="panel"><p>Working proposal only; prices require cost validation. Monthly credit allowances and explicit renewal consent are required.</p></div>`],
+ credits:["Credits & Usage","View your available credits and usage",`<div class="panel"><p id="creditsStatus">Credit balance will be loaded from the backend.</p><button class="primary-btn" onclick="loadResource('credits','creditsStatus')">Refresh Credits</button></div>`],
+ account:["Account & Security","Manage your account and security settings",`<div class="panel"><p id="accountStatus">Account information requires login.</p><button class="secondary-btn" onclick="loadResource('account','accountStatus')">Refresh Profile</button><p>Security options must be enforced by the backend.</p></div>`],
+ policies:["Policies & Support","Platform policies and support",`<div class="panel"><p>Final reviewed policy documents must be published before public launch.</p><div class="grid">${["About Us","Privacy Policy","Terms & Conditions","Refund & Cancellation","Security Policy","Contact & Grievance"].map(x=>`<div class="card"><b>${x}</b></div>`).join("")}</div></div>`],
+ admin:["Admin Control Panel","Restricted administration interface",`<div class="panel"><p>Every admin action must be authorized by the Worker. Hiding this page in HTML is not security authorization.</p><p id="adminStatus">Admin data requires protected backend APIs.</p><button class="primary-btn" onclick="loadResource('admin','adminStatus')">Load Admin Data</button></div>`],
+ security:["Security Operations","Private Owner Security Operations interface",`<div class="panel"><p>Security actions require backend authorization, audit logging and mandatory MFA for Owner/Admin.</p><p id="securityStatus">Security monitoring API integration pending.</p><button class="primary-btn" onclick="loadResource('security','securityStatus')">Refresh Security Status</button></div>`]
+};
+function renderPage(page){if(modules[page])return renderModule(page);const p=pages[page];shell(p?p[0]:"NYAYVERSE AI",p?p[1]:"Page unavailable",p?p[2]:"<div class='panel'>Page not found.</div>")}
+function comingSoon(n){alert(n+" will be available after backend integration.")}
+async function loadResource(name,id){if(!token()){openAuth("welcome");return}setStatus(id,"Loading...");try{const d=await api("user/"+name,undefined,"GET");setStatus(id,JSON.stringify(d,null,2))}catch(e){setStatus(id,"Backend endpoint not connected: "+e.message)}}
+function voiceInput(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("Voice input is not supported in this browser.");return}const r=new SR();r.lang="hi-IN";r.interimResults=false;r.onresult=e=>{const t=e.results[0][0].transcript;if(currentPage==="home")$("question").value+=(" "+t).trim();else{const f=document.querySelector("#modulePrompt");if(f)f.value+=(" "+t).trim()}};r.onerror=e=>alert("Voice input error: "+e.error);r.start()}
+document.addEventListener("DOMContentLoaded",()=>{updateAuthUI();if(token())api("auth/me",undefined,"GET").then(d=>{if(d.user)localStorage.setItem(USER_KEY,JSON.stringify(d.user));updateAuthUI()}).catch(()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);updateAuthUI()})});
 </script>
 </body>
 </html>
