@@ -5,494 +5,718 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090909">
-<title>NYAYVERSE AI - Your AI Assistant</title>
+<meta name="description" content="NYAYVERSE AI - Your unified AI platform">
+<title>NYAYVERSE AI</title>
+
 <style>
-:root{--bg:#090909;--panel:#141414;--panel2:#201c14;--border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;--accent:#c9a44c;--accent2:#e2c477}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}
-.app{display:flex;min-height:100vh}.sidebar{width:255px;background:#0d0d0c;border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;gap:20px;flex-shrink:0;transition:width .25s ease,padding .25s ease}.app.sidebar-collapsed .sidebar{width:0;min-width:0;padding-left:0;padding-right:0;border:0;overflow:hidden;gap:0}
-.logo{display:flex;align-items:center;gap:11px;padding:5px}.logo-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#9c762d,#e3c477);display:grid;place-items:center;font-size:22px;font-weight:bold;color:#111}.logo h2{font-size:17px;margin:0;letter-spacing:1px}.logo small{color:var(--muted);font-size:10px}.sidebar-close{display:none;margin-left:auto;width:34px;height:34px;border:1px solid var(--border);border-radius:8px;background:var(--panel2);color:var(--text);font-size:22px}
-.new-chat{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}.nav-title{font-size:11px;color:#a18a5c;margin:8px}.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#d5cbb9;border:0;border-radius:9px;font-size:13px}.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}.sidebar-bottom{margin-top:auto}
-.main{flex:1;min-width:0;display:flex;flex-direction:column}.topbar{min-height:68px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 25px;background:#0d0d0c;gap:10px}.top-left{display:flex;align-items:center;gap:12px}.topbar h3{font-size:15px;margin:0}.top-actions{display:flex;gap:9px;align-items:center}.small-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}.mobile-menu{display:block}.sidebar-overlay{display:none}
-.content{width:100%;max-width:1100px;margin:0 auto;padding:30px 22px;flex:1}.hero{text-align:center;margin:18px auto 28px}.hero-logo{width:65px;height:65px;margin:auto auto 17px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,#9c762d,#e3c477);color:#111}.hero h1{font-size:30px;margin:0 0 10px}.gradient{background:linear-gradient(90deg,#c9a44c,#f2d990);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:14px;line-height:1.6}
-.section-heading{font-size:17px;margin:28px 0 12px}.studio-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:25px 0}.studio-card{background:linear-gradient(145deg,#171717,#201b12);border:1px solid var(--border);padding:20px;border-radius:15px;text-align:left;color:var(--text);min-height:175px;transition:.2s}.studio-card:hover{border-color:var(--accent);transform:translateY(-3px);background:#242015}.studio-icon{font-size:30px;display:block;margin-bottom:15px;color:#d6b45d}.studio-card b{display:block;font-size:15px;margin-bottom:8px}.studio-card small{color:var(--muted);font-size:12px;line-height:1.6}
-.tool-panel{background:var(--panel);border:1px solid var(--border);padding:22px;border-radius:15px;margin:18px 0}.tool-panel h2{margin:0 0 10px}.tool-panel p{font-size:13px;color:var(--muted);line-height:1.6}.tool-label{display:block;font-size:12px;color:#dfc98e;margin:16px 0 8px}.tool-input,.tool-select,.tool-textarea{width:100%;padding:13px;background:#0b0b0a;border:1px solid var(--border);border-radius:10px;color:white;outline:none}.tool-textarea{min-height:120px;resize:vertical}.tool-input:focus,.tool-select:focus,.tool-textarea:focus{border-color:var(--accent)}.tool-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.primary-btn{padding:11px 17px;border:0;border-radius:9px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}.secondary-btn{padding:11px 17px;border:1px solid var(--border);border-radius:9px;background:var(--panel2);color:white}.tool-status{margin-top:15px;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:#dfc98e;font-size:12px;line-height:1.6;white-space:pre-wrap}.preview{display:none;max-width:100%;max-height:360px;margin-top:15px;border-radius:12px;border:1px solid var(--border)}.file-info{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
-.chat-area{display:none;flex-direction:column;gap:17px;margin:25px 0}.message{display:flex;gap:10px;align-items:flex-start}.avatar{flex-shrink:0;width:32px;height:32px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;font-size:14px}.bubble{max-width:85%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.user .bubble{background:#292316;border-color:#67532a}.user{flex-direction:row-reverse}
-.composer{position:sticky;bottom:0;padding:14px 20px 20px;background:linear-gradient(transparent,var(--bg) 20%);z-index:2}.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #66532e;border-radius:16px;padding:12px;box-shadow:0 10px 35px #0005}.composer textarea{width:100%;resize:none;min-height:55px;max-height:150px;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:14px}.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.composer-bottom small{color:var(--muted);font-size:10px}.send{border:0;border-radius:10px;padding:10px 18px;color:#111;background:linear-gradient(100deg,#c9a44c,#e6cb83);font-weight:bold}.send:disabled{opacity:.55;cursor:not-allowed}.disclaimer{text-align:center;color:#938873;font-size:10px;margin:14px}.footer{text-align:center;color:#938873;font-size:11px;padding:14px;line-height:1.8}.footer a{color:#d7b45d;text-decoration:none;margin:0 5px}
-.modal-bg{display:none;position:fixed;inset:0;background:#000b;align-items:center;justify-content:center;padding:18px;z-index:10}.modal{width:100%;max-width:420px;max-height:90vh;overflow:auto;background:#17150f;border:1px solid var(--border);border-radius:18px;padding:25px}.modal h2{margin:0 0 7px}.modal p{font-size:12px;color:var(--muted);line-height:1.5}.modal input{display:block;width:100%;padding:13px;margin:12px 0;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:white;outline:none}.modal button.primary{width:100%;padding:13px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;border:0;border-radius:9px;font-weight:bold}.modal-links{display:flex;justify-content:space-between;gap:8px;margin-top:17px;flex-wrap:wrap}.modal-links button{background:none;border:0;color:#dfc477;font-size:12px}.close{float:right;background:none;border:0;color:white;font-size:22px}
-.page-panel{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:22px;margin:18px 0}.page-panel h2{margin-top:0}.page-panel p,.page-panel li{color:var(--muted);font-size:13px;line-height:1.7}.sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}.sub-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:13px;color:var(--text);text-align:left}.back-btn{margin-bottom:12px}.policy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.policy-grid button{background:var(--panel2);color:#d5cbb9;border:1px solid var(--border);padding:12px;border-radius:9px;text-align:left;font-size:12px}
-.voice-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.voice-tools button,.speak-btn,.pdf-tools button{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px}.speak-btn{margin-top:10px;color:#dfc477}.pdf-tools{margin-top:20px;padding:15px;background:#0c0c0b;border:1px solid var(--border);border-radius:12px}.pdf-tools input{width:100%;padding:11px;margin:10px 0;background:#090909;border:1px solid var(--border);border-radius:8px;color:white}.pdf-tools button{margin:5px 5px 5px 0}.pdf-status{font-size:12px;color:#dfc477;white-space:pre-wrap;line-height:1.6;margin-top:10px}.source-box{margin-top:14px;padding:12px;background:#0d0d0c;border:1px solid var(--border);border-radius:10px;font-size:12px}.source-heading{color:#dfc477;font-weight:bold;margin-bottom:9px}.source-list{display:flex;flex-direction:column;gap:8px}.source-link{color:#e2c477;text-decoration:none;overflow-wrap:anywhere;line-height:1.5}.legal-disclaimer{margin-top:13px;padding:12px;background:#211b10;border:1px solid #80632e;border-radius:10px;color:#e5d5ad;font-size:12px;line-height:1.6;white-space:pre-wrap}.response-actions{margin-top:10px}.home-hero{margin:30px auto 18px}.home-hero h1{font-size:29px;margin:0 0 9px}.home-prompt{font-size:20px!important;color:var(--muted);margin:0!important}#home .composer{position:relative;bottom:auto;padding:8px 0 4px;background:transparent}#home .composer-inner{max-width:850px;border-radius:16px}#home .composer .footer{display:none}#home .studio-grid{margin:18px 0 14px;gap:12px}#home .studio-card{min-height:100px;padding:16px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}#home .studio-icon{font-size:24px;margin:0;color:#dfbd66}#home .studio-card b{font-size:13px;line-height:1.35;margin:0}#home .studio-card.ai-assistant-card{border-color:#8a6b32;background:linear-gradient(145deg,#211c11,#15130e)}#home .studio-card.ai-assistant-card .studio-icon{color:#f0d48d}
-.attach-btn{background:var(--panel2);color:#e2c477;border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px}.attachment-list{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 10px}.attachment-chip{display:flex;align-items:center;gap:8px;max-width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:9px;background:#201c14;color:#e5d5ad;font-size:11px}.attachment-chip span{max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.attachment-chip button{border:0;background:none;color:#e58a7b;font-weight:bold}.attachment-note{font-size:10px;color:var(--muted);margin:7px 4px}.artifact-list{display:flex;flex-direction:column;gap:8px;margin-top:13px}.artifact-item{padding:11px;border:1px solid var(--border);background:#201c14;border-radius:9px}.artifact-item a{color:#e2c477;text-decoration:none;font-weight:bold}.artifact-preview{display:block;max-width:100%;max-height:360px;margin-top:12px;border-radius:10px;border:1px solid var(--border)}.artifact-video{display:block;max-width:100%;max-height:360px;margin-top:12px}
-@media(max-width:850px){.sidebar{width:235px}}@media(max-width:720px){.sidebar{display:none;position:fixed;z-index:8;inset:0 auto 0 0;width:270px;max-width:85vw;overflow-y:auto;box-shadow:12px 0 35px #0008}.sidebar.open{display:flex}.sidebar-close{display:block}.sidebar-overlay{display:block;position:fixed;inset:0;z-index:7;background:#0009;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}.sidebar-overlay.open{opacity:1;visibility:visible;pointer-events:auto}.app.sidebar-collapsed .sidebar{width:270px;max-width:85vw;padding:22px 16px;border-right:1px solid var(--border)}.mobile-menu{display:block}.topbar{padding:10px 13px}.content{padding:20px 13px}.hero h1{font-size:25px}.studio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.studio-card{min-height:100px}.composer{padding:10px}.bubble{max-width:90%;font-size:13px}.policy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sub-grid{grid-template-columns:1fr}.topbar h3{font-size:13px}.top-actions{gap:5px}.small-btn{padding:8px 9px;font-size:12px}#home .home-hero{margin:24px auto 14px}#home .home-hero h1{font-size:24px}#home .home-prompt{font-size:18px!important}#home .studio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0 10px}#home .studio-card{min-height:96px;padding:12px 6px}#home .studio-card b{font-size:12px}#home .composer{padding:7px 0}#home .composer-inner{padding:10px}}@media(min-width:721px){.mobile-menu{display:block}}
+:root{
+ --bg:#090909;--panel:#141414;--panel2:#201c14;
+ --border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;
+ --accent:#c9a44c;--accent2:#e2c477;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+ width:250px;background:#0d0d0c;border-right:1px solid var(--border);
+ padding:20px 14px;display:flex;flex-direction:column;gap:17px;
+ flex-shrink:0;transition:.2s
+}
+.logo{display:flex;align-items:center;gap:10px;padding:6px}
+.logo-icon,.hero-logo{
+ background:linear-gradient(135deg,#9c762d,#e3c477);
+ color:#111;display:grid;place-items:center;font-weight:bold
+}
+.logo-icon{width:42px;height:42px;border-radius:13px;font-size:22px}
+.logo h2{font-size:16px;margin:0;letter-spacing:1px}
+.logo small{font-size:10px;color:var(--muted)}
+.nav-title{font-size:10px;color:#a18a5c;margin:10px 8px 5px}
+.nav-item{
+ display:block;width:100%;padding:11px 12px;margin:3px 0;
+ text-align:left;background:transparent;color:#d5cbb9;
+ border:0;border-radius:9px;font-size:13px
+}
+.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}
+.sidebar-bottom{margin-top:auto}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+ min-height:65px;border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:10px 22px;background:#0d0d0c;gap:10px
+}
+.topbar h3{font-size:15px;margin:0}
+.top-actions{display:flex;gap:8px;align-items:center}
+.small-btn,.secondary-btn{
+ background:var(--panel2);color:var(--text);
+ border:1px solid var(--border);padding:9px 12px;border-radius:9px
+}
+.mobile-menu{display:none}
+.content{width:100%;max-width:1150px;margin:auto;padding:25px 20px;flex:1}
+.hero{text-align:center;margin:18px auto 25px}
+.hero h1{font-size:29px;margin:0 0 10px}
+.hero p{color:var(--muted);font-size:14px;line-height:1.6}
+.gradient{
+ background:linear-gradient(90deg,#c9a44c,#f2d990);
+ -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero-logo{width:60px;height:60px;margin:auto auto 15px;border-radius:18px;font-size:28px}
+.section-heading{font-size:17px;margin:25px 0 12px}
+.grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;margin:18px 0
+}
+.card{
+ background:linear-gradient(145deg,#171717,#201b12);
+ border:1px solid var(--border);padding:18px;border-radius:14px;
+ color:var(--text);text-align:left;min-height:115px
+}
+.card:hover{border-color:var(--accent)}
+.card .ico{font-size:25px;display:block;margin-bottom:10px}
+.card b{display:block;font-size:14px;margin-bottom:6px}
+.card small{color:var(--muted);font-size:11px;line-height:1.5}
+.panel{
+ background:var(--panel);border:1px solid var(--border);
+ padding:20px;border-radius:14px;margin:15px 0
+}
+.panel h2,.panel h3{margin-top:0}
+.panel p,.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.label{display:block;font-size:12px;color:#dfc98e;margin:14px 0 7px}
+.field,textarea,select{
+ width:100%;padding:12px;background:#0b0b0a;
+ border:1px solid var(--border);border-radius:9px;
+ color:white;outline:none
+}
+textarea{min-height:110px;resize:vertical}
+.field:focus,textarea:focus,select:focus{border-color:var(--accent)}
+.primary-btn{
+ padding:11px 17px;border:0;border-radius:9px;
+ background:linear-gradient(100deg,#a47b2f,#d7b45d);
+ color:#111;font-weight:bold
+}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.status{
+ margin-top:13px;padding:12px;background:#0b0b0a;
+ border:1px solid var(--border);border-radius:9px;
+ color:#dfc98e;font-size:12px;line-height:1.6;white-space:pre-wrap
+}
+.chat-area{display:flex;flex-direction:column;gap:15px;margin:20px 0}
+.message{display:flex;gap:10px;align-items:flex-start}
+.message.user{flex-direction:row-reverse}
+.avatar{
+ width:32px;height:32px;flex-shrink:0;border-radius:10px;
+ background:var(--panel2);display:grid;place-items:center
+}
+.bubble{
+ max-width:85%;background:var(--panel);border:1px solid var(--border);
+ padding:13px 15px;border-radius:4px 13px 13px 13px;
+ line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere
+}
+.user .bubble{background:#292316;border-color:#67532a}
+.composer{position:sticky;bottom:0;padding:12px;background:var(--bg);z-index:2}
+.composer-inner{
+ max-width:850px;margin:auto;background:var(--panel);
+ border:1px solid #66532e;border-radius:15px;padding:12px
+}
+.composer textarea{border:0;background:transparent;min-height:55px}
+.composer-bottom{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.composer-bottom small{color:var(--muted);font-size:10px}
+.send{border:0;border-radius:9px;padding:10px 17px;background:var(--accent2);font-weight:bold}
+.send:disabled{opacity:.5}
+.tool-preview{display:none;max-width:100%;max-height:350px;margin-top:12px}
+.footer{text-align:center;color:#938873;font-size:10px;padding:16px}
+.badge{
+ display:inline-block;padding:5px 9px;border:1px solid var(--border);
+ border-radius:20px;font-size:10px;color:#dfc477;margin:3px
+}
+.modal-bg{
+ display:none;position:fixed;inset:0;background:#000c;z-index:20;
+ align-items:center;justify-content:center;padding:15px
+}
+.modal{
+ width:100%;max-width:430px;max-height:90vh;overflow:auto;
+ background:#17150f;border:1px solid var(--border);
+ border-radius:16px;padding:23px
+}
+.modal input{margin:8px 0}
+.close{float:right;background:none;border:0;color:white;font-size:22px}
+.hidden{display:none!important}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+td,th{padding:11px;border-bottom:1px solid var(--border);text-align:left}
+th{color:#dfc477}
+.link{color:#dfc477;text-decoration:none}
+@media(max-width:850px){.sidebar{width:215px}}
+@media(max-width:700px){
+ .sidebar{
+  display:none;position:fixed;z-index:15;inset:0 auto 0 0;
+  width:270px;max-width:85vw;overflow:auto;box-shadow:10px 0 30px #0008
+ }
+ .sidebar.open{display:flex}
+ .mobile-menu{display:block}
+ .topbar{padding:10px 12px}
+ .content{padding:18px 12px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .card{padding:13px;min-height:105px}
+ .hero h1{font-size:23px}
+ .bubble{max-width:90%;font-size:13px}
+}
 </style>
 </head>
-<body>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMenu()"></div>
-<div class="app">
-<aside class="sidebar" id="sidebar">
- <div class="logo"><div class="logo-icon">⚖</div><div><h2>NYAYVERSE AI</h2><small>YOUR AI ASSISTANT</small></div><button class="sidebar-close" type="button" onclick="closeMenu()">×</button></div>
- <button class="new-chat" onclick="newChat()">＋ New Chat</button>
- <div><div class="nav-title">WORKSPACE</div>
- <button class="nav-item active" onclick="showHome()">⌂ Home</button>
- <button class="nav-item" onclick="comingSoon('Chat History')">◷ Chat History</button>
- <button class="nav-item" onclick="comingSoon('Saved Answers')">☆ Saved Answers</button>
- <button class="nav-item" onclick="comingSoon('Recent Searches')">⌕ Recent Searches</button>
- <button class="nav-item" onclick="openDepartment('ai-chat')">✧ Personal AI Assistant</button>
- <button class="nav-item" onclick="openDepartment('projects')">📁 Projects</button></div>
- <div><div class="nav-title">ACCOUNT</div>
- <button class="nav-item" onclick="openDepartment('account')">⚙ Account & Security</button>
- <button class="nav-item" onclick="openModal('login')">⇥ Login / Sign Up</button>
- <button class="nav-item" onclick="authLogout()">↪ Sign Out</button></div>
- <div class="sidebar-bottom"><div class="nav-title">POLICIES</div><button class="nav-item" onclick="openDepartment('terms')">Terms & Conditions</button><button class="nav-item" onclick="openDepartment('privacy')">Privacy Policy</button><div class="nav-title">NYAYVERSE AI · BETA</div></div>
-</aside>
-<main class="main">
-<header class="topbar"><div class="top-left"><button class="small-btn mobile-menu" onclick="toggleSidebar()">☰</button><h3>⚖ NYAYVERSE AI</h3></div><div class="top-actions"><span style="font-size:11px;color:var(--muted)">Interface: English</span><button class="small-btn" id="topAuthButton" onclick="openModal('login')">Login</button></div></header>
-<section class="content" id="home">
- <div class="hero home-hero"><h1>Hello! I am <span class="gradient">NYAYVERSE AI</span>, your AI assistant.</h1><p class="home-prompt">How can I help you?</p></div>
- <div class="composer" id="composer"><div class="composer-inner"><textarea id="question" placeholder="Ask me anything..." onkeydown="handleKey(event)"></textarea><div class="attachment-list" id="attachmentList"></div><div class="composer-bottom"><small>NYAYVERSE AI · Automatic response language detection</small><div class="voice-tools">
- <input type="file" id="attachmentInput" hidden multiple accept="image/*,video/*,application/pdf,.pdf" onchange="handleAttachments(event)">
- <button class="attach-btn" type="button" onclick="document.getElementById('attachmentInput').click()">＋ Attach</button><button type="button" onclick="startVoiceInput()">🎙 Voice Input</button><button type="button" onclick="stopSpeaking()">■ Stop</button><button class="send" id="sendBtn" onclick="sendMessage()">Send ➤</button></div></div></div><p class="attachment-note">Images, videos and PDFs · Up to 5 files · 20 MB total.</p><div class="footer">AI can make mistakes. Verify important information using reliable sources.</div></div>
- <div class="studio-grid">
- <button class="studio-card" onclick="openCreativeTool('image')"><span class="studio-icon">▧</span><b>Create Image</b></button>
- <button class="studio-card" onclick="openCreativeTool('video')"><span class="studio-icon">▷</span><b>Create Video</b></button>
- <button class="studio-card" onclick="openCreativeTool('checker')"><span class="studio-icon">◈</span><b>Fake Media Checker</b></button>
- <button class="studio-card ai-assistant-card" onclick="openDepartment('ai-chat')"><span class="studio-icon">✧</span><b>Personal AI Assistant</b></button></div>
- <div class="footer">© 2026 NYAYVERSE AI · <a href="#" onclick="openDepartment('policies');return false">Policies & Support</a></div>
-</section>
-<section class="content" id="departmentPage" style="display:none"><button class="small-btn back-btn" onclick="showHome()">← Back to Home</button><div id="departmentContent"></div></section>
-</main></div>
 
-<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal">
- <button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Welcome Back</h2><p id="modalDesc">Login to your NYAYVERSE AI account.</p>
- <input id="authName" type="text" placeholder="Full name" style="display:none" autocomplete="name">
- <input id="authEmail" type="email" placeholder="Email address" autocomplete="email">
- <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password">
- <input id="authConfirm" type="password" placeholder="Confirm password" style="display:none" autocomplete="new-password">
- <button class="primary" onclick="authSubmit()" id="authAction">Continue</button>
- <div class="modal-links" id="modalLinks"></div><p id="authNote" role="status">Use your NYAYVERSE AI account.</p>
-</div></div>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="logo">
+  <div class="logo-icon">⚖</div>
+  <div><h2>NYAYVERSE AI</h2><small>YOUR AI PLATFORM</small></div>
+ </div>
+
+ <button class="primary-btn" style="width:100%" onclick="newChat()">＋ New Chat</button>
+
+ <div>
+  <div class="nav-title">WORKSPACE</div>
+  <button class="nav-item active" onclick="showPage('home',this)">⌂ Home</button>
+  <button class="nav-item" onclick="showPage('history',this)">◷ Chat History</button>
+  <button class="nav-item" onclick="showPage('saved',this)">☆ Saved Answers</button>
+  <button class="nav-item" onclick="showPage('projects',this)">📁 Projects</button>
+  <button class="nav-item" onclick="showPage('assistant',this)">✧ Personal AI Assistant</button>
+ </div>
+
+ <div>
+  <div class="nav-title">AI SERVICES</div>
+  <button class="nav-item" onclick="showPage('medical',this)">🩺 Medical & Healthcare AI</button>
+  <button class="nav-item" onclick="showPage('english',this)">📚 English Learning</button>
+  <button class="nav-item" onclick="showPage('image',this)">🎨 Create Image</button>
+  <button class="nav-item" onclick="showPage('video',this)">🎬 Create Video</button>
+  <button class="nav-item" onclick="showPage('checker',this)">🔍 Fake Media Checker</button>
+ </div>
+
+ <div>
+  <div class="nav-title">ACCOUNT</div>
+  <button class="nav-item" onclick="showPage('membership',this)">⭐ Membership & Plans</button>
+  <button class="nav-item" onclick="showPage('credits',this)">🪙 Credits & Usage</button>
+  <button class="nav-item" onclick="showPage('account',this)">⚙ Account & Security</button>
+  <button class="nav-item" onclick="openAuth('login')">⇥ Login / Sign Up</button>
+  <button class="nav-item" onclick="logout()">↪ Sign Out</button>
+ </div>
+
+ <div>
+  <div class="nav-title">POLICIES & SUPPORT</div>
+  <button class="nav-item" onclick="showPage('policies',this)">Policies & Support</button>
+ </div>
+
+ <div class="sidebar-bottom">
+  <div class="nav-title">ADMINISTRATION</div>
+  <button class="nav-item" id="adminNav" onclick="showPage('admin',this)">🛡 Admin Control Panel</button>
+  <button class="nav-item" id="securityNav" onclick="showPage('security',this)">🔐 Security Operations</button>
+  <div class="nav-title">NYAYVERSE AI · BETA</div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:12px">
+  <button class="small-btn mobile-menu" onclick="toggleMenu()">☰</button>
+  <h3>⚖ NYAYVERSE AI</h3>
+ </div>
+ <div class="top-actions">
+  <span class="muted" style="font-size:10px">AI Platform</span>
+  <button class="small-btn" id="authTop" onclick="openAuth('login')">Login</button>
+ </div>
+</header>
+
+<section class="content" id="page">
+
+<div id="homePage">
+ <div class="hero">
+  <div class="hero-logo">⚖</div>
+  <h1>Hello! I am <span class="gradient">NYAYVERSE AI</span></h1>
+  <p>Your unified AI assistant. How can I help you today?</p>
+ </div>
+
+ <div class="composer" id="mainComposer">
+  <div class="composer-inner">
+   <textarea id="question" placeholder="Ask me anything..."></textarea>
+   <div class="composer-bottom">
+    <small>Automatic response language detection</small>
+    <div class="actions">
+     <input type="file" id="chatFiles" hidden multiple accept="image/*,video/*,application/pdf">
+     <button class="secondary-btn" onclick="document.getElementById('chatFiles').click()">＋ Attach</button>
+     <button class="secondary-btn" onclick="voiceInput()">🎙 Voice</button>
+     <button class="send" id="sendBtn" onclick="sendChat()">Send ➤</button>
+    </div>
+   </div>
+   <div id="fileNames" class="muted"></div>
+  </div>
+  <div class="footer">AI can make mistakes. Verify important information.</div>
+ </div>
+
+ <div id="chatArea" class="chat-area"></div>
+
+ <h3 class="section-heading">Explore NYAYVERSE AI</h3>
+ <div class="grid">
+  <button class="card" onclick="showPage('image')"><span class="ico">🎨</span><b>Create Image</b><small>AI image generation</small></button>
+  <button class="card" onclick="showPage('video')"><span class="ico">🎬</span><b>Create Video</b><small>AI video generation</small></button>
+  <button class="card" onclick="showPage('checker')"><span class="ico">🔍</span><b>Fake Media Checker</b><small>Image and video authenticity analysis</small></button>
+  <button class="card" onclick="showPage('assistant')"><span class="ico">✧</span><b>Personal AI Assistant</b><small>Your personalized AI companion</small></button>
+  <button class="card" onclick="showPage('medical')"><span class="ico">🩺</span><b>Medical & Healthcare AI</b><small>Reports and prescription understanding</small></button>
+  <button class="card" onclick="showPage('english')"><span class="ico">📚</span><b>English Learning</b><small>Speaking and learning practice</small></button>
+ </div>
+</div>
+
+<div id="otherPage" class="hidden"></div>
+
+</section>
+</main>
+</div>
+
+<div class="modal-bg" id="authModal">
+ <div class="modal">
+  <button class="close" onclick="closeAuth()">×</button>
+  <h2 id="authTitle">Login</h2>
+  <p class="muted" id="authDescription">Access your NYAYVERSE AI account.</p>
+  <div id="signupFields" class="hidden">
+   <label class="label">Full Name</label>
+   <input class="field" id="authName" autocomplete="name">
+  </div>
+  <label class="label">Email or Mobile Number</label>
+  <input class="field" id="authIdentifier" autocomplete="username">
+  <label class="label">Password</label>
+  <input class="field" id="authPassword" type="password" autocomplete="current-password">
+  <div id="confirmField" class="hidden">
+   <label class="label">Confirm Password</label>
+   <input class="field" id="authConfirm" type="password">
+  </div>
+  <button class="primary-btn" style="width:100%;margin-top:15px" id="authSubmit" onclick="submitAuth()">Continue</button>
+  <div class="actions">
+   <button class="secondary-btn" onclick="openAuth('login')">Login</button>
+   <button class="secondary-btn" onclick="openAuth('signup')">Sign Up</button>
+   <button class="secondary-btn" onclick="openAuth('forgot')">Forgot Password</button>
+  </div>
+  <p id="authStatus" class="muted" role="status"></p>
+ </div>
+</div>
 
 <script>
 "use strict";
+
+/* BACKEND CONNECTION */
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-const AUTH_TOKEN_KEY="nyayverse_auth_token";
-const AUTH_USER_KEY="nyayverse_auth_user";
-let busy=false,recognition=null,ingestStopRequested=false,currentTool=null,selectedMediaUrl=null,selectedAttachments=[];
-let authMode="login",pendingResetToken=null;
-const MAX_FILES=5,MAX_TOTAL_SIZE=20*1024*1024;
+const TOKEN_KEY="nyayverse_auth_token";
+const USER_KEY="nyayverse_auth_user";
 
-const departments={
- projects:{title:'Projects',desc:'Your research and saved workspaces. Project management will be connected in a future update.',items:['Create New Project','My Projects','Shared Projects'],soon:true},
- terms:{title:'Terms & Conditions',desc:'Terms and conditions for using NYAYVERSE AI. The complete policy will be published before launch.',items:['Platform Use','User Responsibilities','Acceptable Use','Limitations of AI Responses'],soon:true},
- privacy:{title:'Privacy Policy',desc:'Privacy information for NYAYVERSE AI. The complete policy will be published before launch.',items:['Information We Collect','How Information Is Used','Data Security','Data Retention','Your Privacy Choices'],soon:true},
- library:{title:'Law Library',desc:'Explore Indian central and state laws, legal provisions and official legal documents.',items:['Constitution of India','Central Acts','State Acts','BNS – Bharatiya Nyaya Sanhita','BNSS – Bharatiya Nagarik Suraksha Sanhita','BSA – Bharatiya Sakshya Adhiniyam','Rules & Regulations','Consumer Law','Motor Vehicles Act','Family Law','Labour Laws']},
- academy:{title:'Law Academy',desc:'Explore legal education, academic programmes, institutions and learning resources.',items:['3-Year LLB','5-Year Integrated BA LLB','BBA LLB / BCom LLB / BSc LLB','LLM Programmes','PhD in Law','Diploma & Certificate Courses','Colleges & Universities','Admissions & Eligibility','Course Fees','Study Material']},
- exams:{title:'Law Exams',desc:'Prepare for legal entrance, professional qualification and government law examinations.',items:['Judiciary / Civil Judge','APO – Assistant Prosecution Officer','APP / Public Prosecutor','AIBE','UGC NET Law','CLAT PG','Legal Officer','Legal Assistant / Research Officer','Government Legal Jobs','Syllabus & Previous Papers','Mock Tests']},
- news:{title:'Law News',desc:'A dedicated place for legal developments and official notifications. News services are not connected yet.',items:['Supreme Court Updates','High Court Updates','Government Legal Updates','New Acts & Amendments','Legal Notifications','Regulatory Updates']},
- cases:{title:'Case Studies',desc:'Study important judgments with case background, legal issues, decisions and source references.',items:['Supreme Court Judgments','High Court Judgments','Landmark Cases','Constitution Bench Decisions','Criminal Cases','Civil Cases','Judgment PDFs & Sources']},
- history:{title:'Law History',desc:'Explore the historical development of legal institutions and systems in India and around the world.',items:['Ancient Indian Legal Systems','Medieval Legal History','British Era','East India Company Laws','Colonial Judiciary','High Courts in India','Supreme Court History','Constitution-Making History','Modern Legal Reforms','World Legal History']},
- evolution:{title:'Law Origins & Evolution',desc:'Understand how laws, legal ideas, rights and institutions originated and evolved over time.',items:['Origins of Law','Code of Hammurabi','Roman Law','Manusmriti & Ancient Texts','Vedic Legal Traditions','Evolution of Fundamental Rights','International Law','IPC to BNS','CrPC to BNSS','Evidence Act to BSA','Jurists & Legal Thinkers']},
- studio:{title:'Creative Studio',desc:'Use the three creative tools available on the home screen.',items:['Create Image','Create Video','Fake Image & Video Checker']},
- 'ai-chat':{title:'Personal AI Assistant',desc:'Your unified NYAYVERSE AI Assistant. Ask naturally about any topic, in your preferred language. The assistant is designed to handle general knowledge, education, career, health information, Indian law, research and everyday conversations through one chat interface.'},
- account:{title:'User Account & Security',desc:'Manage your NYAYVERSE AI account.',items:['Login & Sign Up','Email Verification','Forgot / Reset Password','User Profile','Logout','Delete Account']},
- policies:{title:'Policies & Support',desc:'Policy pages will be published with accurate terms when the related platform features are implemented.',items:['About Us','Privacy Policy','Terms & Conditions','User License Agreement','Legal Disclaimer','Cookie Policy','Security Policy','Data Retention & Deletion Policy','Contact & Grievance Redressal','Feedback','Help & Support'],soon:true}
-};
+let currentPage="home";
+let selectedFiles=[];
+let busy=false;
+let authMode="login";
+let currentTool=null;
 
-/* AUTHENTICATION */
-function getAuthToken(){return localStorage.getItem(AUTH_TOKEN_KEY)}
-function getStoredUser(){try{return JSON.parse(localStorage.getItem(AUTH_USER_KEY)||"null")}catch(e){return null}}
-function saveAuth(token,user){
- if(token)localStorage.setItem(AUTH_TOKEN_KEY,token);
- if(user)localStorage.setItem(AUTH_USER_KEY,JSON.stringify(user));
- updateAuthUI();
+/* BASIC HELPERS */
+const $=id=>document.getElementById(id);
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
 }
-function clearAuth(){
- localStorage.removeItem(AUTH_TOKEN_KEY);
- localStorage.removeItem(AUTH_USER_KEY);
- updateAuthUI();
+function token(){return localStorage.getItem(TOKEN_KEY)}
+function user(){
+ try{return JSON.parse(localStorage.getItem(USER_KEY)||"null")}
+ catch(e){return null}
 }
-async function authRequest(path,body=null,authorized=false){
- const headers={"Content-Type":"application/json"};
- const token=getAuthToken();
- if(authorized&&token)headers.Authorization="Bearer "+token;
- const response=await fetch(API_URL+"auth/"+path,{
-  method:body===null?"GET":"POST",
-  headers,
-  ...(body===null?{}:{body:JSON.stringify(body)})
+function getHeaders(){
+ const h={"Content-Type":"application/json"};
+ if(token())h.Authorization="Bearer "+token();
+ return h;
+}
+async function api(path,body,method="POST"){
+ const response=await fetch(API_URL+path,{
+  method,headers:getHeaders(),
+  ...(body===undefined?{}:{body:JSON.stringify(body)})
  });
  let data;
- try{data=await response.json()}catch(e){throw new Error("Server returned an invalid response.")}
- if(!response.ok||data.success===false)throw new Error(data.error||data.message||("Request failed ("+response.status+")"));
+ try{data=await response.json()}
+ catch(e){throw new Error("Invalid server response")}
+ if(!response.ok||data.success===false)
+  throw new Error(data.error||data.message||"Request failed");
  return data;
 }
-function updateAuthUI(){
- const user=getStoredUser();
- const button=document.getElementById("topAuthButton");
- if(button){
-  if(getAuthToken()&&user){
-   button.textContent=user.full_name||user.email||"Account";
-   button.onclick=()=>openDepartment("account");
-  }else{
-   button.textContent="Login";
-   button.onclick=()=>openModal("login");
-  }
- }
+function setStatus(id,message){
+ const el=$(id);if(el)el.textContent=message;
 }
-async function authBootstrap(){
- if(!getAuthToken()){updateAuthUI();return}
- try{
-  const result=await authRequest("me",null,true);
-  if(result.user)localStorage.setItem(AUTH_USER_KEY,JSON.stringify(result.user));
- }catch(error){
-  clearAuth();
- }
- updateAuthUI();
+function language(text){
+ if(/[\u0900-\u097F]/.test(text))return "Hindi";
+ const words=(text.toLowerCase().match(/[a-z]+/g)||[]);
+ const hints=["hai","hain","kya","kaise","kyun","nahi","mujhe","mera","meri","aap","batao","samjhao","karna","chahiye"];
+ return words.filter(x=>hints.includes(x)).length>=2?"Hinglish":"English";
 }
-async function authLogout(){
- const token=getAuthToken();
- if(!token){clearAuth();alert("You are not logged in.");return}
- try{await authRequest("logout",{},true)}catch(error){console.warn("Logout request:",error.message)}
- clearAuth();
- alert("You have been logged out.");
-}
-function setAuthNote(message,isError=false){
- const note=document.getElementById("authNote");
- note.textContent=message;
- note.style.color=isError?"#ff9b8e":"#dfc477";
-}
-function openModal(type){
- authMode=type;
- const title=document.getElementById("modalTitle"),desc=document.getElementById("modalDesc");
- const pass=document.getElementById("authPassword"),confirm=document.getElementById("authConfirm"),name=document.getElementById("authName");
- const links=document.getElementById("modalLinks"),action=document.getElementById("authAction");
- name.style.display="none";confirm.style.display="none";pass.style.display="block";pass.value="";confirm.value="";name.value="";
- pass.autocomplete="current-password";
- links.innerHTML="";
- if(type==="signup"){
-  title.textContent="Create Account";desc.textContent="Join NYAYVERSE AI.";
-  name.style.display="block";confirm.style.display="block";pass.autocomplete="new-password";action.textContent="Create Account";
-  addModalLink(links,"Already registered? Login",()=>openModal("login"));
- }else if(type==="forgot"){
-  title.textContent="Forgot Password";desc.textContent="Enter your registered email to request a password reset.";
-  pass.style.display="none";action.textContent="Send Reset Link";
-  addModalLink(links,"Back to Login",()=>openModal("login"));
- }else if(type==="reset"){
-  title.textContent="Create New Password";desc.textContent="Enter and confirm your new password.";
-  pass.autocomplete="new-password";confirm.style.display="block";action.textContent="Reset Password";
-  name.style.display="none";addModalLink(links,"Back to Login",()=>openModal("login"));
- }else{
-  title.textContent="Welcome Back";desc.textContent="Login to your NYAYVERSE AI account.";
-  action.textContent="Login";
-  addModalLink(links,"Forgot Password?",()=>openModal("forgot"));
-  addModalLink(links,"Create Account",()=>openModal("signup"));
- }
- action.disabled=false;action.textContent=type==="signup"?"Create Account":type==="forgot"?"Send Reset Link":type==="reset"?"Reset Password":"Login";
- setAuthNote("Use your NYAYVERSE AI account.");
- document.getElementById("modalBg").style.display="flex";
-}
-function addModalLink(container,label,callback){
- const button=document.createElement("button");button.type="button";button.textContent=label;button.onclick=callback;container.appendChild(button);
-}
-function closeModal(){document.getElementById("modalBg").style.display="none"}
-async function authSubmit(){
- const button=document.getElementById("authAction");
- const email=document.getElementById("authEmail").value.trim().toLowerCase();
- const password=document.getElementById("authPassword").value;
- const name=document.getElementById("authName").value.trim();
- const confirm=document.getElementById("authConfirm").value;
- if(authMode!=="reset"&&!email){setAuthNote("Please enter your email address.",true);return}
- if(authMode==="signup"&&(!name||name.length<2)){setAuthNote("Please enter your full name.",true);return}
- if((authMode==="login"||authMode==="signup"||authMode==="reset")&&password.length<8){setAuthNote("Password must be at least 8 characters.",true);return}
- if((authMode==="signup"||authMode==="reset")&&password!==confirm){setAuthNote("Passwords do not match.",true);return}
- button.disabled=true;
- const original=button.textContent;button.textContent="Please wait...";
- try{
-  if(authMode==="signup"){
-   const result=await authRequest("signup",{full_name:name,email,password});
-   setAuthNote(result.message||"Account created. Please check your email to verify your account.");
-   button.textContent="Email Sent";
-  }else if(authMode==="login"){
-   const result=await authRequest("login",{email,password});
-   if(!result.token)throw new Error("Login response did not contain an authentication token.");
-   saveAuth(result.token,result.user||{email});
-   setAuthNote("Login successful.");
-   closeModal();
-  }else if(authMode==="forgot"){
-   const result=await authRequest("forgot-password",{email});
-   setAuthNote(result.message||"If the account is eligible, a password reset link will be sent.");
-   button.textContent="Request Sent";
-  }else if(authMode==="reset"){
-   if(!pendingResetToken)throw new Error("Password reset token is missing. Open the reset link from your email again.");
-   const result=await authRequest("reset-password",{token:pendingResetToken,password});
-   pendingResetToken=null;
-   setAuthNote(result.message||"Password reset successful. Please log in.");
-   openModal("login");
-   setAuthNote("Password reset successful. Please log in.");
-  }
- }catch(error){
-  setAuthNote(error.message||"Authentication failed. Please try again.",true);
-  button.disabled=false;button.textContent=original;
-  return;
- }
- if(authMode==="login"||authMode==="reset"){button.disabled=false;button.textContent=original}
-}
-async function handleAuthLink(){
- const params=new URLSearchParams(window.location.search);
- const verifyToken=params.get("token");
- if(params.get("auth")==="verify"&&verifyToken){
-  openModal("login");setAuthNote("Verifying your email...");
-  try{
-   const result=await authRequest("verify",{token:verifyToken});
-   setAuthNote(result.message||"Email verified successfully. You can now log in.");
-  }catch(error){setAuthNote(error.message,true)}
-  history.replaceState({},"",window.location.pathname);
- }else if(params.get("auth")==="reset"&&verifyToken){
-  pendingResetToken=verifyToken;openModal("reset");
-  history.replaceState({},"",window.location.pathname);
- }
-}
-
-/* SIDEBAR */
-function toggleMenu(){toggleSidebar()}
-function toggleSidebar(){
- const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("sidebarOverlay"),app=document.querySelector(".app");
- if(window.innerWidth<=720){
-  if(sidebar.classList.contains("open"))closeMenu();
-  else{sidebar.classList.add("open");overlay.classList.add("open")}
- }else app.classList.toggle("sidebar-collapsed");
-}
-function closeMenu(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebarOverlay").classList.remove("open")}
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMenu();closeModal()}});
-window.addEventListener("resize",()=>{if(window.innerWidth>720)closeMenu()});
 
 /* NAVIGATION */
-function showHome(){
- closeMenu();document.getElementById("departmentPage").style.display="none";document.getElementById("home").style.display="block";
- const composer=document.getElementById("composer");document.getElementById("home").insertBefore(composer,document.querySelector("#home .studio-grid"));composer.style.display="block";window.scrollTo({top:0,behavior:"smooth"});
-}
-function newChat(){
- const area=document.getElementById("chatArea");if(area)area.remove();
- document.getElementById("question").value="";clearAttachments();stopSpeaking();showHome();
-}
-function comingSoon(name){alert(name+" is coming soon.")}
-function openDepartment(key){
- closeMenu();const d=departments[key];if(!d)return;
- document.getElementById("home").style.display="none";document.getElementById("departmentPage").style.display="block";
- const composer=document.getElementById("composer");document.getElementById("departmentPage").appendChild(composer);
- composer.style.display=["account","policies","terms","privacy"].includes(key)?"none":"block";
- let html=`<div class="hero" style="text-align:left;margin:8px 0 20px"><h1><span class="gradient">${escapeHTML(d.title)}</span></h1><p>${escapeHTML(d.desc)}</p></div>`;
- if(key==="ai-chat"){
-  html+=`<div class="page-panel"><h2>Ask NYAYVERSE AI</h2><p>Ask anything in your preferred language. Continue your conversation naturally through one unified AI Assistant.</p></div>`;
- }else{
-  html+=`<div class="page-panel"><h2>${d.soon?"Available in a future update":"Explore "+escapeHTML(d.title)}</h2><div class="sub-grid">`;
-  (d.items||[]).forEach(item=>{
-   const preview=d.soon||["account","terms","privacy"].includes(key);
-   let action=preview?`comingSoon(${JSON.stringify(item)})`:`askTopic(${JSON.stringify(item)})`;
-   if(key==="account"&&item==="Login & Sign Up")action="openModal('login')";
-   if(key==="account"&&item==="Logout")action="authLogout()";
-   html+=`<button class="sub-card" onclick="${action}">${escapeHTML(item)} ${d.soon?"· Coming Soon":"→"}</button>`;
-  });
-  html+="</div>";
-  if(d.soon)html+="<p><b>Coming Soon:</b> These options are displayed for planning purposes only.</p>";
-  html+="</div>";
- }
- if(key==="library"){
-  html+=`<div class="page-panel"><h2>Constitution PDF Ingestion</h2><p>Extract text from the stored Constitution PDF and save it to the NYAYVERSE legal database in batches of five pages.</p><div class="pdf-tools"><label for="adminToken">Admin ingestion token</label><input id="adminToken" type="password" placeholder="Enter your admin token" autocomplete="off"><button onclick="startPdfIngestion()">Start PDF Ingestion</button><button onclick="stopPdfIngestion()">Stop</button><div id="pdfStatus" class="pdf-status">Ready. Enter the admin token to begin.</div></div><p><b>Note:</b> Do not use this on a shared or untrusted device.</p></div>`;
- }
- document.getElementById("departmentContent").innerHTML=html;window.scrollTo({top:0,behavior:"smooth"});
-}
-function askTopic(topic){
- const q=document.getElementById("question");q.value="Please explain "+topic+" in clear and structured language. Include reliable sources where available.";
- const composer=document.getElementById("composer");composer.style.display="block";q.focus();window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
-}
-
-/* ATTACHMENTS */
-function formatSize(bytes){return bytes<1024*1024?(bytes/1024).toFixed(0)+" KB":(bytes/1024/1024).toFixed(1)+" MB"}
-function handleAttachments(event){
- const files=Array.from(event.target.files||[]);
- for(const file of files){
-  const image=file.type.startsWith("image/"),video=file.type.startsWith("video/"),pdf=file.type==="application/pdf"||file.name.toLowerCase().endsWith(".pdf");
-  if(!image&&!video&&!pdf){alert("Unsupported file: "+file.name);continue}
-  if(selectedAttachments.length>=MAX_FILES){alert("Maximum 5 files allowed.");break}
-  const limit=video?10*1024*1024:15*1024*1024;
-  if(file.size>limit){alert(file.name+" is too large. Maximum: "+formatSize(limit));continue}
-  const total=selectedAttachments.reduce((sum,item)=>sum+item.file.size,0);
-  if(total+file.size>MAX_TOTAL_SIZE){alert("Total attachment size cannot exceed 20 MB.");break}
-  selectedAttachments.push({file,previewUrl:URL.createObjectURL(file)});
- }
- event.target.value="";renderAttachments();
-}
-function renderAttachments(){
- const list=document.getElementById("attachmentList");list.innerHTML="";
- selectedAttachments.forEach((item,index)=>{
-  const chip=document.createElement("div");chip.className="attachment-chip";
-  const icon=item.file.type.startsWith("image/")?"🖼️":item.file.type.startsWith("video/")?"🎬":"📄";
-  const name=document.createElement("span");name.textContent=icon+" "+item.file.name+" ("+formatSize(item.file.size)+")";
-  const remove=document.createElement("button");remove.type="button";remove.textContent="×";remove.onclick=()=>removeAttachment(index);
-  chip.append(name,remove);list.appendChild(chip);
- });
-}
-function removeAttachment(index){const item=selectedAttachments[index];if(item)URL.revokeObjectURL(item.previewUrl);selectedAttachments.splice(index,1);renderAttachments()}
-function clearAttachments(){selectedAttachments.forEach(item=>URL.revokeObjectURL(item.previewUrl));selectedAttachments=[];renderAttachments();const input=document.getElementById("attachmentInput");if(input)input.value=""}
-function fileToDataURL(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Could not read "+file.name));reader.readAsDataURL(file)})}
-async function getAttachmentPayload(){
- const payload=[];for(const item of selectedAttachments)payload.push({name:item.file.name,type:item.file.type||"application/octet-stream",size:item.file.size,dataUrl:await fileToDataURL(item.file)});return payload;
-}
-
-/* CREATIVE STUDIO */
-function openCreativeTool(tool){
- currentTool=tool;document.getElementById("home").style.display="none";document.getElementById("departmentPage").style.display="block";
- const composer=document.getElementById("composer");document.getElementById("departmentPage").appendChild(composer);composer.style.display="none";
- let html="";
- if(tool==="image"){
-  html=`<div class="tool-panel"><h2>🎨 Create Image</h2><p>Describe the image you want to create.</p><label class="tool-label" for="imagePrompt">Image Description</label><textarea id="imagePrompt" class="tool-textarea" placeholder="Describe the image you want to create..."></textarea><label class="tool-label" for="imageRatio">Image Aspect Ratio</label><select id="imageRatio" class="tool-select"><option value="1:1">Square (1:1)</option><option value="9:16">Portrait (9:16)</option><option value="16:9">Landscape (16:9)</option><option value="4:5">Social Post (4:5)</option></select><div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('image')">Generate Image</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Ready. Image generation requires backend integration.</div><img id="toolPreview" class="preview" alt="Generated image preview"></div>`;
- }else if(tool==="video"){
-  html=`<div class="tool-panel"><h2>🎬 Create Video</h2><p>Prepare a video description and choose your video format.</p><label class="tool-label" for="videoPrompt">Video Description / Prompt</label><textarea id="videoPrompt" class="tool-textarea" placeholder="Describe your video scene, camera movement, subject, style and background..."></textarea><label class="tool-label" for="videoRatio">Video Aspect Ratio</label><select id="videoRatio" class="tool-select"><option value="9:16">Portrait (9:16) - Shorts / Reels</option><option value="16:9">Landscape (16:9) - YouTube</option><option value="1:1">Square (1:1)</option></select><label class="tool-label" for="videoDuration">Video Duration</label><select id="videoDuration" class="tool-select"><option value="5 seconds">5 seconds</option><option value="10 seconds">10 seconds</option><option value="15 seconds">15 seconds</option><option value="30 seconds">30 seconds</option></select><div class="tool-actions"><button class="primary-btn" onclick="requestGeneration('video')">Generate Video</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Ready. Video generation requires backend integration.</div><video id="toolPreview" class="preview" controls></video></div>`;
- }else{
-  html=`<div class="tool-panel"><h2>🔍 Fake Image & Video Checker</h2><p>Upload an image or video file to prepare it for authenticity analysis.</p><label class="tool-label" for="checkerFile">Select Image or Video</label><input id="checkerFile" class="tool-input" type="file" accept="image/*,video/*" onchange="previewCheckerFile(event)"><div id="checkerFileInfo" class="file-info">No file selected.</div><img id="checkerImagePreview" class="preview" alt="Selected image preview"><video id="checkerVideoPreview" class="preview" controls></video><div class="tool-actions"><button class="primary-btn" onclick="checkMedia()">Check Media</button><button class="secondary-btn" onclick="clearTool()">Clear</button></div><div id="toolStatus" class="tool-status">Select an image or video.</div><p>AI-media detection is probabilistic and cannot guarantee 100% accuracy.</p></div>`;
- }
- document.getElementById("departmentContent").innerHTML=`<div class="hero" style="text-align:left;margin:8px 0 18px"><h1><span class="gradient">Creative Studio</span></h1><p>Use the selected tool below.</p></div>${html}`;
+function toggleMenu(){$("sidebar").classList.toggle("open")}
+function showPage(page,button){
+ currentPage=page;
+ $("homePage").classList.toggle("hidden",page!=="home");
+ $("otherPage").classList.toggle("hidden",page==="home");
+ if(page!=="home")renderPage(page);
+ document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));
+ if(button)button.classList.add("active");
+ $("sidebar").classList.remove("open");
  window.scrollTo({top:0,behavior:"smooth"});
 }
-function requestGeneration(type){
- const prompt=document.getElementById(type==="image"?"imagePrompt":"videoPrompt")?.value.trim(),status=document.getElementById("toolStatus");
- if(!prompt){status.textContent="Please enter a description before continuing.";return}
- const ratio=document.getElementById(type==="image"?"imageRatio":"videoRatio").value,duration=type==="video"?document.getElementById("videoDuration").value:"Not applicable";
- status.textContent="Prompt prepared.\n\nPrompt: "+prompt+"\nAspect ratio: "+ratio+"\nDuration: "+duration+"\n\nGeneration endpoint is not connected in this frontend version.";
+function newChat(){
+ $("chatArea").innerHTML="";
+ $("question").value="";
+ $("chatFiles").value="";
+ selectedFiles=[];
+ $("fileNames").textContent="";
+ showPage("home");
+ $("question").focus();
 }
-function previewCheckerFile(event){
- const file=event.target.files?.[0],info=document.getElementById("checkerFileInfo"),image=document.getElementById("checkerImagePreview"),video=document.getElementById("checkerVideoPreview");
- if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
- image.style.display="none";video.style.display="none";
- if(!file){info.textContent="No file selected.";return}
- const isImage=file.type.startsWith("image/"),isVideo=file.type.startsWith("video/");
- if(!isImage&&!isVideo){event.target.value="";info.textContent="Unsupported file.";return}
- if(file.size>100*1024*1024){event.target.value="";info.textContent="File is larger than 100 MB.";return}
- selectedMediaUrl=URL.createObjectURL(file);info.textContent=file.name+" · "+(file.size/1024/1024).toFixed(2)+" MB · "+file.type;
- if(isImage){image.src=selectedMediaUrl;image.style.display="block"}else{video.src=selectedMediaUrl;video.style.display="block"}
- document.getElementById("toolStatus").textContent="File selected. Detection API is not connected in this frontend version.";
-}
-function checkMedia(){const file=document.getElementById("checkerFile")?.files?.[0],status=document.getElementById("toolStatus");status.textContent=file?"File selected. The Fake Media Checker API is not connected in this frontend version.":"Please select an image or video first."}
-function clearTool(){
- if(selectedMediaUrl){URL.revokeObjectURL(selectedMediaUrl);selectedMediaUrl=null}
- const panel=document.getElementById("departmentContent");if(!panel)return;
- panel.querySelectorAll("textarea,input[type=file]").forEach(el=>el.value="");
- panel.querySelectorAll(".tool-status").forEach(el=>el.textContent="Cleared. You can start again.");
- panel.querySelectorAll(".preview").forEach(el=>{el.removeAttribute("src");el.style.display="none"});
- const info=document.getElementById("checkerFileInfo");if(info)info.textContent="No file selected.";
-}
-
-/* LANGUAGE AND SAFETY */
-function detectLanguage(text){
- if(/[\u0900-\u097F]/.test(text))return "Hindi";
- const words=text.toLowerCase().match(/[a-z]+/g)||[];
- const hinglishWords=["kya","hai","hain","kaise","kyun","kyu","nahi","nahin","mujhe","mera","meri","aap","batao","samjhao","kanoon","kanun","dhara","police","karu","kare","hoga","hogi","karna","chahiye","mein","me","aur","agar","ka","ki","ke"];
- return words.filter(w=>hinglishWords.includes(w)).length>=2?"Hinglish":"English";
-}
-function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
-function getSafeHttpUrl(value){
- if(typeof value!=="string")return null;
- try{const url=new URL(value,window.location.href);if(url.protocol!=="https:"&&url.protocol!=="http:")return null;return url.href}catch(e){return null}
-}
-
-/* GENERATED FILES AND AI RESPONSE */
-function renderArtifact(bubble,artifact){
- if(!artifact||typeof artifact!=="object")return;
- const safeUrl=getSafeHttpUrl(artifact.url||artifact.downloadUrl||artifact.fileUrl);if(!safeUrl)return;
- let list=bubble.querySelector(".artifact-list");if(!list){list=document.createElement("div");list.className="artifact-list";bubble.appendChild(list)}
- const item=document.createElement("div");item.className="artifact-item";const link=document.createElement("a");link.href=safeUrl;link.target="_blank";link.rel="noopener noreferrer";link.textContent="📥 Download "+(artifact.name||artifact.filename||"Generated File");item.appendChild(link);list.appendChild(item);
- const mime=String(artifact.mimeType||"").toLowerCase();
- if(mime.startsWith("image/")){const img=document.createElement("img");img.className="artifact-preview";img.src=safeUrl;img.alt=artifact.name||"Generated image";img.loading="lazy";bubble.appendChild(img)}
- else if(mime.startsWith("video/")){const video=document.createElement("video");video.className="artifact-video";video.src=safeUrl;video.controls=true;bubble.appendChild(video)}
-}
-function renderAIResponse(bubble,data,reply){
- bubble.textContent=reply||"No response received. Please try again.";
- const sources=Array.isArray(data.sources)?data.sources:Array.isArray(data.citations)?data.citations:[];
- const valid=[];sources.forEach(source=>{if(!source||typeof source!=="object")return;const url=getSafeHttpUrl(source.url||source.link||source.href);if(url)valid.push({name:String(source.name||source.title||source.source||source.label||"Source"),url})});
- if(valid.length){const box=document.createElement("div");box.className="source-box";const heading=document.createElement("div");heading.className="source-heading";heading.textContent="Sources & References";const list=document.createElement("div");list.className="source-list";valid.forEach(source=>{const a=document.createElement("a");a.className="source-link";a.href=source.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=source.name;list.appendChild(a)});box.append(heading,list);bubble.appendChild(box)}
- if(data.showLegalDisclaimer===true){const text=typeof data.legalDisclaimer==="string"&&data.legalDisclaimer.trim()?data.legalDisclaimer.trim():"This response provides general legal information and is not a substitute for advice from a qualified legal professional.";const box=document.createElement("div");box.className="legal-disclaimer";box.textContent=text;bubble.appendChild(box)}
- if(Array.isArray(data.artifacts))data.artifacts.forEach(item=>renderArtifact(bubble,item));
- const direct=data.fileUrl||data.downloadUrl||data.generatedFileUrl;if(direct)renderArtifact(bubble,{name:data.filename||"Generated File",url:direct,mimeType:data.mimeType});
- const image=data.imageUrl||data.generatedImageUrl;if(image)renderArtifact(bubble,{name:"Generated Image",url:image,mimeType:"image/png"});
- const actions=document.createElement("div");actions.className="response-actions";const speak=document.createElement("button");speak.className="speak-btn";speak.type="button";speak.textContent="🔊 Listen to Answer";speak.onclick=()=>speakText(reply||"No response received.");actions.appendChild(speak);bubble.appendChild(actions);
+function comingSoon(name){
+ alert(name+" will be available after backend integration.");
 }
 
 /* CHAT */
 function addMessage(text,type){
- let area=document.getElementById("chatArea");
- if(!area){area=document.createElement("div");area.id="chatArea";area.className="chat-area";const homeVisible=document.getElementById("home").style.display!=="none";const target=homeVisible?document.getElementById("home"):document.getElementById("departmentPage");const composer=document.getElementById("composer");if(composer.parentElement===target)target.insertBefore(area,composer);else target.appendChild(area)}
- area.style.display="flex";const row=document.createElement("div");row.className="message "+type;const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=type==="user"?"👤":"✧";const bubble=document.createElement("div");bubble.className="bubble";bubble.textContent=text;row.append(avatar,bubble);area.appendChild(row);row.scrollIntoView({behavior:"smooth",block:"end"});return bubble;
+ const row=document.createElement("div");
+ row.className="message "+type;
+ const avatar=document.createElement("div");
+ avatar.className="avatar";
+ avatar.textContent=type==="user"?"👤":"⚖";
+ const bubble=document.createElement("div");
+ bubble.className="bubble";
+ bubble.textContent=text;
+ row.append(avatar,bubble);
+ $("chatArea").appendChild(row);
+ row.scrollIntoView({behavior:"smooth",block:"end"});
+ return bubble;
 }
-function handleKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}}
-async function sendMessage(){
- const input=document.getElementById("question"),question=input.value.trim();if(busy)return;if(!question&&!selectedAttachments.length){input.focus();return}
- busy=true;const btn=document.getElementById("sendBtn");btn.disabled=true;
- const names=selectedAttachments.map(item=>item.file.name),userText=question||"Please analyze the attached file(s) and explain their contents.";
- addMessage(userText+(names.length?"\n\nAttachments: "+names.join(", "):""),"user");input.value="";
- const answer=addMessage("Preparing your request...","ai");
+$("question").addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat()}
+});
+$("chatFiles").addEventListener("change",e=>{
+ selectedFiles=Array.from(e.target.files||[]);
+ if(selectedFiles.length>5){selectedFiles=selectedFiles.slice(0,5)}
+ const total=selectedFiles.reduce((n,f)=>n+f.size,0);
+ if(total>20*1024*1024){selectedFiles=[];e.target.value="";alert("Maximum total attachment size is 20 MB.");}
+ $("fileNames").textContent=selectedFiles.map(f=>f.name).join(", ");
+});
+async function sendChat(){
+ if(busy)return;
+ const question=$("question").value.trim();
+ if(!question&&!selectedFiles.length)return;
+ if(!token()){openAuth("login");setStatus("authStatus","Please login to continue.");return}
+ busy=true;$("sendBtn").disabled=true;
+ const prompt=question||"Please analyze my attached files.";
+ addMessage(prompt,"user");
+ $("question").value="";
+ const bubble=addMessage("Thinking...","ai");
  try{
-  const attachments=await getAttachmentPayload();clearAttachments();answer.textContent="Thinking...";
-  const response=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:userText,language:detectLanguage(userText),attachments})});
-  let data;try{data=await response.json()}catch(e){throw new Error("The server returned an invalid response.")}
-  if(!response.ok)throw new Error(data.error||data.message||("Server error: "+response.status));
-  const reply=data.reply||data.response||data.answer||data.text||(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("\n");
-  if(!reply&&!data.artifacts&&!data.imageUrl&&!data.fileUrl&&!data.downloadUrl)answer.textContent="No response received. Please try again.";
-  else renderAIResponse(answer,data,String(reply||"Your requested file is ready."));
- }catch(error){answer.textContent="Sorry, an error occurred: "+error.message+"\n\nIf you attached files, your backend must support the attachments field to analyze them."}
- finally{busy=false;btn.disabled=false}
-}
-
-/* VOICE */
-function startVoiceInput(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("Voice input is not supported in this browser.");return}
- stopSpeaking();recognition=new SR();recognition.lang="hi-IN";recognition.interimResults=false;recognition.maxAlternatives=1;
- recognition.onresult=event=>{const transcript=event.results[0][0].transcript,input=document.getElementById("question");input.value=(input.value+" "+transcript).trim();input.focus()};
- recognition.onerror=event=>alert("Voice input error: "+event.error);recognition.onend=()=>{recognition=null};recognition.start();
-}
-function speakText(text){
- if(!("speechSynthesis"in window)){alert("Text-to-speech is not supported.");return}
- window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);const language=detectLanguage(text);utterance.lang=language==="Hindi"||language==="Hinglish"?"hi-IN":"en-IN";utterance.rate=.95;window.speechSynthesis.speak(utterance);
-}
-function stopSpeaking(){if("speechSynthesis"in window)window.speechSynthesis.cancel();if(recognition){try{recognition.stop()}catch(e){}recognition=null}}
-
-/* PDF INGESTION */
-function stopPdfIngestion(){ingestStopRequested=true;const status=document.getElementById("pdfStatus");if(status)status.textContent="Stop requested. The current batch will finish first."}
-async function startPdfIngestion(){
- const token=document.getElementById("adminToken")?.value.trim(),status=document.getElementById("pdfStatus");if(!token){alert("Please enter your admin ingestion token.");return}
- if(!window.confirm("Start extracting the Constitution PDF and saving its text into the legal database?"))return;
- ingestStopRequested=false;status.textContent="Loading PDF processing library...";
- try{
-  const pdfjs=await import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs");pdfjs.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
-  status.textContent="Downloading Constitution PDF...";const pdfResponse=await fetch(API_URL+"library/pdf");if(!pdfResponse.ok)throw new Error("PDF download failed: HTTP "+pdfResponse.status);
-  const pdfData=await pdfResponse.arrayBuffer(),pdf=await pdfjs.getDocument({data:new Uint8Array(pdfData)}).promise,totalPages=pdf.numPages;let savedPages=0;
-  status.textContent=`PDF loaded: ${totalPages} pages. Starting extraction...`;
-  for(let start=1;start<=totalPages;start+=5){
-   if(ingestStopRequested)break;const batch=[],end=Math.min(start+4,totalPages);
-   for(let pageNumber=start;pageNumber<=end;pageNumber++){
-    if(ingestStopRequested)break;status.textContent=`Extracting page ${pageNumber} of ${totalPages}...`;
-    const page=await pdf.getPage(pageNumber),content=await page.getTextContent(),pageText=content.items.map(item=>item.str||"").join(" ").trim();
-    if(!pageText)throw new Error("No extractable text found on page "+pageNumber+".");if(pageText.length>50000)throw new Error("Page "+pageNumber+" exceeds 50,000 characters.");
-    batch.push({pageNumber,text:pageText});
-   }
-   if(!batch.length)break;status.textContent=`Saving pages ${start}–${end} to legal database...`;
-   const saveResponse=await fetch(API_URL+"admin/ingest-chunk",{method:"POST",headers:{"Content-Type":"application/json","x-admin-token":token},body:JSON.stringify({document_id:1,pages:batch})});
-   const saveData=await saveResponse.json();if(!saveResponse.ok||!saveData.success)throw new Error(saveData.error||"Database save failed at page "+start);
-   savedPages+=batch.length;status.textContent=`Saved ${savedPages} of ${totalPages} pages successfully.`;await new Promise(resolve=>setTimeout(resolve,150));
+  const attachments=[];
+  for(const file of selectedFiles){
+   const dataUrl=await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=()=>reject(new Error("File reading failed"));
+    reader.readAsDataURL(file);
+   });
+   attachments.push({name:file.name,type:file.type,size:file.size,dataUrl});
   }
-  status.textContent=ingestStopRequested?`Stopped. ${savedPages} pages were saved.`:`Completed successfully. ${savedPages} pages saved to the legal database.`;
- }catch(error){status.textContent="Ingestion error: "+error.message}
+  selectedFiles=[];$("chatFiles").value="";$("fileNames").textContent="";
+  const result=await fetch(API_URL,{
+   method:"POST",headers:getHeaders(),
+   body:JSON.stringify({message:prompt,language:language(prompt),attachments})
+  });
+  const data=await result.json();
+  if(!result.ok)throw new Error(data.error||"Chat request failed");
+  const reply=data.reply||data.response||data.answer||data.text||"No response received.";
+  bubble.textContent=reply;
+  if(Array.isArray(data.sources)&&data.sources.length){
+   const sourceBox=document.createElement("div");
+   sourceBox.className="status";
+   sourceBox.textContent="Sources:\n"+data.sources.map(s=>s.title||s.name||s.url).join("\n");
+   bubble.appendChild(sourceBox);
+  }
+ }catch(e){bubble.textContent="Error: "+e.message}
+ finally{busy=false;$("sendBtn").disabled=false}
+}
+
+/* AUTHENTICATION */
+function openAuth(mode){
+ authMode=mode;
+ $("authModal").style.display="flex";
+ $("authTitle").textContent=
+  mode==="signup"?"Create Account":
+  mode==="forgot"?"Forgot Password":"Login";
+ $("authDescription").textContent=
+  mode==="signup"?"Create your NYAYVERSE AI account.":
+  mode==="forgot"?"Enter your registered email or mobile number.":
+  "Login using your registered identifier.";
+ $("signupFields").classList.toggle("hidden",mode!=="signup");
+ $("confirmField").classList.toggle("hidden",mode!=="signup");
+ $("authPassword").style.display=mode==="forgot"?"none":"block";
+ $("authStatus").textContent="";
+}
+function closeAuth(){$("authModal").style.display="none"}
+async function submitAuth(){
+ const identifier=$("authIdentifier").value.trim();
+ const password=$("authPassword").value;
+ const name=$("authName").value.trim();
+ if(!identifier){setStatus("authStatus","Enter your email or mobile number.");return}
+ if(authMode!=="forgot"&&password.length<8){
+  setStatus("authStatus","Password must be at least 8 characters.");return;
+ }
+ if(authMode==="signup"){
+  if(!name){setStatus("authStatus","Enter your full name.");return}
+  if(password!==$("authConfirm").value){
+   setStatus("authStatus","Passwords do not match.");return;
+  }
+ }
+ const button=$("authSubmit");button.disabled=true;
+ setStatus("authStatus","Please wait...");
+ try{
+  let result;
+  if(authMode==="signup"){
+   result=await api("auth/signup",{full_name:name,identifier,password});
+  }else if(authMode==="login"){
+   result=await api("auth/login",{identifier,password});
+   if(!result.token)throw new Error("Login token missing.");
+   localStorage.setItem(TOKEN_KEY,result.token);
+   localStorage.setItem(USER_KEY,JSON.stringify(result.user||{}));
+   closeAuth();updateAuthUI();
+  }else{
+   result=await api("auth/forgot-password",{identifier});
+  }
+  if(authMode!=="login")setStatus("authStatus",result.message||"Request submitted.");
+ }catch(e){setStatus("authStatus",e.message)}
+ finally{button.disabled=false}
+}
+function updateAuthUI(){
+ const u=user();
+ $("authTop").textContent=token()?(u?.full_name||"My Account"):"Login";
+ const role=String(u?.role||"").toLowerCase();
+ const isAdmin=["owner","admin"].includes(role);
+ $("adminNav").classList.toggle("hidden",!isAdmin);
+ $("securityNav").classList.toggle("hidden",!isAdmin);
+}
+async function logout(){
+ try{if(token())await api("auth/logout",{})}catch(e){}
+ localStorage.removeItem(TOKEN_KEY);
+ localStorage.removeItem(USER_KEY);
+ updateAuthUI();
+ alert("Signed out.");
+}
+
+/* PAGE RENDERER */
+function shell(title,description,content){
+ $("otherPage").innerHTML=`
+ <button class="secondary-btn" onclick="showPage('home')">← Home</button>
+ <div class="hero" style="text-align:left">
+ <h1><span class="gradient">${escapeHTML(title)}</span></h1>
+ <p>${escapeHTML(description)}</p></div>${content}`;
+}
+function renderPage(page){
+ const pages={
+ history:["Chat History","Your previous conversations","<div class='panel'><p id='historyStatus'>Chat history will load from your account after backend integration.</p><button class='primary-btn' onclick=\"loadResource('history','historyStatus')\">Refresh</button></div>"],
+ saved:["Saved Answers","Your saved AI responses","<div class='panel'><p id='savedStatus'>Saved answers will be connected to your account.</p><button class='primary-btn' onclick=\"loadResource('saved','savedStatus')\">Refresh</button></div>"],
+ projects:["Projects","Organize your research and workspaces","<div class='panel'><p>Project storage and sharing will be connected through the backend.</p><button class='primary-btn' onclick=\"comingSoon('Projects')\">Create Project</button></div>"],
+ assistant:["Personal AI Assistant","Your separate personalized assistant service",`
+ <div class="panel">
+ <label class="label">Assistant persona</label>
+ <select id="persona"><option>Neutral Assistant</option><option>Caring Friend</option><option>Best Friend</option><option>Girlfriend</option><option>Boyfriend</option><option>Wife</option><option>Husband</option><option>Custom</option></select>
+ <label class="label">Voice preference</label>
+ <select id="assistantVoice"><option>Neutral</option><option>Female</option><option>Male</option></select>
+ <label class="label">Your message</label><textarea id="assistantMessage" placeholder="Talk to your personal assistant..."></textarea>
+ <div class="actions"><button class="primary-btn" onclick="sendSpecial('assistant','assistantMessage','assistantStatus')">Send</button></div>
+ <div id="assistantStatus" class="status">Personal Assistant API integration pending.</div>
+ </div>`],
+ medical:["Medical & Healthcare AI","Understand medical reports and prescriptions",`
+ <div class="panel">
+ <p>Upload a medical report or prescription for explanation. This service does not replace a qualified medical professional.</p>
+ <label class="label">Upload report</label><input class="field" id="medicalFile" type="file" accept="image/*,application/pdf">
+ <label class="label">Your question</label><textarea id="medicalQuestion" placeholder="Explain my report in simple language..."></textarea>
+ <div class="actions"><button class="primary-btn" onclick="sendMedical()">Analyze Report</button></div>
+ <div id="medicalStatus" class="status">Medical AI API integration pending.</div>
+ </div>`],
+ english:["English Learning","Practice speaking, grammar and interview English",`
+ <div class="panel">
+ <label class="label">Learning goal</label>
+ <select id="englishGoal"><option>Daily Conversation</option><option>Job Interview</option><option>Insurance Sales English</option><option>Grammar</option><option>Pronunciation</option><option>Vocabulary</option></select>
+ <label class="label">Practice text</label><textarea id="englishText" placeholder="Write or speak in English..."></textarea>
+ <div class="actions"><button class="primary-btn" onclick="sendSpecial('english','englishText','englishStatus')">Practice</button><button class="secondary-btn" onclick="voiceInput()">🎙 Voice Input</button></div>
+ <div id="englishStatus" class="status">English Learning API integration pending.</div>
+ </div>`],
+ image:["Create Image","Generate images from your description",`
+ <div class="panel">
+ <label class="label">Image description</label><textarea id="imagePrompt" placeholder="Describe the image..."></textarea>
+ <label class="label">Aspect ratio</label><select id="imageRatio"><option>1:1</option><option>9:16</option><option>16:9</option><option>4:5</option></select>
+ <label class="label">Resolution</label><select id="imageResolution"><option>1K</option><option>2K</option><option>4K</option></select>
+ <div class="actions"><button class="primary-btn" onclick="generateMedia('image')">Generate Image</button></div>
+ <div id="imageStatus" class="status">Image generation API integration pending.</div><img id="imagePreview" class="tool-preview" alt="Generated image">
+ </div>`],
+ video:["Create Video","Generate videos from your prompt",`
+ <div class="panel">
+ <label class="label">Video description</label><textarea id="videoPrompt" placeholder="Describe scenes, subject, movement and style..."></textarea>
+ <label class="label">Aspect ratio</label><select id="videoRatio"><option>9:16</option><option>16:9</option><option>1:1</option></select>
+ <label class="label">Duration</label><select id="videoDuration"><option>5</option><option>8</option><option>10</option><option>15</option><option>30</option></select>
+ <div class="actions"><button class="primary-btn" onclick="generateMedia('video')">Generate Video</button></div>
+ <div id="videoStatus" class="status">Video generation API integration pending.</div><video id="videoPreview" class="tool-preview" controls></video>
+ </div>`],
+ checker:["Fake Image & Video Checker","Analyze media for possible manipulation or AI generation",`
+ <div class="panel">
+ <label class="label">Select image or video</label><input class="field" id="checkerFile" type="file" accept="image/*,video/*">
+ <div class="actions"><button class="primary-btn" onclick="checkMedia()">Analyze Media</button></div>
+ <div id="checkerStatus" class="status">Fake Media detection API integration pending. Results are probabilistic.</div>
+ </div>`],
+ membership:["Membership & Plans","Choose a suitable NYAYVERSE AI membership",`
+ <div class="grid">
+  <div class="card"><b>Core AI Pro</b><h2>₹2,999/year</h2><small>Working proposed annual price</small><button class="primary-btn" onclick="requestPlan('Core AI Pro')">Choose Plan</button></div>
+  <div class="card"><b>Core AI Ultra</b><h2>₹7,999/year</h2><small>Working proposed annual price</small><button class="primary-btn" onclick="requestPlan('Core AI Ultra')">Choose Plan</button></div>
+  <div class="card"><b>Personal AI</b><h2>₹1,999/year</h2><button class="primary-btn" onclick="requestPlan('Personal AI')">Choose Plan</button></div>
+  <div class="card"><b>Medical AI</b><h2>₹2,499/year</h2><button class="primary-btn" onclick="requestPlan('Medical AI')">Choose Plan</button></div>
+  <div class="card"><b>English Learning</b><h2>₹999/year</h2><button class="primary-btn" onclick="requestPlan('English Learning')">Choose Plan</button></div>
+ </div>
+ <div class="panel"><p>These are working blueprint prices, not final cost-validated launch prices. Payment and subscription activation require verified backend integration and explicit user consent. No automatic renewal without consent.</p></div>`],
+ credits:["Credits & Usage","View your available credits and usage",`
+ <div class="panel"><p id="creditsStatus">Credit balance will be loaded from the backend.</p><button class="primary-btn" onclick="loadResource('credits','creditsStatus')">Refresh Credits</button></div>`],
+ account:["Account & Security","Manage your account and security settings",`
+ <div class="panel">
+ <p id="accountStatus">Account information requires login.</p>
+ <div class="actions">
+ <button class="secondary-btn" onclick="loadResource('account','accountStatus')">Refresh Profile</button>
+ <button class="secondary-btn" onclick="logout()">Sign Out</button>
+ </div>
+ <p>Security options: active sessions, MFA, passkeys, account recovery and privacy controls will be enforced through the backend.</p>
+ </div>`],
+ policies:["Policies & Support","Platform policies and support",`
+ <div class="panel">
+ <p>Publish final reviewed policy documents before public launch.</p>
+ <div class="grid">
+ <div class="card"><b>About Us</b><small>Platform information</small></div>
+ <div class="card"><b>Privacy Policy</b><small>Data use and privacy</small></div>
+ <div class="card"><b>Terms & Conditions</b><small>Platform terms</small></div>
+ <div class="card"><b>Refund & Cancellation</b><small>Refund policy</small></div>
+ <div class="card"><b>Security Policy</b><small>Security and protection</small></div>
+ <div class="card"><b>Contact & Grievance</b><small>Support details</small></div>
+ </div></div>`],
+ admin:["Admin Control Panel","Restricted administration interface",`
+ <div class="panel"><p>Owner/Admin access must be verified by the Worker on every request. Hiding this page in HTML is not security authorization.</p></div>
+ <div class="grid">
+ <div class="card"><b>API & Provider Cost Control</b><small>Providers, model routing, API usage and cost limits</small></div>
+ <div class="card"><b>Membership & Pricing</b><small>Plans, trials, renewals and entitlements</small></div>
+ <div class="card"><b>Credits & Usage Limits</b><small>Credit ledger, quotas and usage controls</small></div>
+ <div class="card"><b>Revenue & Expenses</b><small>Payment records, revenue and profit/loss</small></div>
+ <div class="card"><b>Feature Management</b><small>Feature switches, maintenance and configuration</small></div>
+ <div class="card"><b>System Management</b><small>Service status, settings and audit history</small></div>
+ </div>
+ <div class="panel"><p id="adminStatus">Admin data requires protected backend APIs and Owner/Admin authorization.</p><button class="primary-btn" onclick="loadResource('admin','adminStatus')">Load Admin Data</button></div>`],
+ security:["Security Operations","Private Owner Security Operations interface",`
+ <div class="panel"><p>Security actions are not executed by this HTML. Every action must be verified, logged and authorized by the Worker with mandatory MFA for Owner/Admin.</p></div>
+ <div class="grid">
+ <div class="card"><b>Security Status</b><small>Threat and service monitoring</small></div>
+ <div class="card"><b>Login Sessions</b><small>Session monitoring and revocation</small></div>
+ <div class="card"><b>Threat Detection</b><small>Suspicious logins and access attempts</small></div>
+ <div class="card"><b>Owner Alerts</b><small>Email, push and SMS delivery logs</small></div>
+ <div class="card"><b>Database & Storage</b><small>D1 and R2 access monitoring</small></div>
+ <div class="card"><b>Backup & Recovery</b><small>Backup status and recovery controls</small></div>
+ </div>
+ <div class="panel">
+ <h3>Security Event Log</h3><p id="securityStatus">Security monitoring API integration pending.</p>
+ <button class="primary-btn" onclick="loadResource('security','securityStatus')">Refresh Security Status</button>
+ </div>`]
+ };
+ const p=pages[page];
+ if(!p){shell("NYAYVERSE AI","Page unavailable","<div class='panel'>Page not found.</div>");return}
+ shell(p[0],p[1],p[2]);
+}
+
+/* BACKEND-DEPENDENT FEATURES */
+async function loadResource(name,statusId){
+ if(!token()){setStatus(statusId,"Please login first.");return}
+ setStatus(statusId,"Loading...");
+ try{
+  const data=await api("user/"+name,undefined,"GET");
+  setStatus(statusId,JSON.stringify(data,null,2));
+ }catch(e){setStatus(statusId,"Backend endpoint not yet connected: "+e.message)}
+}
+async function sendSpecial(service,inputId,statusId){
+ if(!token()){openAuth("login");return}
+ const message=$(inputId).value.trim();
+ if(!message){setStatus(statusId,"Please enter your message.");return}
+ setStatus(statusId,"Sending request...");
+ try{
+  const data=await api(service+"/chat",{message,language:language(message)});
+  setStatus(statusId,data.reply||data.response||JSON.stringify(data));
+ }catch(e){setStatus(statusId,"Service integration pending: "+e.message)}
+}
+async function sendMedical(){
+ if(!token()){openAuth("login");return}
+ const file=$("medicalFile").files[0];
+ const question=$("medicalQuestion").value.trim();
+ if(!file&&!question){setStatus("medicalStatus","Upload a report or enter a question.");return}
+ setStatus("medicalStatus","Medical AI request requires backend upload integration.");
+}
+async function generateMedia(type){
+ if(!token()){openAuth("login");return}
+ const prompt=$(type+"Prompt").value.trim();
+ if(!prompt){setStatus(type+"Status","Enter a prompt first.");return}
+ const settings=type==="image"?
+ {ratio:$("imageRatio").value,resolution:$("imageResolution").value}:
+ {ratio:$("videoRatio").value,duration:$("videoDuration").value};
+ setStatus(type+"Status","Generation request is prepared. Provider API, credit reservation and cost validation must be connected in Worker.js.");
+}
+async function checkMedia(){
+ if(!token()){openAuth("login");return}
+ const file=$("checkerFile").files[0];
+ if(!file){setStatus("checkerStatus","Select an image or video.");return}
+ if(file.size>100*1024*1024){setStatus("checkerStatus","Maximum file size is 100 MB.");return}
+ setStatus("checkerStatus","Media detection requires secure upload and Reality Defender backend integration.");
+}
+async function requestPlan(plan){
+ if(!token()){openAuth("login");return}
+ if(!confirm("Submit a request for "+plan+"? No payment will be taken yet."))return;
+ try{
+  const result=await api("membership/request",{plan});
+  alert(result.message||"Membership request submitted.");
+ }catch(e){alert("Membership backend integration pending: "+e.message)}
+}
+
+/* VOICE INPUT */
+function voiceInput(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){alert("Voice input is not supported in this browser.");return}
+ const recognition=new SR();
+ recognition.lang="hi-IN";
+ recognition.interimResults=false;
+ recognition.onresult=e=>{
+  const text=e.results[0][0].transcript;
+  if(currentPage==="home")$("question").value+=(" "+text).trim();
+  else{
+   const field=document.querySelector("#otherPage textarea");
+   if(field)field.value+=(" "+text).trim();
+  }
+ };
+ recognition.onerror=e=>alert("Voice input error: "+e.error);
+ recognition.start();
 }
 
 /* STARTUP */
 document.addEventListener("DOMContentLoaded",()=>{
  updateAuthUI();
- authBootstrap();
- handleAuthLink();
+ if(token()){
+  api("auth/me",undefined,"GET").then(data=>{
+   if(data.user)localStorage.setItem(USER_KEY,JSON.stringify(data.user));
+   updateAuthUI();
+  }).catch(()=>{
+   localStorage.removeItem(TOKEN_KEY);
+   localStorage.removeItem(USER_KEY);
+   updateAuthUI();
+  });
+ }
 });
-if(document.readyState!=="loading"){
- updateAuthUI();
- authBootstrap();
- handleAuthLink();
-}
 </script>
 </body>
 </html>
