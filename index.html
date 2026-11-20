@@ -20,9 +20,12 @@ button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 .app{display:flex;min-height:100vh}
 .sidebar{
- width:250px;background:#0d0d0c;border-right:1px solid var(--border);
+ width:250px;min-width:250px;flex-basis:250px;
+ background:#0d0d0c;border-right:1px solid var(--border);
  padding:20px 14px;display:flex;flex-direction:column;gap:17px;
- flex-shrink:0;transition:transform .25s ease
+ flex-shrink:0;
+ transition:width .25s ease, min-width .25s ease, flex-basis .25s ease, padding .25s ease, transform .25s ease;
+ overflow-x:hidden;
 }
 .logo{display:flex;align-items:center;gap:10px;padding:6px}
 .logo-icon,.hero-logo{
@@ -54,8 +57,24 @@ button{cursor:pointer}
  background:var(--panel2);color:var(--text);
  border:1px solid var(--border);padding:9px 12px;border-radius:9px
 }
-.mobile-menu{display:none}
+
+/* MENU BUTTON: MOBILE + DESKTOP */
+.mobile-menu{display:block}
 .sidebar-backdrop{display:none}
+
+/* DESKTOP SIDEBAR COLLAPSE */
+@media(min-width:701px){
+ .sidebar.desktop-closed{
+  width:0!important;
+  min-width:0!important;
+  flex-basis:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  border-right:0!important;
+  overflow:hidden!important;
+ }
+}
+
 .content{width:100%;max-width:1150px;margin:auto;padding:25px 20px;flex:1}
 .hero{text-align:center;margin:18px auto 25px}
 .hero h1{font-size:29px;margin:0 0 10px}
@@ -142,12 +161,15 @@ td,th{padding:11px;border-bottom:1px solid var(--border);text-align:left}
 th{color:#dfc477}
 .link{color:#dfc477;text-decoration:none}
 
-@media(max-width:850px){.sidebar{width:215px}}
+@media(max-width:850px){.sidebar{width:215px;min-width:215px;flex-basis:215px}}
+
 @media(max-width:700px){
  .sidebar{
   display:flex;position:fixed;z-index:25;top:0;bottom:0;left:0;
-  width:280px;max-width:85vw;overflow-y:auto;
-  transform:translateX(-110%);box-shadow:10px 0 30px #0008
+  width:280px;min-width:0;max-width:85vw;flex-basis:280px;
+  overflow-y:auto;
+  transform:translateX(-110%);box-shadow:10px 0 30px #0008;
+  padding:20px 14px;
  }
  .sidebar.open{transform:translateX(0)}
  .sidebar-close{display:block}
@@ -156,7 +178,6 @@ th{color:#dfc477}
   z-index:24;opacity:0;visibility:hidden;transition:.2s
  }
  .sidebar-backdrop.open{opacity:1;visibility:visible}
- .mobile-menu{display:block}
  .topbar{padding:10px 12px}
  .content{padding:18px 12px}
  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
@@ -380,48 +401,73 @@ function language(text){
  return words.filter(x=>hints.includes(x)).length>=2?"Hinglish":"English";
 }
 
-/* SIDEBAR OPEN AND CLOSE */
+/* SIDEBAR OPEN AND CLOSE - MOBILE + DESKTOP */
 function toggleMenu(){
+ const sidebar=$("sidebar");
+ const backdrop=$("sidebarBackdrop");
+
  if(window.innerWidth<=700){
-  const sidebar=$("sidebar");
-  const backdrop=$("sidebarBackdrop");
   if(sidebar.classList.contains("open")){
    closeMenu();
   }else{
    sidebar.classList.add("open");
    backdrop.classList.add("open");
   }
+ }else{
+  sidebar.classList.toggle("desktop-closed");
  }
 }
+
 function closeMenu(){
- $("sidebar").classList.remove("open");
- $("sidebarBackdrop").classList.remove("open");
+ const sidebar=$("sidebar");
+ const backdrop=$("sidebarBackdrop");
+
+ if(window.innerWidth<=700){
+  sidebar.classList.remove("open");
+  backdrop.classList.remove("open");
+ }else{
+  sidebar.classList.add("desktop-closed");
+  sidebar.classList.remove("open");
+  backdrop.classList.remove("open");
+ }
 }
 
-/* Close sidebar when tapping outside it */
+/* OUTSIDE CLICK CLOSE - MOBILE + DESKTOP */
 document.addEventListener("click",function(e){
- if(window.innerWidth>700)return;
-
  const sidebar=$("sidebar");
  const menuButton=document.querySelector(".mobile-menu");
 
- if(
-  sidebar.classList.contains("open") &&
-  !sidebar.contains(e.target) &&
-  !menuButton.contains(e.target)
- ){
-  closeMenu();
+ if(!sidebar||!menuButton)return;
+
+ if(sidebar.contains(e.target)||menuButton.contains(e.target))return;
+
+ if(window.innerWidth<=700){
+  if(sidebar.classList.contains("open"))closeMenu();
+ }else{
+  if(!sidebar.classList.contains("desktop-closed"))closeMenu();
  }
 });
 
+/* ESCAPE KEY */
 document.addEventListener("keydown",e=>{
  if(e.key==="Escape"){
   closeMenu();
   closeAuth();
  }
 });
+
+/* RESPONSIVE MODE CHANGE */
 window.addEventListener("resize",()=>{
- if(window.innerWidth>700)closeMenu();
+ const sidebar=$("sidebar");
+ const backdrop=$("sidebarBackdrop");
+
+ if(window.innerWidth>700){
+  sidebar.classList.remove("open");
+  backdrop.classList.remove("open");
+ }else{
+  sidebar.classList.remove("desktop-closed");
+  backdrop.classList.remove("open");
+ }
 });
 
 /* NAVIGATION */
