@@ -383,14 +383,37 @@ function language(text){
 /* SIDEBAR OPEN AND CLOSE */
 function toggleMenu(){
  if(window.innerWidth<=700){
-  $("sidebar").classList.toggle("open");
-  $("sidebarBackdrop").classList.toggle("open");
+  const sidebar=$("sidebar");
+  const backdrop=$("sidebarBackdrop");
+  if(sidebar.classList.contains("open")){
+   closeMenu();
+  }else{
+   sidebar.classList.add("open");
+   backdrop.classList.add("open");
+  }
  }
 }
 function closeMenu(){
  $("sidebar").classList.remove("open");
  $("sidebarBackdrop").classList.remove("open");
 }
+
+/* Close sidebar when tapping outside it */
+document.addEventListener("click",function(e){
+ if(window.innerWidth>700)return;
+
+ const sidebar=$("sidebar");
+ const menuButton=document.querySelector(".mobile-menu");
+
+ if(
+  sidebar.classList.contains("open") &&
+  !sidebar.contains(e.target) &&
+  !menuButton.contains(e.target)
+ ){
+  closeMenu();
+ }
+});
+
 document.addEventListener("keydown",e=>{
  if(e.key==="Escape"){
   closeMenu();
@@ -607,6 +630,7 @@ async function logout(){
  localStorage.removeItem(TOKEN_KEY);
  localStorage.removeItem(USER_KEY);
  updateAuthUI();
+ closeMenu();
  alert("Signed out.");
 }
 
@@ -632,19 +656,10 @@ const pages={
  <div class="panel"><p>Project storage and sharing will be connected through the backend.</p>
  <button class="primary-btn" onclick="comingSoon('Projects')">Create Project</button></div>`],
 
- assistant:["Personal AI Assistant","Your personalized AI companion",`
+ assistant:["Personal AI Assistant","Your personal AI assistant",`
  <div class="panel">
- <label class="label">Assistant interaction style</label>
- <select id="persona">
-  <option value="Neutral Assistant">Neutral Assistant</option>
-  <option value="Caring Companion">Caring Companion</option>
-  <option value="Best Friend">Best Friend</option>
-  <option value="Study Partner">Study Partner</option>
-  <option value="Professional Assistant">Professional Assistant</option>
-  <option value="Custom">Custom</option>
- </select>
  <label class="label">Your message</label>
- <textarea id="assistantMessage" placeholder="Talk to your personal assistant..."></textarea>
+ <textarea id="assistantMessage" placeholder="Talk to your personal AI assistant..."></textarea>
  <div class="actions"><button class="primary-btn" onclick="sendPersonalAI()">Send</button></div>
  <div id="assistantStatus" class="status">Personal AI Assistant.</div>
  </div>`],
@@ -836,7 +851,6 @@ async function sendPersonalAI(){
  try{
   const data=await api("assistant/chat",{
    message,
-   persona:$("persona").value,
    language:language(message)
   });
   setStatus("assistantStatus",data.reply||data.response||JSON.stringify(data));
