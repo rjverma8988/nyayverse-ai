@@ -1,453 +1,761 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080808">
+<meta name="description" content="NYAYVERSE AI — Your intelligent universe.">
 <title>NYAYVERSE AI — Intelligence Universe</title>
 <style>
-:root{--bg:#080808;--panel:#111;--panel2:#191919;--gold:#d6ad55;--gold2:#f4d993;--text:#f5f5f5;--muted:#999;--border:rgba(214,173,85,.23);--green:#42b883;--red:#e05252}
+:root{--bg:#080808;--panel:#111;--panel2:#191919;--gold:#d6ad55;--gold2:#f4d993;--text:#f5f5f5;--muted:#999;--border:rgba(214,173,85,.23);--green:#42b883;--red:#e05252;--drawer:280px}
 *{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
 .app{min-height:100vh}
-.sidebar{position:fixed;inset:0 auto 0 0;width:260px;background:#0d0d0d;border-right:1px solid var(--border);padding:18px 13px;overflow-y:auto;z-index:100;transition:.3s}
-.brand{font-size:22px;font-weight:900;color:var(--gold);padding:13px 10px 25px;letter-spacing:1px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--drawer);background:#0d0d0d;border-right:1px solid var(--border);padding:17px 13px 25px;overflow-y:auto;z-index:120;transform:translateX(-105%);transition:transform .28s ease;box-shadow:15px 0 45px rgba(0,0,0,.35)}
+.sidebar.open{transform:translateX(0)}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.66);z-index:110;opacity:0;visibility:hidden;transition:.25s}
+.drawer-backdrop.show{opacity:1;visibility:visible}
+.brand{font-size:22px;font-weight:900;color:var(--gold);padding:13px 10px 23px;letter-spacing:1px}
 .brand small{display:block;font-size:9px;color:#888;letter-spacing:3px;margin-top:6px}
 .nav-label{font-size:10px;color:#777;font-weight:bold;letter-spacing:2px;padding:17px 10px 8px}
-.nav-btn{width:100%;display:flex;gap:12px;align-items:center;text-align:left;background:transparent;color:#ccc;border:1px solid transparent;padding:11px;border-radius:8px;margin:3px 0;font-size:13px}
+.nav-btn{width:100%;display:flex;gap:12px;align-items:center;text-align:left;background:transparent;color:#ccc;border:1px solid transparent;padding:10px 11px;border-radius:8px;margin:2px 0;font-size:13px}
 .nav-btn:hover,.nav-btn.active{background:rgba(214,173,85,.1);color:var(--gold2);border-color:var(--border)}
-.main{margin-left:260px;min-height:100vh}
-.topbar{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:1px solid var(--border);background:#0b0b0b;position:sticky;top:0;z-index:50}
+.nav-parent{width:100%;display:flex;justify-content:space-between;align-items:center;background:transparent;color:var(--gold2);border:1px solid var(--border);padding:11px;border-radius:8px;margin:5px 0;font-size:13px}
+.nav-submenu{padding-left:10px;display:none}
+.nav-submenu.open{display:block}
+.main{min-height:100vh}
+.topbar{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--border);background:rgba(11,11,11,.96);position:sticky;top:0;z-index:70;backdrop-filter:blur(12px)}
 .top-actions{display:flex;gap:10px;align-items:center}
-.top-title{font-weight:bold;font-size:15px}
-.menu-toggle{display:none;background:transparent;color:var(--gold);border:1px solid var(--border);padding:8px 12px;border-radius:7px}
-.content{max-width:1500px;margin:auto;padding:27px}
+.top-title{font-weight:bold;font-size:15px;letter-spacing:.5px}
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;background:transparent;color:var(--gold);border:1px solid var(--border);padding:8px 12px;border-radius:7px}
+.content{max-width:1450px;margin:auto;padding:25px}
 .page{display:none}
 .page.active{display:block}
 .gold-btn{background:linear-gradient(135deg,#b98a32,#f3d58b);color:#111;border:0;padding:11px 17px;border-radius:8px;font-weight:bold}
+.gold-btn:hover{filter:brightness(1.08)}
 .outline-btn{background:transparent;color:var(--gold2);border:1px solid var(--border);padding:10px 15px;border-radius:8px}
-.hero{padding:50px 28px;border:1px solid var(--border);border-radius:17px;background:radial-gradient(circle at top right,rgba(214,173,85,.17),transparent 45%),linear-gradient(135deg,#19150d,#0c0c0c);margin-bottom:25px}
-.hero h1{font-size:clamp(30px,5vw,51px);color:var(--gold2);margin-bottom:15px}
-.hero p{max-width:680px;color:#bbb;line-height:1.8}
-.section-title{font-size:21px;color:var(--gold2);margin:25px 0 16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:21px;transition:.2s}
-.module-card{cursor:pointer;min-height:145px}
+.outline-btn:hover{background:rgba(214,173,85,.09)}
+.hero{text-align:center;padding:42px 25px 30px;border:1px solid var(--border);border-radius:17px;background:radial-gradient(circle at top right,rgba(214,173,85,.17),transparent 45%),linear-gradient(135deg,#19150d,#0c0c0c);margin-bottom:20px}
+.hero h1{font-size:clamp(29px,5vw,48px);color:var(--gold2);margin-bottom:10px}
+.hero .subheading{font-size:clamp(18px,3vw,24px);font-weight:600;color:#fff;margin:7px 0 12px}
+.home-composer{max-width:850px;margin:0 auto;text-align:left;background:#080808;border:1px solid rgba(214,173,85,.45);border-radius:14px;padding:12px;box-shadow:0 10px 35px rgba(0,0,0,.25)}
+.composer-row{display:flex;gap:10px;align-items:flex-end}
+.composer-row textarea{flex:1;min-width:0;min-height:55px;max-height:170px;resize:vertical;background:transparent;border:0;outline:none;color:white;padding:10px}
+.composer-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+.icon-btn{background:#171717;color:var(--gold2);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.icon-btn.recording{color:#ff7777;border-color:#e05252}
+.section-title{font-size:21px;color:var(--gold2);margin:24px 0 15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;transition:.2s}
+.module-card{cursor:pointer;min-height:142px}
 .module-card:hover{transform:translateY(-3px);border-color:var(--gold);background:#17140e}
-.module-icon{font-size:27px;margin-bottom:13px}
-.card h3{color:var(--gold2);font-size:16px;margin-bottom:9px}
+.module-icon{font-size:27px;margin-bottom:12px}
+.card h3{color:var(--gold2);font-size:16px;margin-bottom:8px}
 .card p,.muted{color:var(--muted);font-size:12px;line-height:1.7}
-.workspace{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:22px;margin-top:16px}
-.workspace h2{color:var(--gold2);margin-bottom:12px}
-.field{display:block;width:100%;background:#080808;border:1px solid #383838;border-radius:8px;padding:13px;color:white;margin:9px 0 15px;outline:none}
+.workspace{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:21px;margin-top:15px}
+.workspace h2{color:var(--gold2);margin-bottom:11px;font-size:19px}
+.field{display:block;width:100%;background:#080808;border:1px solid #383838;border-radius:8px;padding:13px;color:white;margin:9px 0 14px;outline:none}
 .field:focus{border-color:var(--gold)}
-textarea.field{min-height:130px;resize:vertical}
-.result{background:#080808;border:1px solid var(--border);border-radius:9px;padding:15px;margin-top:15px;min-height:50px;white-space:pre-wrap;line-height:1.7;color:#ddd}
-.chat-layout{display:flex;flex-direction:column;min-height:65vh}
-.chat-messages{flex:1;min-height:300px;max-height:55vh;overflow:auto;padding:12px}
-.message{padding:13px 15px;border-radius:10px;margin:10px 0;max-width:85%;line-height:1.6;white-space:pre-wrap}
+textarea.field{min-height:125px;resize:vertical}
+.result{background:#080808;border:1px solid var(--border);border-radius:9px;padding:15px;margin-top:14px;min-height:48px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;color:#ddd}
+.chat-messages{min-height:210px;max-height:48vh;overflow:auto;padding:8px}
+.message{padding:12px 14px;border-radius:10px;margin:10px 0;max-width:88%;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
 .message.user{background:#282113;border:1px solid var(--border);margin-left:auto}
 .message.ai{background:#171717;border:1px solid #292929}
-.chat-compose{display:flex;gap:10px;align-items:flex-end}
-.chat-compose textarea{flex:1;min-height:55px;max-height:140px}
-.chat-compose button{height:48px}
 .status{font-size:12px;color:var(--muted);margin-top:8px}
 .hidden{display:none!important}
 hr{border:0;border-top:1px solid var(--border);margin:17px 0}
-@media(max-width:850px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu-toggle{display:block}.content{padding:15px}.topbar{padding:0 13px}}
+.auth-row{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+.soul-theme{--gold:#e69a39;--gold2:#ffd18a;--border:rgba(230,154,57,.3)}
+.soul-theme .workspace,.soul-theme .card{border-color:rgba(230,154,57,.32)}
+.soul-theme .gold-btn{background:linear-gradient(135deg,#c96b22,#ffd18a)}
+.notice{font-size:12px;color:#aaa;line-height:1.6;margin-top:10px}
+.footer-note{text-align:center;color:#777;font-size:11px;padding:28px 10px}
+@media(max-width:700px){.content{padding:14px}.topbar{padding:0 12px}.top-title{font-size:13px}.hero{padding:30px 14px}.composer-row{align-items:stretch}.composer-actions{justify-content:space-between}.message{max-width:95%}.grid{grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}.card{padding:16px}}
 </style>
 </head>
 <body>
 <div class="app">
-<aside class="sidebar" id="sidebar">
- <div class="brand">NYAYVERSE AI<small>INTELLIGENCE UNIVERSE</small></div>
- <div class="nav-label">MAIN</div>
- <button class="nav-btn active" onclick="showPage('home',this)">🏠 Home</button>
- <button class="nav-btn" onclick="showPage('chat',this)">🤖 Main AI Chat</button>
- <button class="nav-btn" onclick="showPage('history',this)">🕘 Chat History</button>
- <button class="nav-btn" onclick="showPage('saved',this)">🔖 Saved Answers</button>
- <button class="nav-btn" onclick="showPage('searches',this)">🔍 Recent Searches</button>
- <div class="nav-label">SPECIALIST AI</div>
- <button class="nav-btn" onclick="showPage('image',this)">🎨 Image AI</button>
- <button class="nav-btn" onclick="showPage('video',this)">🎬 Video AI</button>
- <button class="nav-btn" onclick="showPage('fake',this)">🛡️ Fake Media Checker</button>
- <button class="nav-btn" onclick="showPage('assistant',this)">🧠 Personal AI Assistant</button>
- <button class="nav-btn" onclick="showPage('medical',this)">⚕️ Medical AI</button>
- <button class="nav-btn" onclick="showPage('english',this)">🌐 English Learning</button>
- <button class="nav-btn" onclick="showPage('soul',this)">✨ SoulSphere</button>
- <div class="nav-label">KNOWLEDGE & LEARNING</div>
- <button class="nav-btn" onclick="showPage('projects',this)">📁 Projects</button>
- <button class="nav-btn" onclick="showPage('law',this)">⚖️ Law Library</button>
- <button class="nav-btn" onclick="showPage('academy',this)">🎓 Law Academy</button>
- <button class="nav-btn" onclick="showPage('exams',this)">📝 Law Exams</button>
- <button class="nav-btn" onclick="showPage('news',this)">📰 Law News</button>
- <button class="nav-btn" onclick="showPage('cases',this)">📚 Case Studies</button>
- <div class="nav-label">ACCOUNT</div>
- <button class="nav-btn" onclick="showPage('account',this)">👤 Account & Security</button>
- <button class="nav-btn" onclick="showPage('membership',this)">💎 Membership</button>
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+  <div class="brand">NYAYVERSE AI<small>INTELLIGENCE UNIVERSE</small></div>
+  <div class="nav-label">HOME</div>
+  <button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
+  <button class="nav-btn" data-page="history" onclick="showPage('history',this)">🕘 Chat History</button>
+  <button class="nav-btn" data-page="saved" onclick="showPage('saved',this)">🔖 Saved Answers</button>
+  <button class="nav-btn" data-page="searches" onclick="showPage('searches',this)">🔍 Recent Searches</button>
+  <button class="nav-btn" data-page="projects" onclick="showPage('projects',this)">📁 Projects</button>
+
+  <div class="nav-label">SPECIALIST TOOLS</div>
+  <button class="nav-btn" data-page="image" onclick="showPage('image',this)">🎨 Create Image</button>
+  <button class="nav-btn" data-page="video" onclick="showPage('video',this)">🎬 Create Video</button>
+  <button class="nav-btn" data-page="fake" onclick="showPage('fake',this)">🛡️ Fake Media Checker</button>
+  <button class="nav-btn" data-page="assistant" onclick="showPage('assistant',this)">🧠 Personal AI Assistant</button>
+  <button class="nav-btn" data-page="medical" onclick="showPage('medical',this)">⚕️ Medical & Healthcare AI</button>
+  <button class="nav-btn" data-page="english" onclick="showPage('english',this)">🌐 English Learning</button>
+  <button class="nav-btn" data-page="soul" onclick="showPage('soul',this)">✨ SoulSphere</button>
+
+  <div class="nav-label">EDUCATION PANEL</div>
+  <button class="nav-parent" id="educationToggle" aria-expanded="false" onclick="toggleEducation()">🎓 Education Panel <span id="educationArrow">＋</span></button>
+  <div class="nav-submenu" id="educationMenu">
+    <button class="nav-btn" data-page="law" onclick="showPage('law',this)">⚖️ Law Library</button>
+    <button class="nav-btn" data-page="academy" onclick="showPage('academy',this)">🎓 Law Academy</button>
+    <button class="nav-btn" data-page="exams" onclick="showPage('exams',this)">📝 Law Exams</button>
+    <button class="nav-btn" data-page="news" onclick="showPage('news',this)">📰 Law News</button>
+    <button class="nav-btn" data-page="career" onclick="showPage('career',this)">💼 Career</button>
+    <button class="nav-btn" data-page="ela" onclick="showPage('ela',this)">📖 e-La</button>
+  </div>
+
+  <div class="nav-label">ACCOUNT</div>
+  <button class="nav-btn" data-page="security" onclick="showPage('security',this)">🔐 Account Security</button>
+  <button class="nav-btn" data-page="account" onclick="showPage('account',this)">👤 Login / Sign Up</button>
+  <button class="nav-btn" data-page="about" onclick="showPage('about',this)">ℹ️ About</button>
+  <button class="nav-btn" data-page="terms" onclick="showPage('terms',this)">📄 Terms & Conditions</button>
+  <button class="nav-btn" data-page="privacy" onclick="showPage('privacy',this)">🔒 Privacy & Security</button>
 </aside>
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeSidebar()" aria-hidden="true"></div>
 
 <main class="main">
 <header class="topbar">
- <div class="top-actions">
-  <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-  <div class="top-title">NYAYVERSE AI</div>
- </div>
- <div class="top-actions">
-  <button class="outline-btn" onclick="showPage('account')">Login</button>
-  <button class="gold-btn" onclick="showPage('account')">Sign Up</button>
- </div>
+  <div class="top-actions">
+    <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" aria-label="Open menu" aria-expanded="false">☰</button>
+    <div class="top-title">NYAYVERSE AI</div>
+  </div>
+  <div class="top-actions">
+    <button class="outline-btn" onclick="showPage('account')">Login</button>
+    <button class="gold-btn" onclick="showPage('account')">Sign Up</button>
+  </div>
 </header>
 
 <div class="content">
 <section class="page active" id="home">
- <div class="hero">
-  <h1>Welcome to NYAYVERSE AI</h1>
-  <p>Your intelligent universe for law, knowledge, creativity, healthcare information, learning and personal productivity.</p><br>
-  <button class="gold-btn" onclick="showPage('chat')">Start AI Conversation →</button>
- </div>
- <h2 class="section-title">Explore Your AI Universe</h2>
- <div class="grid">
-  <div class="card module-card" onclick="showPage('chat')"><div class="module-icon">🤖</div><h3>Main AI Chat</h3><p>Ask questions and explore knowledge with your universal AI assistant.</p></div>
-  <div class="card module-card" onclick="showPage('image')"><div class="module-icon">🎨</div><h3>Image AI</h3><p>Create images from your imagination and prompts.</p></div>
-  <div class="card module-card" onclick="showPage('video')"><div class="module-icon">🎬</div><h3>Video AI</h3><p>Turn ideas into AI-generated videos.</p></div>
-  <div class="card module-card" onclick="showPage('fake')"><div class="module-icon">🛡️</div><h3>Fake Media Checker</h3><p>Analyze images and videos for signs of manipulation.</p></div>
-  <div class="card module-card" onclick="showPage('assistant')"><div class="module-icon">🧠</div><h3>Personal AI Assistant</h3><p>Organize tasks, ideas and everyday work.</p></div>
-  <div class="card module-card" onclick="showPage('medical')"><div class="module-icon">⚕️</div><h3>Medical AI</h3><p>Understand medical information and reports.</p></div>
-  <div class="card module-card" onclick="showPage('english')"><div class="module-icon">🌐</div><h3>English Learning</h3><p>Practice English and improve communication.</p></div>
-  <div class="card module-card" onclick="showPage('soul')"><div class="module-icon">✨</div><h3>SoulSphere</h3><p>Astrology, kundli and spiritual insights.</p></div>
- </div>
+  <div class="hero">
+    <h1>Welcome to NYAYVERSE AI</h1>
+    <div class="subheading">How can I help you?</div>
+    <div class="home-composer">
+      <div class="composer-row">
+        <textarea id="homeChatInput" aria-label="Ask NYAYVERSE AI" placeholder="Message NYAYVERSE AI..."></textarea>
+      </div>
+      <div class="composer-actions">
+        <div>
+          <button class="icon-btn" id="homeVoiceBtn" onclick="startVoice('homeChatInput','homeVoiceBtn')" title="Voice input">🎙 Voice</button>
+          <button class="icon-btn hidden" id="homeStopBtn" onclick="stopGeneration()" title="Stop generating">■ Stop</button>
+        </div>
+        <button class="gold-btn" onclick="sendChatFrom('homeChatInput')">Send ➤</button>
+      </div>
+      <div class="status" id="homeChatStatus">Ask a question to start a conversation.</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Explore Specialist Tools</h2>
+  <div class="grid">
+    <div class="card module-card" onclick="showPage('image')"><div class="module-icon">🎨</div><h3>Create Image</h3><p>Generate images from your ideas and prompts.</p></div>
+    <div class="card module-card" onclick="showPage('video')"><div class="module-icon">🎬</div><h3>Create Video</h3><p>Turn creative ideas into AI video requests.</p></div>
+    <div class="card module-card" onclick="showPage('fake')"><div class="module-icon">🛡️</div><h3>Fake Media Checker</h3><p>Check media for potential signs of manipulation.</p></div>
+    <div class="card module-card" onclick="showPage('assistant')"><div class="module-icon">🧠</div><h3>Personal AI Assistant</h3><p>Help with documents, writing, research and tasks.</p></div>
+    <div class="card module-card" onclick="showPage('medical')"><div class="module-icon">⚕️</div><h3>Medical & Healthcare AI</h3><p>Understand general medical information and reports.</p></div>
+    <div class="card module-card" onclick="showPage('english')"><div class="module-icon">🌐</div><h3>English Learning</h3><p>Practice grammar, vocabulary and communication.</p></div>
+    <div class="card module-card" onclick="showPage('soul')"><div class="module-icon">✨</div><h3>SoulSphere</h3><p>Astrology, kundli and spiritual insights.</p></div>
+  </div>
 </section>
 
 <section class="page" id="chat">
- <h1 class="section-title">🤖 Main AI Chat</h1>
- <p class="muted">Your universal AI assistant. Ask questions about law, science, education, geography, technology and more.</p>
- <div class="workspace chat-layout">
-  <div class="chat-messages" id="chatMessages">
-   <div class="message ai">Namaste! Welcome to NYAYVERSE AI. How can I help you today?</div>
+  <h1 class="section-title">🤖 Main AI Chat</h1>
+  <p class="muted">Your universal AI assistant. Ask questions across subjects and topics.</p>
+  <div class="workspace">
+    <div class="chat-messages" id="chatMessages"><div class="message ai">Namaste! Welcome to NYAYVERSE AI. How can I help you today?</div></div>
+    <div class="home-composer">
+      <div class="composer-row"><textarea id="chatInput" placeholder="Message NYAYVERSE AI..."></textarea></div>
+      <div class="composer-actions">
+        <button class="icon-btn" id="chatVoiceBtn" onclick="startVoice('chatInput','chatVoiceBtn')">🎙 Voice</button>
+        <button class="icon-btn hidden" id="chatStopBtn" onclick="stopGeneration()">■ Stop</button>
+        <button class="gold-btn" onclick="sendChatFrom('chatInput')">Send ➤</button>
+      </div>
+    </div>
+    <div class="status" id="chatStatus">AI assistant ready</div>
   </div>
-  <div class="chat-compose">
-   <textarea class="field" id="chatInput" placeholder="Ask anything..."></textarea>
-   <button class="gold-btn" onclick="sendChat()">Send ➤</button>
+</section><section class="page" id="image">
+  <h1 class="section-title">🎨 Create Image</h1>
+  <div class="workspace"><h2>Image Creation Studio</h2><p class="muted">Describe the image you want to create.</p>
+    <textarea class="field" id="imagePrompt" placeholder="Describe your image in detail..."></textarea>
+    <button class="gold-btn" onclick="runFeature('image')">Create Image</button>
+    <div class="result" id="imageResult">Your image result will appear here after the image provider route is connected.</div>
   </div>
-  <div class="status" id="chatStatus">AI assistant ready</div>
- </div>
-</section>
-
-<section class="page" id="image">
- <h1 class="section-title">🎨 Image AI Studio</h1>
- <div class="workspace">
-  <h2>Create Image</h2><p class="muted">Describe the image you want to create.</p>
-  <textarea class="field" id="imagePrompt" placeholder="Describe your image in detail..."></textarea>
-  <button class="gold-btn" onclick="runFeature('image')">Create Image</button>
-  <div class="result" id="imageResult">Your generated image will appear here when image generation is connected.</div>
- </div>
- <div class="grid">
-  <div class="card"><h3>Image Editing</h3><p>Edit and transform images.</p></div>
-  <div class="card"><h3>Background Removal</h3><p>Remove or replace image backgrounds.</p></div>
-  <div class="card"><h3>Image Enhancement</h3><p>Improve image quality and resolution.</p></div>
- </div>
+  <div class="grid">
+    <div class="card"><h3>Image Editing</h3><p>Edit and transform uploaded images when supported by the connected service.</p></div>
+    <div class="card"><h3>Background Removal</h3><p>Background tools can be connected here.</p></div>
+    <div class="card"><h3>Image Enhancement</h3><p>Improve image quality using a connected provider.</p></div>
+  </div>
 </section>
 
 <section class="page" id="video">
- <h1 class="section-title">🎬 Video AI Studio</h1>
- <div class="workspace">
-  <h2>Create AI Video</h2>
-  <textarea class="field" id="videoPrompt" placeholder="Describe the video scene, style and movement..."></textarea>
-  <label class="muted">Video duration</label>
-  <select class="field" id="videoDuration"><option>5 seconds</option><option>10 seconds</option><option>15 seconds</option><option>30 seconds</option></select>
-  <button class="gold-btn" onclick="runFeature('video')">Create Video</button>
-  <div class="result" id="videoResult">Your video workspace is ready. Provider integration is pending.</div>
- </div>
- <div class="grid">
-  <div class="card"><h3>Image to Video</h3><p>Animate a still image.</p></div>
-  <div class="card"><h3>Video Editing</h3><p>AI-assisted video editing.</p></div>
-  <div class="card"><h3>AI Storyboard</h3><p>Plan scenes and shots.</p></div>
- </div>
+  <h1 class="section-title">🎬 Create Video</h1>
+  <div class="workspace"><h2>AI Video Studio</h2>
+    <textarea class="field" id="videoPrompt" placeholder="Describe the video scene, style and movement..."></textarea>
+    <label class="muted" for="videoDuration">Video duration</label>
+    <select class="field" id="videoDuration"><option value="5 seconds">5 seconds</option><option value="10 seconds">10 seconds</option><option value="15 seconds">15 seconds</option><option value="30 seconds">30 seconds</option></select>
+    <button class="gold-btn" onclick="runFeature('video')">Create Video</button>
+    <div class="result" id="videoResult">Video generation requires an active video provider integration.</div>
+  </div>
+  <div class="grid"><div class="card"><h3>Image to Video</h3><p>Animate a still image.</p></div><div class="card"><h3>Video Editing</h3><p>AI-assisted editing workspace.</p></div><div class="card"><h3>AI Storyboard</h3><p>Plan scenes and shots.</p></div></div>
 </section>
 
 <section class="page" id="fake">
- <h1 class="section-title">🛡️ Fake Media Checker</h1>
- <div class="workspace">
-  <h2>Media Authenticity Analysis</h2>
-  <p class="muted">Select an image or video for analysis.</p>
-  <input class="field" type="file" id="fakeFile" accept="image/*,video/*">
-  <button class="gold-btn" onclick="runFeature('fake')">Analyze Media</button>
-  <div class="result" id="fakeResult">Analysis results will appear here after provider integration.</div>
-  <p class="muted">AI analysis is not a guarantee of authenticity. Verify important evidence independently.</p>
- </div>
+  <h1 class="section-title">🛡️ Fake Media Checker</h1>
+  <div class="workspace"><h2>Media Authenticity Analysis</h2><p class="muted">Select an image or video for analysis.</p>
+    <input class="field" type="file" id="fakeFile" accept="image/*,video/*">
+    <button class="gold-btn" onclick="runFeature('fake')">Analyze Media</button>
+    <div class="result" id="fakeResult">Select a file to begin. Media analysis requires a connected analysis provider.</div>
+    <p class="notice">AI analysis cannot guarantee whether media is authentic. Independently verify important evidence.</p>
+  </div>
 </section>
 
 <section class="page" id="assistant">
- <h1 class="section-title">🧠 Personal AI Assistant</h1>
- <div class="grid">
-  <div class="card"><h3>Task Planner</h3><p>Organize your daily tasks.</p></div>
-  <div class="card"><h3>Writing Assistant</h3><p>Draft emails, documents and messages.</p></div>
-  <div class="card"><h3>Research Assistant</h3><p>Organize research and ideas.</p></div>
-  <div class="card"><h3>Document Assistant</h3><p>Work with your documents.</p></div>
- </div>
- <div class="workspace"><h2>Ask Your Assistant</h2><textarea class="field" id="assistantPrompt" placeholder="What would you like help with?"></textarea><button class="gold-btn" onclick="runFeature('assistant')">Ask Assistant</button><div class="result" id="assistantResult"></div></div>
+  <h1 class="section-title">🧠 Personal AI Assistant</h1>
+  <div class="grid"><div class="card"><h3>Task Planner</h3><p>Organize daily tasks and plans.</p></div><div class="card"><h3>Writing Assistant</h3><p>Draft emails, documents and messages.</p></div><div class="card"><h3>Research Assistant</h3><p>Organize research and ideas.</p></div><div class="card"><h3>Document Assistant</h3><p>Work with documents when file tools are connected.</p></div></div>
+  <div class="workspace"><h2>Ask Your Assistant</h2><textarea class="field" id="assistantPrompt" placeholder="What would you like help with?"></textarea><button class="gold-btn" onclick="runFeature('assistant')">Ask Assistant</button><div class="result" id="assistantResult"></div></div>
 </section>
 
 <section class="page" id="medical">
- <h1 class="section-title">⚕️ Medical & Healthcare AI</h1>
- <div class="workspace">
-  <h2>Medical Information Assistant</h2>
-  <p class="muted">Understand medicines, medical terminology, reports and general health information.</p>
-  <textarea class="field" id="medicalPrompt" placeholder="Ask a medical information question..."></textarea>
-  <button class="gold-btn" onclick="runFeature('medical')">Ask Medical AI</button>
-  <div class="result" id="medicalResult"></div>
-  <hr><p class="muted">This tool provides educational information only. It does not diagnose conditions or replace a qualified healthcare professional. For emergencies, seek urgent medical care.</p>
- </div>
- <div class="grid">
-  <div class="card"><h3>Medicine Information</h3><p>Drug names and general information.</p></div>
-  <div class="card"><h3>Report Understanding</h3><p>Understand medical report terminology.</p></div>
-  <div class="card"><h3>Prescription Education</h3><p>Understand prescription terminology.</p></div>
- </div>
+  <h1 class="section-title">⚕️ Medical & Healthcare AI</h1>
+  <div class="workspace"><h2>Medical Information Assistant</h2><p class="muted">Understand medicines, medical terminology, reports and general health information.</p>
+    <textarea class="field" id="medicalPrompt" placeholder="Ask a medical information question..."></textarea>
+    <button class="gold-btn" onclick="runFeature('medical')">Ask Medical AI</button><div class="result" id="medicalResult"></div>
+    <hr><p class="notice">Educational information only; not a diagnosis or substitute for a qualified healthcare professional. For emergencies, seek urgent medical care.</p>
+  </div>
+  <div class="grid"><div class="card"><h3>Medicine Information</h3><p>Drug names and general information.</p></div><div class="card"><h3>Report Understanding</h3><p>Understand medical report terminology.</p></div><div class="card"><h3>Prescription Education</h3><p>Understand prescription terminology.</p></div></div>
 </section>
 
 <section class="page" id="english">
- <h1 class="section-title">🌐 English Learning Studio</h1>
- <div class="workspace">
-  <h2>Practice English</h2>
-  <textarea class="field" id="englishPrompt" placeholder="Write a sentence or ask for an English lesson..."></textarea>
-  <button class="gold-btn" onclick="runFeature('english')">Practice with AI</button>
-  <div class="result" id="englishResult"></div>
- </div>
- <div class="grid">
-  <div class="card"><h3>Speaking Practice</h3><p>Practice everyday conversations.</p></div>
-  <div class="card"><h3>Grammar</h3><p>Learn grammar step by step.</p></div>
-  <div class="card"><h3>Vocabulary</h3><p>Build useful vocabulary.</p></div>
-  <div class="card"><h3>Interview Preparation</h3><p>Practice professional interviews.</p></div>
- </div>
+  <h1 class="section-title">🌐 English Learning</h1>
+  <div class="workspace"><h2>Practice English</h2><textarea class="field" id="englishPrompt" placeholder="Write a sentence or ask for an English lesson..."></textarea><button class="gold-btn" onclick="runFeature('english')">Practice with AI</button><div class="result" id="englishResult"></div></div>
+  <div class="grid"><div class="card"><h3>Speaking Practice</h3><p>Practice everyday conversations.</p></div><div class="card"><h3>Grammar</h3><p>Learn grammar step by step.</p></div><div class="card"><h3>Vocabulary</h3><p>Build useful vocabulary.</p></div><div class="card"><h3>Interview Preparation</h3><p>Practice professional interviews.</p></div></div>
 </section>
 
 <section class="page" id="soul">
- <h1 class="section-title">✨ SoulSphere</h1>
- <div class="workspace">
-  <h2>Astrology & Spiritual Insights</h2>
-  <input class="field" id="soulName" placeholder="Name (optional)">
-  <input class="field" id="soulDob" type="date">
-  <input class="field" id="soulTime" type="time">
-  <input class="field" id="soulPlace" placeholder="Birth place">
-  <button class="gold-btn" onclick="runFeature('soul')">Explore SoulSphere</button>
-  <div class="result" id="soulResult">Kundli and astrology calculations require a connected astrology data provider.</div>
- </div>
- <div class="grid">
-  <div class="card"><h3>Kundli</h3><p>Birth chart workspace.</p></div>
-  <div class="card"><h3>Panchang</h3><p>Calendar and Panchang workspace.</p></div>
-  <div class="card"><h3>Horoscope</h3><p>Horoscope and interpretation.</p></div>
-  <div class="card"><h3>Muhurat</h3><p>Auspicious timing workspace.</p></div>
- </div>
+  <div class="soul-theme">
+    <h1 class="section-title">✨ SoulSphere</h1>
+    <div class="workspace"><h2>Astrology & Spiritual Insights</h2><p class="muted">Enter birth details for an astrology request.</p>
+      <input class="field" id="soulName" placeholder="Name (optional)">
+      <input class="field" id="soulDob" type="date" aria-label="Date of birth">
+      <input class="field" id="soulTime" type="time" aria-label="Time of birth">
+      <input class="field" id="soulPlace" placeholder="Birth place">
+      <button class="gold-btn" onclick="runFeature('soul')">Explore SoulSphere</button>
+      <div class="result" id="soulResult">Kundli calculations require a connected astrology data provider.</div>
+    </div>
+    <div class="grid"><div class="card"><h3>Kundli</h3><p>Birth chart workspace.</p></div><div class="card"><h3>Panchang</h3><p>Calendar and Panchang workspace.</p></div><div class="card"><h3>Horoscope</h3><p>Horoscope and interpretation.</p></div><div class="card"><h3>Muhurat</h3><p>Auspicious timing workspace.</p></div></div>
+  </div>
 </section>
 
-<section class="page" id="history"><h1 class="section-title">🕘 Chat History</h1><div class="workspace"><p class="muted">Your saved conversation history will appear here after history API integration.</p></div></section>
-<section class="page" id="saved"><h1 class="section-title">🔖 Saved Answers</h1><div class="workspace"><p class="muted">Your saved answers will appear here after account and storage integration.</p></div></section>
-<section class="page" id="searches"><h1 class="section-title">🔍 Recent Searches</h1><div class="workspace"><p class="muted">Your recent searches will appear here.</p></div></section>
-<section class="page" id="projects"><h1 class="section-title">📁 Projects</h1><div class="workspace"><h2>My Projects</h2><p class="muted">Create and manage your AI projects. Project storage integration is pending.</p></div></section>
-<section class="page" id="law"><h1 class="section-title">⚖️ Law Library</h1><div class="workspace"><h2>Legal Knowledge Centre</h2><input class="field" placeholder="Search acts, sections, judgments and legal topics"><p class="muted">Legal document search and retrieval integration is pending.</p></div></section>
+<section class="page" id="history"><h1 class="section-title">🕘 Chat History</h1><div class="workspace"><p class="muted">Conversation history will appear here when history storage and retrieval are enabled in the backend.</p></div></section>
+<section class="page" id="saved"><h1 class="section-title">🔖 Saved Answers</h1><div class="workspace"><p class="muted">Save and retrieve answers when account storage integration is enabled.</p></div></section>
+<section class="page" id="searches"><h1 class="section-title">🔍 Recent Searches</h1><div class="workspace"><p class="muted">Your recent searches will appear here after search-history integration.</p></div></section>
+<section class="page" id="projects"><h1 class="section-title">📁 Projects</h1><div class="workspace"><h2>My Projects</h2><p class="muted">Create and manage AI projects. Project storage integration is pending.</p></div></section>
+<section class="page" id="law"><h1 class="section-title">⚖️ Law Library</h1><div class="workspace"><h2>Legal Knowledge Centre</h2><input class="field" placeholder="Search acts, sections, judgments and legal topics"><p class="muted">Legal document search integration is pending.</p></div></section>
 <section class="page" id="academy"><h1 class="section-title">🎓 Law Academy</h1><div class="grid"><div class="card"><h3>Courses</h3><p>Structured learning modules.</p></div><div class="card"><h3>Lessons</h3><p>Learn legal concepts step by step.</p></div><div class="card"><h3>Certificates</h3><p>Course completion workspace.</p></div></div></section>
-<section class="page" id="exams"><h1 class="section-title">📝 Law Exams</h1><div class="workspace"><h2>Practice Tests</h2><p class="muted">Exams, quizzes, results and progress tracking will be connected to the backend.</p></div></section>
-<section class="page" id="news"><h1 class="section-title">📰 Law News</h1><div class="workspace"><p class="muted">Verified legal news and current updates will appear here after news-source integration.</p></div></section>
-<section class="page" id="cases"><h1 class="section-title">📚 Case Studies</h1><div class="workspace"><p class="muted">Case studies and judgments workspace. Legal database integration is pending.</p></div></section>
+<section class="page" id="exams"><h1 class="section-title">📝 Law Exams</h1><div class="workspace"><h2>Practice Tests</h2><p class="muted">Exams, quizzes and progress tracking require backend integration.</p></div></section>
+<section class="page" id="news"><h1 class="section-title">📰 Law News</h1><div class="workspace"><p class="muted">Verified legal news requires a connected news/search source.</p></div></section>
+<section class="page" id="career"><h1 class="section-title">💼 Career</h1><div class="workspace"><h2>Career Guidance</h2><p class="muted">Career resources, guidance and opportunities workspace.</p></div></section>
+<section class="page" id="ela"><h1 class="section-title">📖 e-La</h1><div class="workspace"><h2>e-La Learning</h2><p class="muted">Digital learning resources and educational tools workspace.</p></div></section>
+
+<section class="page" id="security"><h1 class="section-title">🔐 Account Security</h1><div class="workspace"><h2>Security Centre</h2><p class="muted">Use a strong unique password. Account sessions, devices and security controls depend on backend support.</p></div></section>
 
 <section class="page" id="account">
- <h1 class="section-title">👤 Account & Security</h1>
- <div class="workspace">
-  <h2>Welcome to NYAYVERSE AI</h2>
-  <p class="muted">Sign in or create your account.</p>
-  <button class="outline-btn" onclick="showAuth('login')">Login</button>
-  <button class="gold-btn" onclick="showAuth('signup')">Sign Up</button>
-  <div id="authArea">
-   <h3 style="margin-top:20px;color:var(--gold2)" id="authTitle">Login</h3>
-   <div id="signupFields" class="hidden">
-    <input class="field" id="fullName" placeholder="Full name">
-    <select class="field" id="gender"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select>
-   </div>
-   <input class="field" id="authEmail" type="email" placeholder="Email address">
-   <input class="field" id="authPassword" type="password" placeholder="Password">
-   <button class="gold-btn" onclick="submitAuth()">Continue</button>
-   <p class="status" id="authStatus">Email login and signup use the backend API.</p>
+  <h1 class="section-title">👤 Login / Sign Up</h1>
+  <div class="workspace"><h2>Welcome to NYAYVERSE AI</h2><p class="muted">Sign in or create your account.</p>
+    <div class="auth-row"><button class="outline-btn" onclick="showAuth('login')">Login</button><button class="gold-btn" onclick="showAuth('signup')">Create Account</button></div>
+    <button class="outline-btn" style="width:100%" onclick="startGoogleLogin()">Continue with Google</button>
+    <div id="authArea">
+      <h3 id="authTitle" style="margin-top:20px;color:var(--gold2)">Login</h3>
+      <div id="signupFields" class="hidden">
+        <input class="field" id="fullName" placeholder="Full name" autocomplete="name">
+        <label class="muted" for="gender">Gender</label>
+        <select class="field" id="gender"><option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
+      </div>
+      <input class="field" id="authEmail" type="email" placeholder="Email address" autocomplete="email">
+      <input class="field" id="authPassword" type="password" placeholder="Password" autocomplete="current-password">
+      <button class="gold-btn" onclick="submitAuth()">Continue</button>
+      <button class="outline-btn" style="margin-left:7px" onclick="forgotPassword()">Forgot Password?</button>
+      <p class="status" id="authStatus">Email login and signup require the configured backend API.</p>
+    </div>
   </div>
-  <hr><p class="muted">Google sign-in and mobile OTP require their respective OAuth and OTP integrations.</p>
- </div>
 </section>
 
-<section class="page" id="membership">
- <h1 class="section-title">💎 Membership & Plans</h1>
- <div class="grid">
-  <div class="card"><h3>Starter</h3><p>Basic AI access and usage limits.</p><br><button class="outline-btn" onclick="choosePlan('starter')">Choose Plan</button></div>
-  <div class="card"><h3>Pro</h3><p>Enhanced AI access and premium tools.</p><br><button class="gold-btn" onclick="choosePlan('pro')">Choose Plan</button></div>
-  <div class="card"><h3>Premium</h3><p>Advanced access and premium experiences.</p><br><button class="outline-btn" onclick="choosePlan('premium')">Choose Plan</button></div>
- </div>
- <div class="result" id="planStatus">Membership and Razorpay checkout integration must be completed on the backend before accepting payments.</div>
-</section>
-
+<section class="page" id="about"><h1 class="section-title">ℹ️ About NYAYVERSE AI</h1><div class="workspace"><h2>Intelligence Universe</h2><p class="muted">NYAYVERSE AI brings together general AI assistance and specialist workspaces for creativity, learning, healthcare information and productivity.</p></div></section>
+<section class="page" id="terms"><h1 class="section-title">📄 Terms & Conditions</h1><div class="workspace"><p class="muted">Use NYAYVERSE AI responsibly. AI-generated information may be incomplete or inaccurate. Specialist outputs are informational and should be independently verified. Applicable subscription, payment, refund and service terms must be published by the site operator before paid services are offered.</p></div></section>
+<section class="page" id="privacy"><h1 class="section-title">🔒 Privacy & Security</h1><div class="workspace"><p class="muted">Do not submit passwords, payment secrets or unnecessary sensitive information in prompts. The operator should publish a complete privacy policy describing data collection, use, retention, sharing and user rights before launch.</p></div></section>
 </div>
+<div class="footer-note">NYAYVERSE AI · Intelligence Universe</div>
 </main>
-</div>
-
-<script>
+</div><script>
 const API_BASE="https://nyayverse-ai-backend.rjverma8988.workers.dev";
+let activeController=null;
+let activeVoiceRecognition=null;
+let authMode="login";
 
-function showPage(id,btn){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- const page=document.getElementById(id);
- if(page)page.classList.add("active");
- document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
- if(btn)btn.classList.add("active");
- document.getElementById("sidebar").classList.remove("open");
- window.scrollTo({top:0,behavior:"smooth"});
+function openSidebar(){
+  document.getElementById("sidebar").classList.add("open");
+  document.getElementById("drawerBackdrop").classList.add("show");
+  document.getElementById("menuToggle").setAttribute("aria-expanded","true");
+}
+
+function closeSidebar(){
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("drawerBackdrop").classList.remove("show");
+  document.getElementById("menuToggle").setAttribute("aria-expanded","false");
 }
 
 function toggleSidebar(){
- document.getElementById("sidebar").classList.toggle("open");
+  if(document.getElementById("sidebar").classList.contains("open")){
+    closeSidebar();
+  }else{
+    openSidebar();
+  }
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    closeSidebar();
+    stopVoice();
+  }
+});
+
+function toggleEducation(){
+  const menu=document.getElementById("educationMenu");
+  const btn=document.getElementById("educationToggle");
+  const open=!menu.classList.contains("open");
+  menu.classList.toggle("open",open);
+  btn.setAttribute("aria-expanded",String(open));
+  document.getElementById("educationArrow").textContent=open?"－":"＋";
+}
+
+function showPage(id,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+
+  const page=document.getElementById(id);
+  if(page)page.classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+
+  if(btn){
+    btn.classList.add("active");
+  }else{
+    const nav=document.querySelector('.nav-btn[data-page="'+id+'"]');
+    if(nav)nav.classList.add("active");
+  }
+
+  closeSidebar();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+async function apiRequest(path,options={},signal){
+  const response=await fetch(API_BASE+path,{
+    ...options,
+    signal,
+    headers:{
+      "Content-Type":"application/json",
+      ...(options.headers||{})
+    },
+    credentials:"include"
+  });
+
+  const data=await response.json().catch(()=>({
+    error:"Invalid server response"
+  }));
+
+  if(!response.ok){
+    throw new Error(data.error||data.message||("Request failed ("+response.status+")"));
+  }
+
+  return data;
 }
 
 function addMessage(text,type){
- const box=document.getElementById("chatMessages");
- const div=document.createElement("div");
- div.className="message "+type;
- div.textContent=text;
- box.appendChild(div);
- box.scrollTop=box.scrollHeight;
- return div;
+  const box=document.getElementById("chatMessages");
+  const div=document.createElement("div");
+
+  div.className="message "+type;
+  div.textContent=text;
+
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+
+  return div;
 }
 
-async function apiRequest(path,options={}){
- const response=await fetch(API_BASE+path,{
-  ...options,
-  headers:{
-   "Content-Type":"application/json",
-   ...(options.headers||{})
-  },
-  credentials:"include"
- });
- const data=await response.json().catch(()=>({error:"Invalid server response"}));
- if(!response.ok)throw new Error(data.error||"Request failed");
- return data;
-}
+async function sendChatFrom(inputId){
+  const input=document.getElementById(inputId);
+  const question=input.value.trim();
 
-async function sendChat(){
- const input=document.getElementById("chatInput");
- const question=input.value.trim();
- if(!question)return;
- input.value="";
- addMessage(question,"user");
- const waiting=addMessage("Thinking...","ai");
- document.getElementById("chatStatus").textContent="Connecting to AI...";
- try{
-  const data=await apiRequest("/api/ai/chat",{
-   method:"POST",
-   body:JSON.stringify({message:question})
+  if(!question)return;
+
+  if(activeController)stopGeneration();
+
+  input.value="";
+
+  const home=(inputId==="homeChatInput");
+
+  if(home){
+    showPage("chat");
+    document.getElementById("chatInput").value="";
+  }
+
+  addMessage(question,"user");
+
+  const waiting=addMessage("Thinking...","ai");
+  const status=document.getElementById("chatStatus");
+
+  status.textContent="Connecting to AI...";
+
+  const stopIds=["homeStopBtn","chatStopBtn"];
+
+  stopIds.forEach(id=>{
+    document.getElementById(id).classList.remove("hidden");
   });
-  waiting.textContent=data.answer||data.response||"No answer received.";
-  document.getElementById("chatStatus").textContent="Response received";
- }catch(error){
-  waiting.textContent="AI connection error: "+error.message+"\nPlease check the Worker API route and backend configuration.";
-  document.getElementById("chatStatus").textContent="Connection unavailable";
- }
+
+  const controller=new AbortController();
+  activeController=controller;
+
+  try{
+    const data=await apiRequest(
+      "/api/ai/chat",
+      {
+        method:"POST",
+        body:JSON.stringify({message:question})
+      },
+      controller.signal
+    );
+
+    waiting.textContent=data.answer||data.response||data.message||"No answer received.";
+    status.textContent="Response received";
+
+  }catch(error){
+
+    if(error.name==="AbortError"){
+      waiting.textContent="Generation stopped.";
+    }else{
+      waiting.textContent=
+        "AI connection error: "+error.message+
+        "\nPlease verify the Worker route, CORS and backend configuration.";
+
+      status.textContent="Connection unavailable";
+    }
+
+  }finally{
+
+    if(activeController===controller){
+      activeController=null;
+    }
+
+    stopIds.forEach(id=>{
+      document.getElementById(id).classList.add("hidden");
+    });
+  }
 }
 
-document.getElementById("chatInput").addEventListener("keydown",function(e){
- if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat();}
+function stopGeneration(){
+  if(activeController){
+    activeController.abort();
+    activeController=null;
+  }
+
+  document.getElementById("homeStopBtn").classList.add("hidden");
+  document.getElementById("chatStopBtn").classList.add("hidden");
+}
+
+function startVoice(inputId,buttonId){
+  const SpeechRecognition=
+    window.SpeechRecognition||window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    alert("Voice input is not supported in this browser. Try a recent version of Chrome.");
+    return;
+  }
+
+  stopVoice();
+
+  const recognition=new SpeechRecognition();
+
+  recognition.lang="hi-IN";
+  recognition.continuous=false;
+  recognition.interimResults=true;
+
+  const input=document.getElementById(inputId);
+  const button=document.getElementById(buttonId);
+
+  button.classList.add("recording");
+  button.textContent="Listening...";
+
+  activeVoiceRecognition=recognition;
+
+  recognition.onresult=event=>{
+    let text="";
+
+    for(let i=0;i<event.results.length;i++){
+      text+=event.results[i][0].transcript;
+    }
+
+    input.value=text;
+  };
+
+  recognition.onerror=()=>{
+    button.classList.remove("recording");
+    button.textContent="🎙 Voice";
+    activeVoiceRecognition=null;
+  };
+
+  recognition.onend=()=>{
+    button.classList.remove("recording");
+    button.textContent="🎙 Voice";
+    activeVoiceRecognition=null;
+  };
+
+  try{
+    recognition.start();
+  }catch(e){
+    button.classList.remove("recording");
+    button.textContent="🎙 Voice";
+  }
+}
+
+function stopVoice(){
+  if(activeVoiceRecognition){
+    try{
+      activeVoiceRecognition.stop();
+    }catch(e){}
+
+    activeVoiceRecognition=null;
+  }
+
+  ["homeVoiceBtn","chatVoiceBtn"].forEach(id=>{
+    const b=document.getElementById(id);
+
+    if(b){
+      b.classList.remove("recording");
+      b.textContent="🎙 Voice";
+    }
+  });
+}
+
+document.getElementById("homeChatInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&!e.shiftKey){
+    e.preventDefault();
+    sendChatFrom("homeChatInput");
+  }
+});
+
+document.getElementById("chatInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&!e.shiftKey){
+    e.preventDefault();
+    sendChatFrom("chatInput");
+  }
 });
 
 async function runFeature(type){
- const prompts={
-  image:["imagePrompt","imageResult"],
-  video:["videoPrompt","videoResult"],
-  fake:["fakeFile","fakeResult"],
-  assistant:["assistantPrompt","assistantResult"],
-  medical:["medicalPrompt","medicalResult"],
-  english:["englishPrompt","englishResult"],
-  soul:["soulPlace","soulResult"]
- };
- const [inputId,resultId]=prompts[type];
- const input=document.getElementById(inputId);
- const result=document.getElementById(resultId);
- if(type==="fake"){
-  if(!input.files||!input.files[0]){
-   result.textContent="Please select an image or video first.";
-   return;
+
+  const config={
+    image:{
+      input:"imagePrompt",
+      result:"imageResult",
+      route:"/api/media/image"
+    },
+    video:{
+      input:"videoPrompt",
+      result:"videoResult",
+      route:"/api/media/video"
+    },
+    assistant:{
+      input:"assistantPrompt",
+      result:"assistantResult",
+      route:"/api/ai/chat"
+    },
+    medical:{
+      input:"medicalPrompt",
+      result:"medicalResult",
+      route:"/api/ai/chat"
+    },
+    english:{
+      input:"englishPrompt",
+      result:"englishResult",
+      route:"/api/ai/chat"
+    }
+  };
+
+  if(type==="fake"){
+    const file=document.getElementById("fakeFile").files[0];
+    const result=document.getElementById("fakeResult");
+
+    result.textContent=file
+      ?"File selected: "+file.name+". The media upload/analysis endpoint is not configured in this HTML."
+      :"Please select an image or video first.";
+
+    return;
   }
-  result.textContent="Media upload and analysis provider integration is not yet enabled.";
-  return;
- }
- const prompt=input.value.trim();
- if(!prompt){
-  result.textContent="Please enter your request first.";
-  return;
- }
- result.textContent="Processing...";
- const routes={
-  assistant:"/api/ai/chat",
-  medical:"/api/ai/chat",
-  english:"/api/ai/chat",
-  soul:"/api/ai/chat",
-  image:"/api/media/image",
-  video:"/api/media/video"
- };
- try{
-  const data=await apiRequest(routes[type],{
-   method:"POST",
-   body:JSON.stringify({
-    message:prompt,
-    prompt:prompt,
-    feature:type,
-    duration:document.getElementById("videoDuration")?.value||""
-   })
-  });
-  result.textContent=data.answer||data.response||data.message||"Request completed.";
- }catch(error){
-  result.textContent="Service unavailable: "+error.message+"\nThis feature may need its provider integration and backend route.";
- }
+
+  if(type==="soul"){
+    const result=document.getElementById("soulResult");
+
+    const details={
+      name:document.getElementById("soulName").value.trim(),
+      date_of_birth:document.getElementById("soulDob").value,
+      time_of_birth:document.getElementById("soulTime").value,
+      birth_place:document.getElementById("soulPlace").value.trim()
+    };
+
+    if(
+      !details.date_of_birth||
+      !details.time_of_birth||
+      !details.birth_place
+    ){
+      result.textContent="Please enter date of birth, time of birth and birth place.";
+      return;
+    }
+
+    result.textContent=
+      "Astrology calculation route/provider integration must be connected before this request can be processed.";
+
+    return;
+  }
+
+  const item=config[type];
+  const prompt=document.getElementById(item.input).value.trim();
+  const result=document.getElementById(item.result);
+
+  if(!prompt){
+    result.textContent="Please enter your request first.";
+    return;
+  }
+
+  result.textContent="Processing...";
+
+  try{
+    const payload={
+      message:prompt,
+      prompt:prompt,
+      feature:type
+    };
+
+    if(type==="video"){
+      payload.duration=document.getElementById("videoDuration").value;
+    }
+
+    const data=await apiRequest(
+      item.route,
+      {
+        method:"POST",
+        body:JSON.stringify(payload)
+      }
+    );
+
+    result.textContent=
+      data.answer||data.response||data.message||"Request completed.";
+
+  }catch(error){
+
+    result.textContent=
+      "Service unavailable: "+error.message+
+      "\nThis feature may require a configured backend route/provider.";
+  }
 }
 
-let authMode="login";
 function showAuth(mode){
- authMode=mode;
- document.getElementById("authTitle").textContent=mode==="signup"?"Create Account":"Login";
- document.getElementById("signupFields").classList.toggle("hidden",mode!=="signup");
+  authMode=mode;
+
+  document.getElementById("authTitle").textContent=
+    mode==="signup"?"Create Account":"Login";
+
+  document.getElementById("signupFields").classList.toggle(
+    "hidden",
+    mode!=="signup"
+  );
 }
 
 async function submitAuth(){
- const email=document.getElementById("authEmail").value.trim();
- const password=document.getElementById("authPassword").value;
- const status=document.getElementById("authStatus");
- if(!email||!password){status.textContent="Enter email and password.";return;}
- const body={email,password};
- let path="/api/auth/login";
- if(authMode==="signup"){
-  body.full_name=document.getElementById("fullName").value.trim();
-  body.gender=document.getElementById("gender").value;
-  path="/api/auth/signup";
-  if(!body.full_name||!body.gender){status.textContent="Enter your name and select gender.";return;}
- }
- status.textContent="Please wait...";
- try{
-  const data=await apiRequest(path,{method:"POST",body:JSON.stringify(body)});
-  status.textContent=data.message||"Request successful. Check your email if verification is required.";
- }catch(error){
-  status.textContent="Account request failed: "+error.message;
- }
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  const status=document.getElementById("authStatus");
+
+  if(!email||!password){
+    status.textContent="Enter email and password.";
+    return;
+  }
+
+  const body={email,password};
+  let path="/api/auth/login";
+
+  if(authMode==="signup"){
+
+    body.full_name=document.getElementById("fullName").value.trim();
+    body.gender=document.getElementById("gender").value;
+
+    path="/api/auth/signup";
+
+    if(
+      !body.full_name||
+      !["Male","Female"].includes(body.gender)
+    ){
+      status.textContent="Enter your name and select Male or Female.";
+      return;
+    }
+  }
+
+  status.textContent="Please wait...";
+
+  try{
+    const data=await apiRequest(
+      path,
+      {
+        method:"POST",
+        body:JSON.stringify(body)
+      }
+    );
+
+    status.textContent=
+      data.message||
+      "Request successful. Follow any email verification instructions.";
+
+  }catch(error){
+
+    status.textContent="Account request failed: "+error.message;
+  }
 }
 
-async function choosePlan(plan){
- const result=document.getElementById("planStatus");
- result.textContent="Preparing "+plan+" membership...";
- try{
-  const data=await apiRequest("/api/payments/create-order",{
-   method:"POST",
-   body:JSON.stringify({plan})
-  });
-  result.textContent=data.message||"Order created. Payment checkout integration is still required.";
- }catch(error){
-  result.textContent="Payment service unavailable: "+error.message;
- }
+function startGoogleLogin(){
+  window.location.href=API_BASE+"/api/auth/google/start";
+}
+
+async function forgotPassword(){
+  const email=document.getElementById("authEmail").value.trim();
+  const status=document.getElementById("authStatus");
+
+  if(!email){
+    status.textContent="Enter your email address first.";
+    return;
+  }
+
+  status.textContent="Requesting password reset...";
+
+  try{
+    const data=await apiRequest(
+      "/api/auth/forgot-password",
+      {
+        method:"POST",
+        body:JSON.stringify({email})
+      }
+    );
+
+    status.textContent=
+      data.message||
+      "If the account exists, password reset instructions will be sent.";
+
+  }catch(error){
+
+    status.textContent=
+      "Password reset service is not available: "+error.message;
+  }
 }
 </script>
 </body>
