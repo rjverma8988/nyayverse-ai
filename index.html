@@ -153,7 +153,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
  </div>
 
  <div>
-  <div class="nav-title">SPECIALIST AI</div>
+  <div class="nav-title">SPECIALIST TOOLS</div>
   <button class="nav-item" onclick="openModule('image')">▧ Create Image</button>
   <button class="nav-item" onclick="openModule('video')">▷ Create Video</button>
   <button class="nav-item" onclick="openModule('checker')">◈ Fake Media Checker</button>
@@ -225,7 +225,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
   <button class="studio-card" onclick="openModule('image')"><span class="studio-icon">▧</span><b>Create Image</b><small>AI image creation workspace</small></button>
   <button class="studio-card" onclick="openModule('video')"><span class="studio-icon">▷</span><b>Create Video</b><small>AI video creation workspace</small></button>
   <button class="studio-card" onclick="openModule('checker')"><span class="studio-icon">◈</span><b>Fake Media Checker</b><small>Image and video authenticity analysis</small></button>
-  <button class="studio-card ai-assistant-card" onclick="openModule('assistant')"><span class="studio-icon">✧</span><b>Personal AI Assistant</b><small>Your dedicated AI workspace</small></button>
+  <button class="studio-card ai-assistant-card" onclick="openModule('assistant')"><span class="studio-icon">✧</span><b>Personal AI Assistant</b><small>Your personal workspace</small></button>
   <button class="studio-card" onclick="openModule('medical')"><span class="studio-icon">✚</span><b>Medical & Healthcare AI</b><small>Health information and medical research</small></button>
   <button class="studio-card" onclick="openModule('english')"><span class="studio-icon">文</span><b>English Learning</b><small>Speaking, grammar and practice</small></button>
   <button class="studio-card" onclick="openModule('soul')"><span class="studio-icon">☯</span><b>SoulSphere</b><small>Astrology and personal insights</small></button>
@@ -315,7 +315,7 @@ const moduleData={
  },
  assistant:{
   title:"Personal AI Assistant",icon:"✧",
-  description:"A dedicated personal workspace for planning, productivity, writing, research and everyday assistance.",
+  description:"A personal workspace for planning, productivity, writing, research and everyday assistance.",
   sections:{
    "Personal Assistant":["Ask My Assistant","Daily Planning","Personal Productivity","Goal Planning"],
    "Work & Writing":["Email & Message Drafting","Document Writing","Ideas & Brainstorming","Summaries"],
@@ -439,7 +439,7 @@ function openUtility(name){
  showPage(name,`<div class="page-panel"><h2>${esc(name)}</h2><p>This workspace is prepared in the interface. Persistent account-based history and saved records require backend integration.</p><div class="module-note">Your data will be displayed here after the relevant secure database features are connected.</div></div>`);
 }
 
-/* SPECIALIST MODULE WORKSPACES */
+/* SPECIALIST WORKSPACES */
 function openModule(key){
  closeMenu();
  const m=moduleData[key];if(!m)return;
