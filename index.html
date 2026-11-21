@@ -525,4 +525,721 @@ document.addEventListener("click",e=>{if(!$("sidebar").classList.contains("open"
 window.addEventListener("resize",()=>{if(window.innerWidth>700){$("sidebar").classList.remove("open");$("backdrop").classList.remove("show");document.body.classList.remove("sidebar-lock");$("sidebar").classList.remove("collapsed")}else if(!$("sidebar").classList.contains("open")){$("sidebar").classList.remove("collapsed");document.body.classList.remove("sidebar-lock")}});
 buildSidebar("home");setSidebar(false);
 </script>
+  
+<script>
+/* =========================================================
+   NYAYVERSE AI — AUTHENTICATION OVERRIDE
+   Paste immediately before </body> in the existing index.html.
+   ========================================================= */
+(() => {
+"use strict";
+
+const AUTH_ROUTES = {
+  me: "auth/me",
+  signup: "auth/signup",
+  verifyEmail: "auth/verify-email",
+  login: "auth/login",
+  forgot: "auth/forgot-password",
+  reset: "auth/reset-password",
+  logout: "auth/logout",
+  googleStart: "auth/google/start",
+  sendMobileOtp: "auth/mobile/send-otp",
+  verifyMobileOtp: "auth/mobile/verify-otp"
+};
+
+const AUTH_TOKEN_KEY = "nyayverse_auth_token";
+
+let authProfile = null;
+let authBusy = false;
+
+const authToken = () => localStorage.getItem(AUTH_TOKEN_KEY) || "";
+
+function authHeaders() {
+  const headers = {"Content-Type":"application/json"};
+  if (authToken()) {
+    headers.Authorization = "Bearer " + authToken();
+  }
+  return headers;
+}
+
+async function authRequest(route, body, method = "POST") {
+  const response = await fetch(API_URL + route, {
+    method,
+    headers: authHeaders(),
+    ...(body === undefined ? {} : {body:JSON.stringify(body)})
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || data.success === false) {
+    const error = new Error(
+      data.message || data.error || "Service temporarily unavailable."
+    );
+    error.status = response.status;
+    error.code = data.code || "";
+    throw error;
+  }
+
+  return data;
+}
+
+function authEscape(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
+}
+
+function authMessage(message, isError = false) {
+  const element = $("authMessage");
+  if (!element) return;
+  element.textContent = message;
+  element.style.color = isError ? "#ff9b9b" : "#f0d58b";
+}
+
+function saveAuthSession(data) {
+  const newToken = data.token || data.access_token ||
+    data.session?.access_token;
+
+  if (newToken) {
+    localStorage.setItem(AUTH_TOKEN_KEY, newToken);
+  }
+
+  authProfile =
+    data.user ||
+    data.profile ||
+    data.account ||
+    data.data?.user ||
+    authProfile;
+
+  updateAuthInterface();
+}
+
+function updateAuthInterface() {
+  const button = $("loginTop");
+
+  if (!button) return;
+
+  if (authToken()) {
+    const name =
+      authProfile?.full_name ||
+      authProfile?.name ||
+      authProfile?.display_name ||
+      authProfile?.email ||
+      "My Account";
+
+    button.textContent =
+      name.length > 20 ? "My Account" : name;
+
+    button.title = "Open My Account";
+    button.onclick = () => navigate("account");
+  } else {
+    button.textContent = "Log in";
+    button.title = "Log in to NYAYVERSE AI";
+    button.onclick = openAuth;
+  }
+}
+
+/* ---------- SESSION RESTORE ---------- */
+
+async function restoreAuthSession() {
+  const savedToken = authToken();
+
+  if (!savedToken) {
+    updateAuthInterface();
+    return;
+  }
+
+  try {
+    const data = await authRequest(AUTH_ROUTES.me, undefined, "GET");
+
+    authProfile =
+      data.user ||
+      data.profile ||
+      data.account ||
+      data.data?.user ||
+      null;
+
+    updateAuthInterface();
+
+  } catch (error) {
+    /*
+      Do not delete a valid-looking session because of a temporary
+      network error or missing endpoint. Clear only on unauthorized.
+    */
+    if (error.status === 401 || error.status === 403) {
+      localStorage.removeItem(AUTH_TOKEN_KEY);
+      authProfile = null;
+    }
+
+    updateAuthInterface();
+  }
+}
+
+/* ---------- AUTH UI EXTENSIONS ---------- */
+
+function addAuthFields() {
+  const start = $("authStart");
+  const fields = $("authFields");
+
+  if (!start || !fields) return;
+
+  if (!$("mobileLoginBtn")) {
+    const mobileButton = document.createElement("button");
+    mobileButton.type = "button";
+    mobileButton.className = "btn";
+    mobileButton.id = "mobileLoginBtn";
+    mobileButton.textContent = "Continue with Mobile";
+    mobileButton.onclick = () => authFormMode("mobile");
+    start.appendChild(mobileButton);
+  }
+
+  if (!$("mobileWrap")) {
+    const wrapper = document.createElement("div");
+    wrapper.id = "mobileWrap";
+    wrapper.className = "hidden";
+    wrapper.innerHTML = `
+      <label>Mobile Number</label>
+      <input id="mobileNumber" type="tel"
+        inputmode="tel" autocomplete="tel"
+        maxlength="15" placeholder="+91 9876543210">
+    `;
+    $("authForm").insertBefore(wrapper, $("authSubmit"));
+  }
+
+  if (!$("mobileOtpWrap")) {
+    const wrapper = document.createElement("div");
+    wrapper.id = "mobileOtpWrap";
+    wrapper.className = "hidden";
+    wrapper.innerHTML = `
+      <label>Mobile OTP</label>
+      <input id="mobileOtp" type="text"
+        inputmode="numeric" autocomplete="one-time-code"
+        maxlength="8" placeholder="Enter mobile OTP">
+    `;
+    $("authForm").insertBefore(wrapper, $("authSubmit"));
+  }
+
+  if (!$("newPasswordWrap")) {
+    const wrapper = document.createElement("div");
+    wrapper.id = "newPasswordWrap";
+    wrapper.className = "hidden";
+    wrapper.innerHTML = `
+      <label>New Password</label>
+      <input id="newPassword" type="password"
+        autocomplete="new-password" minlength="8"
+        placeholder="Enter new password">
+      <label>Reset Token</label>
+      <input id="resetToken" type="text"
+        placeholder="Enter reset token received by email">
+    `;
+    $("authForm").insertBefore(wrapper, $("authSubmit"));
+  }
+
+  if (!$("resetLink")) {
+    const link = document.createElement("button");
+    link.type = "button";
+    link.className = "btn hidden";
+    link.id = "resetLink";
+    link.textContent = "I have a reset token";
+    link.onclick = () => authFormMode("reset");
+    $("authFields").appendChild(link);
+  }
+
+  if (!$("verifyAgain")) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn hidden";
+    button.id = "verifyAgain";
+    button.textContent = "Resend verification code";
+    button.onclick = resendEmailVerification;
+    $("authFields").appendChild(button);
+  }
+
+  if (!$("authSwitch")) {
+    const switchText = document.createElement("p");
+    switchText.id = "authSwitch";
+    switchText.className = "muted";
+    switchText.style.textAlign = "center";
+    switchText.innerHTML =
+      'Already have an account? <a href="#" id="switchLogin" style="color:var(--gold2)">Log in</a>';
+    $("authFields").appendChild(switchText);
+
+    $("switchLogin").onclick = event => {
+      event.preventDefault();
+      authFormMode("login");
+    };
+  }
+}
+
+/* ---------- FORM MODE CONTROL ---------- */
+
+const originalOpenAuth = openAuth;
+
+openAuth = function() {
+  addAuthFields();
+  originalOpenAuth();
+  $("entryEmail").value = "";
+  authFormMode("start");
+};
+
+authFormMode = function(mode) {
+  addAuthFields();
+
+  authMode = mode;
+
+  $("authStart").classList.toggle("hidden", mode !== "start");
+  $("authFields").classList.toggle("hidden", mode === "start");
+
+  $("nameWrap").classList.toggle("hidden", mode !== "signup");
+  $("confirmWrap").classList.toggle("hidden", mode !== "signup");
+  $("consentWrap").classList.toggle("hidden", mode !== "signup");
+
+  $("passwordWrap").classList.toggle(
+    "hidden",
+    ["forgot","verify","mobile","mobile-verify","reset"].includes(mode)
+  );
+
+  $("otpWrap").classList.toggle("hidden", mode !== "verify");
+
+  $("mobileWrap").classList.toggle(
+    "hidden",
+    !["mobile","mobile-verify"].includes(mode)
+  );
+
+  $("mobileOtpWrap").classList.toggle(
+    "hidden",
+    mode !== "mobile-verify"
+  );
+
+  $("newPasswordWrap").classList.toggle(
+    "hidden",
+    mode !== "reset"
+  );
+
+  $("forgotLink").classList.toggle("hidden", mode !== "login");
+  $("resetLink").classList.toggle("hidden", mode !== "forgot");
+  $("verifyAgain").classList.toggle("hidden", mode !== "verify");
+
+  const titles = {
+    start:"Welcome to NYAYVERSE AI",
+    login:"Log in to NYAYVERSE AI",
+    signup:"Create your account",
+    verify:"Verify your email",
+    forgot:"Forgot password?",
+    reset:"Reset your password",
+    mobile:"Continue with Mobile",
+    "mobile-verify":"Verify mobile number"
+  };
+
+  const labels = {
+    login:"Log in",
+    signup:"Create account",
+    verify:"Verify Email",
+    forgot:"Send reset instructions",
+    reset:"Reset Password",
+    mobile:"Send OTP",
+    "mobile-verify":"Verify Mobile OTP"
+  };
+
+  $("authTitle").textContent = titles[mode] || titles.start;
+  $("authSubmit").textContent = labels[mode] || "Continue";
+
+  $("authMessage").textContent = "";
+
+  if (mode === "start") {
+    $("authStart").classList.remove("hidden");
+    $("authFields").classList.add("hidden");
+  } else {
+    $("authStart").classList.add("hidden");
+    $("authFields").classList.remove("hidden");
+  }
+
+  if (mode === "login" || mode === "signup" ||
+      mode === "verify" || mode === "forgot" || mode === "reset") {
+    $("authEmail").value =
+      $("entryEmail").value.trim() || $("authEmail").value;
+  }
+
+  $("authBack").onclick = () => authFormMode("start");
+};
+
+/* ---------- EMAIL VERIFICATION RESEND ---------- */
+
+async function resendEmailVerification() {
+  const email = $("authEmail").value.trim();
+
+  if (!email) {
+    authMessage("Please enter your email address.", true);
+    return;
+  }
+
+  try {
+    authMessage("Sending verification email...");
+
+    const data = await authRequest(AUTH_ROUTES.signup, {
+      action:"resend_verification",
+      email
+    });
+
+    authMessage(
+      data.message || "If supported, a new verification code has been sent."
+    );
+  } catch (error) {
+    authMessage(error.message, true);
+  }
+}
+
+/* ---------- GOOGLE LOGIN ---------- */
+
+$("googleBtn").onclick = () => {
+  const returnUrl = location.origin + location.pathname;
+
+  const url = API_URL + AUTH_ROUTES.googleStart +
+    "?return_to=" + encodeURIComponent(returnUrl);
+
+  location.href = url;
+};
+
+/* ---------- GOOGLE CALLBACK ---------- */
+
+async function processGoogleCallback() {
+  const url = new URL(location.href);
+
+  const queryToken =
+    url.searchParams.get("token") ||
+    url.searchParams.get("access_token");
+
+  const hash = new URLSearchParams(
+    location.hash.replace(/^#/, "")
+  );
+
+  const hashToken =
+    hash.get("token") ||
+    hash.get("access_token");
+
+  const callbackToken = queryToken || hashToken;
+
+  if (callbackToken) {
+    localStorage.setItem(AUTH_TOKEN_KEY, callbackToken);
+
+    /*
+      Remove token from browser address bar after storing it.
+      Prefer an HttpOnly-cookie or one-time authorization-code
+      flow on the backend for production security.
+    */
+    history.replaceState({}, document.title,
+      location.pathname + location.search.replace(/[?&](token|access_token)=[^&]*/g, "")
+    );
+  }
+
+  if (authToken()) {
+    await restoreAuthSession();
+  }
+}
+
+/* ---------- MAIN AUTH SUBMIT ---------- */
+
+$("authForm").onsubmit = async event => {
+  event.preventDefault();
+
+  if (authBusy) return;
+  authBusy = true;
+
+  const submit = $("authSubmit");
+  submit.disabled = true;
+
+  const email = $("authEmail").value.trim();
+  const password = $("password").value;
+
+  try {
+    if (authMode === "signup") {
+      const name = $("fullName").value.trim();
+      const gender = $("gender").value;
+
+      if (!name) throw new Error("Please enter your full name.");
+      if (!["Male","Female"].includes(gender)) {
+        throw new Error("Please select Male or Female.");
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        throw new Error("Please enter a valid email address.");
+      }
+      if (password.length < 8) {
+        throw new Error("Password must contain at least 8 characters.");
+      }
+      if (password !== $("confirmPassword").value) {
+        throw new Error("Passwords do not match.");
+      }
+      if (!$("consent").checked) {
+        throw new Error("Please accept the Terms and Privacy Policy.");
+      }
+
+      authMessage("Creating your account...");
+
+      const data = await authRequest(AUTH_ROUTES.signup, {
+        full_name:name,
+        gender,
+        email,
+        password,
+        consent:{
+          terms:true,
+          privacy:true
+        }
+      });
+
+      authFormMode("verify");
+      $("authEmail").value = email;
+
+      authMessage(
+        data.message ||
+        "Your account has been created. Enter the verification code sent to your email."
+      );
+
+    } else if (authMode === "verify") {
+      const otp = $("otp").value.trim();
+
+      if (!otp) throw new Error("Please enter your email verification code.");
+
+      authMessage("Verifying your email...");
+
+      const data = await authRequest(AUTH_ROUTES.verifyEmail, {
+        email,
+        otp
+      });
+
+      if (data.token || data.access_token) {
+        saveAuthSession(data);
+        closeAuth();
+      } else {
+        authFormMode("login");
+        $("authEmail").value = email;
+        authMessage(
+          data.message || "Email verified. You can now log in."
+        );
+      }
+
+    } else if (authMode === "login") {
+      if (!email || !password) {
+        throw new Error("Enter your email and password.");
+      }
+
+      authMessage("Signing you in...");
+
+      const data = await authRequest(AUTH_ROUTES.login, {
+        email,
+        password
+      });
+
+      if (!data.token && !data.access_token) {
+        throw new Error("Login service did not return a session token.");
+      }
+
+      saveAuthSession(data);
+      closeAuth();
+
+    } else if (authMode === "forgot") {
+      if (!email) throw new Error("Enter your registered email address.");
+
+      authMessage("Requesting password reset...");
+
+      const data = await authRequest(AUTH_ROUTES.forgot, {
+        email
+      });
+
+      authMessage(
+        data.message ||
+        "If this account exists, password reset instructions have been sent."
+      );
+
+      $("resetLink").classList.remove("hidden");
+
+    } else if (authMode === "reset") {
+      const newPassword = $("newPassword").value;
+      const resetToken = $("resetToken").value.trim();
+
+      if (!resetToken) throw new Error("Enter your password reset token.");
+      if (newPassword.length < 8) {
+        throw new Error("New password must contain at least 8 characters.");
+      }
+
+      authMessage("Updating your password...");
+
+      const data = await authRequest(AUTH_ROUTES.reset, {
+        email,
+        reset_token:resetToken,
+        token:resetToken,
+        new_password:newPassword,
+        password:newPassword
+      });
+
+      authFormMode("login");
+      authMessage(data.message || "Password reset successful. Please log in.");
+
+    } else if (authMode === "mobile") {
+      const mobile = $("mobileNumber").value.trim();
+
+      if (!/^\+?[0-9\s-]{8,15}$/.test(mobile)) {
+        throw new Error("Enter a valid mobile number with country code.");
+      }
+
+      authMessage("Sending mobile OTP...");
+
+      const data = await authRequest(AUTH_ROUTES.sendMobileOtp, {
+        mobile,
+        phone:mobile,
+        country_code:"+91"
+      });
+
+      authFormMode("mobile-verify");
+      $("mobileNumber").value = mobile;
+
+      authMessage(
+        data.message || "OTP sent if mobile OTP service is configured."
+      );
+
+    } else if (authMode === "mobile-verify") {
+      const mobile = $("mobileNumber").value.trim();
+      const otp = $("mobileOtp").value.trim();
+
+      if (!otp) throw new Error("Enter the mobile OTP.");
+
+      authMessage("Verifying mobile OTP...");
+
+      const data = await authRequest(AUTH_ROUTES.verifyMobileOtp, {
+        mobile,
+        phone:mobile,
+        otp
+      });
+
+      if (!data.token && !data.access_token) {
+        throw new Error("Mobile verification did not return a session token.");
+      }
+
+      saveAuthSession(data);
+      closeAuth();
+    }
+
+  } catch (error) {
+    console.error("NYAYVERSE AI Authentication:", error);
+    authMessage(error.message, true);
+  } finally {
+    authBusy = false;
+    submit.disabled = false;
+  }
+};
+
+/* ---------- MY ACCOUNT PAGE ---------- */
+
+const previousRenderPage = renderPage;
+
+renderPage = function(page) {
+  if (page !== "account") {
+    return previousRenderPage(page);
+  }
+
+  if (!authToken()) {
+    moduleShell(
+      "Account & Security",
+      "Sign in to manage your account",
+      "",
+      `<div class="panel">
+        <p>You are currently using NYAYVERSE AI as a guest.</p>
+        <button class="btn primary" id="accountLogin">Log in / Create Account</button>
+      </div>`
+    );
+
+    $("accountLogin").onclick = openAuth;
+    return;
+  }
+
+  const profile = authProfile || {};
+  const name = authEscape(
+    profile.full_name || profile.name || "NYAYVERSE AI User"
+  );
+  const email = authEscape(profile.email || "Not available");
+  const gender = authEscape(profile.gender || "Not available");
+  const customerId = authEscape(
+    profile.customer_id || profile.customerId || "Not available"
+  );
+
+  moduleShell(
+    "My Account",
+    "Your profile and account security",
+    "",
+    `<div class="panel">
+      <h2>${name}</h2>
+      <p><b>Email:</b> ${email}</p>
+      <p><b>Gender:</b> ${gender}</p>
+      <p><b>Customer ID:</b> ${customerId}</p>
+      <p class="muted">
+        Profile information is displayed from the authenticated backend response.
+      </p>
+      <button class="btn" id="refreshProfile">Refresh Profile</button>
+      <button class="btn" id="accountLogout">Sign Out</button>
+    </div>`
+  );
+
+  $("refreshProfile").onclick = async () => {
+    $("refreshProfile").disabled = true;
+
+    try {
+      const data = await authRequest(AUTH_ROUTES.me, undefined, "GET");
+      authProfile =
+        data.user || data.profile || data.account || data.data?.user || null;
+      renderPage("account");
+    } catch (error) {
+      alert("Could not refresh profile: " + error.message);
+    } finally {
+      $("refreshProfile").disabled = false;
+    }
+  };
+
+  $("accountLogout").onclick = logoutUser;
+};
+
+/* ---------- LOGOUT OVERRIDE ---------- */
+
+logoutUser = async function() {
+  try {
+    if (authToken()) {
+      await authRequest(AUTH_ROUTES.logout, {});
+    }
+  } catch (error) {
+    console.warn("Logout API:", error.message);
+  }
+
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  authProfile = null;
+
+  updateAuthInterface();
+  closeAuth();
+  navigate("home");
+};
+
+/* ---------- LOGIN BUTTON + INITIALIZATION ---------- */
+
+$("loginTop").onclick = () => {
+  if (authToken()) {
+    navigate("account");
+  } else {
+    openAuth();
+  }
+};
+
+addAuthFields();
+updateAuthInterface();
+
+processGoogleCallback()
+  .then(restoreAuthSession)
+  .catch(error => {
+    console.warn("Session restore:", error.message);
+    updateAuthInterface();
+  });
+
+})();
+</script>
+
 </body></html>
