@@ -1241,9 +1241,7 @@ processGoogleCallback()
 
 })();
 </script>
-<!-- NYAYVERSE AI: Seven-module chat interface add-on -->
-<script>
-/* NYAYVERSE AI — Seven-module chat interface add-on
+NYAYVERSE AI — UPDATED SEVEN-MODULE CHAT ADD-ON\nInstallation: In index.html, REMOVE the complete old add-on script previously pasted before </body>, then paste this entire updated script in its place, immediately before </body>. Do not add a second copy. Save and refresh.\n\n/* NYAYVERSE AI — Seven-module chat interface add-on
    Paste this complete script immediately BEFORE </body> in index.html.
    It adds a module-specific chat panel without replacing existing module tools.
 */
@@ -1252,18 +1250,18 @@ processGoogleCallback()
 
   const API_BASE = "https://nyayverse-ai-backend.rjverma8988.workers.dev/";
   const MODULES = {
-    "Create Image": { key: "image", route: "", intro: "Discuss image ideas, prompts and edits with NYAYVERSE AI." },
-    "Create Video": { key: "video", route: "", intro: "Discuss video concepts, scenes, motion and prompts with NYAYVERSE AI." },
-    "Fake Media Checker": { key: "checker", route: "", intro: "Ask questions about media verification, evidence and limitations." },
-    "Personal AI Assistant": { key: "assistant", route: "api/personal-assistant/chat", intro: "Chat with your personal AI assistant." },
-    "Medical & Healthcare AI": { key: "medical", route: "api/medical/chat", intro: "Ask general health-information questions. This is not a diagnosis." },
-    "English Learning": { key: "english", route: "api/english/chat", intro: "Practice English through a conversation with your AI tutor." },
-    "Divya Drishti · दिव्य दृष्टि": { key: "divya", route: "api/divya/chat", intro: "ज्योतिष, पंचांग और आध्यात्मिक विषयों पर बातचीत करें।" }
+    "Create Image": { key: "image", route: "", intro: "Hi! How can I help you today?" },
+    "Create Video": { key: "video", route: "", intro: "Hi! How can I help you today?" },
+    "Fake Media Checker": { key: "checker", route: "", intro: "Hi! How can I help you today?" },
+    "Personal AI Assistant": { key: "assistant", route: "api/personal-assistant/chat", intro: "Hi! How can I help you today?" },
+    "Medical & Healthcare AI": { key: "medical", route: "api/medical/chat", intro: "Hi! How can I help you today?" },
+    "English Learning": { key: "english", route: "api/english/chat", intro: "Hi! How can I help you today?" },
+    "Divya Drishti · दिव्य दृष्टि": { key: "divya", route: "api/divya/chat", intro: "नमस्ते! मैं आपकी क्या मदद करूँ?" }
   };
 
   const style = document.createElement("style");
   style.textContent = `
-    .nyv-module-chat{margin:22px 0 0;border:1px solid #6d572c;border-radius:16px;background:#111;padding:14px;color:#f6f1e6}
+    .nyv-module-chat{margin:0 0 20px;border:1px solid #6d572c;border-radius:16px;background:#111;padding:14px;color:#f6f1e6}
     .nyv-chat-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid #40351f;padding-bottom:10px}
     .nyv-chat-head h2{font-size:18px;margin:0;color:#f0d58b}
     .nyv-chat-log{height:260px;overflow:auto;padding:10px 2px}
@@ -1333,9 +1331,14 @@ processGoogleCallback()
           </div>
         </div>
       </div>
-      <div class="nyv-chat-note">Voice input uses browser speech recognition; spoken replies use browser text-to-speech where supported. Attachments are selected here, but the current JSON chat endpoint does not upload file contents.</div>
     `;
-    section.appendChild(wrap);
+    // Keep the module title at the top, then show chat BEFORE all feature/tool boxes.
+    const moduleHead = section.querySelector(".module-head");
+    if (moduleHead && moduleHead.parentNode === section) {
+      section.insertBefore(wrap, moduleHead.nextSibling);
+    } else {
+      section.insertBefore(wrap, section.firstChild);
+    }
 
     const log = wrap.querySelector(".nyv-chat-log");
     const prompt = wrap.querySelector("[data-prompt]");
@@ -1364,6 +1367,14 @@ processGoogleCallback()
       if (!message && !selected.length) return;
       if (controller) return;
 
+      // Handle simple greetings locally: never send a long welcome paragraph.
+      if (/^(hi+|hello+|hey+|hii+|नमस्ते|नमस्कार)[!,.\\s]*$/i.test(message)) {
+        appendMessage(log, message, "user");
+        prompt.value = "";
+        appendMessage(log, /^नम/u.test(message) ? "नमस्ते!" : "Hi!", "ai");
+        return;
+      }
+
       const token = localStorage.getItem("nyayverse_auth_token") || "";
       const attachments = selected.map(f => ({ name: f.name, type: f.type, size: f.size }));
       if (selected.some(f => f.size > 20 * 1024 * 1024)) {
@@ -1380,8 +1391,9 @@ processGoogleCallback()
 
       const route = mod.route || "";
       const payload = {
-        message: message || "Please help me with the selected attachment.",
-        prompt: message || "Please help me with the selected attachment.",
+        message: "IMPORTANT RESPONSE STYLE: Reply briefly and directly, normally in 1–3 short sentences. Do not add generic introductions, disclaimers, or unrelated advice unless specifically needed. If the user only greets you, reply only with the matching greeting.\\n\\nUSER MESSAGE: " + (message || "Please help me with the selected attachment."),
+        prompt: "IMPORTANT RESPONSE STYLE: Reply briefly and directly, normally in 1–3 short sentences. Avoid generic introductions and unrelated extra information.\\n\\nUSER MESSAGE: " + (message || "Please help me with the selected attachment."),
+        response_style: "concise; usually 1-3 short sentences; no generic welcome paragraph",
         language: mod.key === "divya" ? "hi" : (/[\u0900-\u097F]/.test(message) ? "hi" : "auto"),
         module: mod.key,
         feature: (section.querySelector(".module-head h1")?.textContent || "").trim(),
@@ -1503,7 +1515,4 @@ processGoogleCallback()
     scan();
   }
 })();
-
-</script>
-
 </body></html>
