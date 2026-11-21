@@ -7,18 +7,26 @@
 <title>NYAYVERSE AI</title>
 <style>
 :root{--bg:#090909;--panel:#151515;--panel2:#201b12;--line:#40351f;--text:#f6f1e6;--muted:#b8ad98;--gold:#d2ad59;--gold2:#f0d58b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:flex}.sidebar{width:265px;flex:0 0 265px;background:#0d0d0c;border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:8px;transition:.2s;z-index:30}.brand{font-weight:800;letter-spacing:1.3px;color:var(--gold2);padding:12px 10px;font-size:16px}.nav-label{font-size:10px;color:#9b8658;letter-spacing:1.3px;padding:14px 10px 4px}.nav button{display:block;width:100%;text-align:left;background:transparent;border:0;color:#d9d0bf;border-radius:9px;padding:10px 11px;font-size:13px}.nav button:hover,.nav button.active{background:#282115;color:var(--gold2)}.sidebar-bottom{margin-top:auto}.main{min-width:0;flex:1;display:flex;flex-direction:column}.topbar{height:62px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#0d0d0c;position:sticky;top:0;z-index:10}.topbar strong{letter-spacing:1px}.top-actions{display:flex;gap:8px}.btn,.icon-btn{border:1px solid var(--line);background:#211b10;color:var(--text);padding:9px 13px;border-radius:9px}.btn.primary{background:linear-gradient(110deg,#a98235,#e6c774);color:#14110a;border:0;font-weight:700}.content{width:min(1120px,100%);margin:auto;padding:25px 20px 45px}.hidden{display:none!important}.hero{text-align:center;padding:20px 10px 12px}.hero h1{font-size:clamp(22px,3vw,30px);margin:0 0 7px}.hero p{color:var(--muted);margin:0}.composer{max-width:850px;margin:22px auto 25px;background:#171717;border:1px solid #6d572c;border-radius:16px;padding:12px}.composer textarea{width:100%;min-height:58px;resize:vertical;background:transparent;border:0;color:var(--text);outline:0;padding:7px}.composer-tools{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.toolrow{display:flex;gap:7px;flex-wrap:wrap}.hint,.muted{color:var(--muted);font-size:12px}.chat{max-width:850px;margin:0 auto}.msg{display:flex;margin:14px 0;gap:10px}.msg.user{justify-content:flex-end}.bubble{max-width:88%;padding:12px 15px;border:1px solid var(--line);background:#171717;border-radius:13px;white-space:pre-wrap;overflow-wrap:anywhere}.user .bubble{background:#292316}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}.tile,.panel{border:1px solid var(--line);background:linear-gradient(145deg,#171717,#211b11);border-radius:14px;padding:17px}.tile{text-align:left;color:var(--text);min-height:110px}.tile:hover{border-color:var(--gold)}.tile b{display:block;margin:7px 0}.tile small{color:var(--muted)}.module{--accent:#d2ad59;--m-bg:#151515;--m-panel:#211b11;--m-line:#4b3c20;background:var(--m-bg);border:1px solid var(--m-line);border-radius:18px;padding:20px;min-height:65vh}.module h1{margin:0 0 4px;font-size:25px}.module-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--m-line);padding-bottom:15px}.module .panel{background:var(--m-panel);border-color:var(--m-line)}.module label{display:block;color:var(--accent);font-size:12px;margin:13px 0 6px}.module input,.module textarea,.module select,.field{width:100%;background:#0c0c0c;color:var(--text);border:1px solid var(--m-line);padding:11px;border-radius:9px}.module textarea{min-height:100px}.module .btn.primary{background:var(--accent);color:#111}.status{white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--m-line);background:#0b0b0b;border-radius:9px;padding:11px;margin-top:12px;color:#e8d49e;font-size:12px}.soul{--accent:#bd6b20;--m-bg:#fffaf0;--m-panel:#fff;--m-line:#ead3ad;color:#302216}.soul .muted{color:#79664f}.soul input,.soul textarea,.soul select{background:#fff;color:#302216}.soul .panel{box-shadow:0 5px 18px #8b5b1610}.english{--accent:#d18bff;--m-bg:#17112c;--m-panel:#21183b;--m-line:#5b3e82;background:radial-gradient(ellipse at top right,#3d1d5c,#17112c 60%)}.english .btn.primary{background:linear-gradient(100deg,#a855f7,#ff7b78,#399bff)}.checker{--accent:#42d8ee;--m-bg:#071421;--m-panel:#102337;--m-line:#15536a;background:radial-gradient(ellipse at top right,#0c3b52,#071421 60%)}.modal-bg{position:fixed;inset:0;background:#000b;z-index:80;display:none;align-items:center;justify-content:center;padding:15px}.modal{width:min(440px,100%);max-height:92vh;overflow:auto;background:#17150f;border:1px solid #6c552b;border-radius:17px;padding:23px}.modal h2{text-align:center;margin:5px 0}.modal input{width:100%;padding:11px;background:#090909;border:1px solid var(--line);border-radius:9px;color:white;margin:6px 0}.modal label{display:block;color:var(--gold2);font-size:12px;margin-top:12px}.modal .btn{width:100%;margin:7px 0}.divider{display:flex;align-items:center;gap:10px;color:#8f846f;font-size:11px;margin:12px 0}.divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}.footer{border-top:1px solid var(--line);padding:20px;text-align:center;color:var(--muted);font-size:11px}.footer a{color:var(--gold2);margin:0 8px}.backdrop{display:none}.mobile-only{display:none}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.sidebar{position:fixed;inset:0 auto 0 0;width:280px;transform:translateX(-110%);box-shadow:12px 0 35px #0009}.sidebar.open{transform:translateX(0)}.backdrop.show{display:block;position:fixed;inset:0;background:#0009;z-index:25}.mobile-only{display:inline-block}.content{padding:18px 12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tile{padding:12px;min-height:105px}.topbar{padding:0 12px}.module{padding:13px}}
-@media(max-width:390px){.grid{grid-template-columns:1fr}.composer-tools{align-items:flex-start}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,Arial,sans-serif}body.sidebar-lock{overflow:hidden}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:flex}
+.sidebar{width:265px;flex:0 0 265px;background:#0d0d0c;border-right:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:8px;transition:transform .22s ease;z-index:40;min-height:100vh;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.brand{font-weight:800;letter-spacing:1.3px;color:var(--gold2);padding:12px 10px;font-size:16px}.sidebar-close{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#211b10;color:var(--text);border-radius:8px;width:36px;height:36px;font-size:21px}
+.nav-label{font-size:10px;color:#9b8658;letter-spacing:1.3px;padding:14px 10px 4px}.nav button{display:block;width:100%;text-align:left;background:transparent;border:0;color:#d9d0bf;border-radius:9px;padding:10px 11px;font-size:13px}.nav button:hover,.nav button.active{background:#282115;color:var(--gold2)}.sidebar-bottom{margin-top:auto}.main{min-width:0;flex:1;display:flex;flex-direction:column}.topbar{height:62px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#0d0d0c;position:sticky;top:0;z-index:10}.topbar strong{letter-spacing:1px}.top-actions{display:flex;gap:8px}.btn,.icon-btn{border:1px solid var(--line);background:#211b10;color:var(--text);padding:9px 13px;border-radius:9px}.btn.primary{background:linear-gradient(110deg,#a98235,#e6c774);color:#14110a;border:0;font-weight:700}.content{width:min(1120px,100%);margin:auto;padding:25px 20px 45px}.hidden{display:none!important}.hero{text-align:center;padding:20px 10px 12px}.hero h1{font-size:clamp(22px,3vw,30px);margin:0 0 7px}.hero p{color:var(--muted);margin:0}.composer{max-width:850px;margin:22px auto 25px;background:#171717;border:1px solid #6d572c;border-radius:16px;padding:12px}.composer textarea{width:100%;min-height:58px;resize:vertical;background:transparent;border:0;color:var(--text);outline:0;padding:7px}.composer-tools{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.toolrow{display:flex;gap:7px;flex-wrap:wrap}.hint,.muted{color:var(--muted);font-size:12px}.chat{max-width:850px;margin:0 auto}.msg{display:flex;margin:14px 0;gap:10px}.msg.user{justify-content:flex-end}.bubble{max-width:88%;padding:12px 15px;border:1px solid var(--line);background:#171717;border-radius:13px;white-space:pre-wrap;overflow-wrap:anywhere}.user .bubble{background:#292316}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}.tile,.panel{border:1px solid var(--line);background:linear-gradient(145deg,#171717,#211b11);border-radius:14px;padding:17px}.tile{text-align:left;color:var(--text);min-height:110px}.tile:hover{border-color:var(--gold)}.tile b{display:block;margin:7px 0}.tile small{color:var(--muted)}.module{--accent:#d2ad59;--m-bg:#151515;--m-panel:#211b11;--m-line:#4b3c20;background:var(--m-bg);border:1px solid var(--m-line);border-radius:18px;padding:20px;min-height:65vh}.module h1{margin:0 0 4px;font-size:25px}.module-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--m-line);padding-bottom:15px}.module .panel{background:var(--m-panel);border-color:var(--m-line)}.module label{display:block;color:var(--accent);font-size:12px;margin:13px 0 6px}.module input,.module textarea,.module select,.field{width:100%;background:#0c0c0c;color:var(--text);border:1px solid var(--m-line);padding:11px;border-radius:9px}.module textarea{min-height:100px}.module .btn.primary{background:var(--accent);color:#111}.status{white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--m-line);background:#0b0b0b;border-radius:9px;padding:11px;margin-top:12px;color:#e8d49e;font-size:12px}
+.soul{--accent:#bd6b20;--m-bg:#fffaf0;--m-panel:#fff;--m-line:#ead3ad;color:#302216}.soul .muted{color:#79664f}.soul input,.soul textarea,.soul select{background:#fff;color:#302216}.soul .panel{box-shadow:0 5px 18px #8b5b1610}.english{--accent:#d18bff;--m-bg:#17112c;--m-panel:#21183b;--m-line:#5b3e82;background:radial-gradient(ellipse at top right,#3d1d5c,#17112c 60%)}.english .btn.primary{background:linear-gradient(100deg,#a855f7,#ff7b78,#399bff)}
+/* Latest approved theme: Fake Media Checker uses the global Black-Gold theme. */
+.checker{--accent:#d2ad59;--m-bg:#151515;--m-panel:#211b11;--m-line:#4b3c20;background:linear-gradient(145deg,#151515,#211b11)}
+.modal-bg{position:fixed;inset:0;background:#000b;z-index:80;display:none;align-items:center;justify-content:center;padding:15px}.modal{width:min(440px,100%);max-height:92vh;overflow:auto;background:#17150f;border:1px solid #6c552b;border-radius:17px;padding:23px}.modal h2{text-align:center;margin:5px 0}.modal input{width:100%;padding:11px;background:#090909;border:1px solid var(--line);border-radius:9px;color:white;margin:6px 0}.modal label{display:block;color:var(--gold2);font-size:12px;margin-top:12px}.modal .btn{width:100%;margin:7px 0}.divider{display:flex;align-items:center;gap:10px;color:#8f846f;font-size:11px;margin:12px 0}.divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}.footer{border-top:1px solid var(--line);padding:20px;text-align:center;color:var(--muted);font-size:11px}.footer a{color:var(--gold2);margin:0 8px}.backdrop{display:none}.backdrop.show{display:block;position:fixed;inset:0;background:#0009;z-index:35}.mobile-only{display:inline-flex;align-items:center;justify-content:center}.module-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}.module-feature-grid .tile{min-height:92px}.feature-screen{margin-top:18px}.feature-screen .panel{max-width:850px}.topbar .menu-toggle{min-width:40px;height:40px;padding:6px;font-size:20px}
+@media(max-width:850px){.grid,.module-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.sidebar{position:fixed;inset:0 auto 0 0;width:min(290px,86vw);height:100dvh;min-height:100dvh;transform:translateX(-110%);box-shadow:12px 0 35px #0009}.sidebar.open{transform:translateX(0)}.backdrop.show{display:block;position:fixed;inset:0;background:#0009;z-index:35}.content{padding:18px 12px}.grid,.module-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tile{padding:12px;min-height:105px}.topbar{padding:0 12px}.module{padding:13px}}
+@media(min-width:701px){.sidebar{transform:translateX(0)}.sidebar.collapsed{display:none}.sidebar.open{transform:translateX(0)}.backdrop.show{display:block;position:fixed;inset:0;background:#0008;z-index:35}}
+@media(max-width:390px){.grid,.module-feature-grid{grid-template-columns:1fr}.composer-tools{align-items:flex-start}}
 </style>
 </head>
 <body>
-<div class="backdrop" id="backdrop" onclick="closeSidebar()"></div>
+<div class="backdrop" id="backdrop" aria-hidden="true"></div>
 <div class="app">
-<aside class="sidebar" id="sidebar">
-  <div class="brand">NYAYVERSE AI</div>
-  <nav class="nav">
+<aside class="sidebar" id="sidebar" aria-label="NYAYVERSE AI navigation" aria-hidden="false">
+  <div class="sidebar-head"><div class="brand">NYAYVERSE AI</div><button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar" title="Close">×</button></div>
+  <nav class="nav" id="sidebarNav">
     <div class="nav-label">WORKSPACE</div>
     <button class="active" data-page="home">⌂ Main AI Chat</button>
     <button data-page="history">◷ Chat History</button><button data-page="saved">☆ Saved Answers</button><button data-page="searches">⌕ Recent Searches</button>
@@ -26,11 +34,11 @@
     <button data-page="image">✦ Create Image</button><button data-page="video">▶ Create Video</button><button data-page="checker">⌕ Fake Media Checker</button><button data-page="assistant">✧ Personal AI Assistant</button><button data-page="medical">✚ Medical & Healthcare AI</button><button data-page="english">文 English Learning</button><button data-page="divya">🪷 Divya Drishti · दिव्य दृष्टि</button>
     <div class="nav-label">MORE</div>
     <button data-page="projects">▦ Projects & Documents</button><button data-page="law">⚖ Law & Knowledge</button><button data-page="account">⚙ Account & Security</button><button data-page="plans">◇ Membership & Plans</button>
+    <div class="nav-label">POLICIES</div><button data-page="about">About NYAYVERSE AI</button><button data-page="terms">Terms & Conditions</button><button data-page="privacy">Privacy Policy</button><button data-page="agreement">User Agreement</button><button id="logoutBtn">↪ Sign Out</button>
   </nav>
-  <div class="sidebar-bottom nav"><div class="nav-label">POLICIES</div><button data-page="about">About NYAYVERSE AI</button><button data-page="terms">Terms & Conditions</button><button data-page="privacy">Privacy Policy</button><button data-page="agreement">User Agreement</button><button id="logoutBtn">↪ Sign Out</button></div>
 </aside>
 <main class="main">
-<header class="topbar"><div style="display:flex;align-items:center;gap:10px"><button class="icon-btn mobile-only" id="menuBtn" aria-label="Open menu">☰</button><strong>NYAYVERSE AI</strong></div><div class="top-actions"><button class="btn" id="loginTop">Log in</button></div></header>
+<header class="topbar"><div style="display:flex;align-items:center;gap:10px"><button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open sidebar" aria-expanded="false" aria-controls="sidebar">☰</button><strong>NYAYVERSE AI</strong></div><div class="top-actions"><button class="btn" id="loginTop">Log in</button></div></header>
 <section class="content">
 <div id="home">
   <div class="hero"><h1>Welcome to <span style="color:var(--gold2)">NYAYVERSE AI</span></h1><p>How can I help you?</p></div>
@@ -93,64 +101,114 @@
 <script>
 "use strict";
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-const ROUTES={chat:"",signup:"auth/signup",verifyEmail:"auth/verify-email",login:"auth/login",forgot:"auth/forgot-password",logout:"auth/logout",googleStart:"auth/google/start",
- image:"image/generate",video:"video/generate",checker:"media/check"};
-const $=id=>document.getElementById(id);let authMode="start",busy=false,aborter=null,recognition=null,selectedFiles=[];
+const ROUTES={chat:"",signup:"auth/signup",verifyEmail:"auth/verify-email",login:"auth/login",forgot:"auth/forgot-password",logout:"auth/logout",googleStart:"auth/google/start",image:"image/generate",video:"video/generate",checker:"media/check"};
+const $=id=>document.getElementById(id);let authMode="start",busy=false,aborter=null,recognition=null,selectedFiles=[],currentPage="home",currentModule=null,currentFeature=null;
 const token=()=>localStorage.getItem("nyayverse_auth_token")||"";
 function headers(){const h={"Content-Type":"application/json"};if(token())h.Authorization="Bearer "+token();return h}
 async function request(path,body,method="POST",signal){const r=await fetch(API_URL+path,{method,headers:headers(),...(body===undefined?{}:{body:JSON.stringify(body)}),signal});const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw new Error(d.error||d.message||"The service is temporarily unavailable.");return d}
 function showStatus(msg){$("authMessage").textContent=msg}
-function openAuth(){ $("authModal").style.display="flex";authMode="start";$("authStart").classList.remove("hidden");$("authFields").classList.add("hidden");$("authTitle").textContent="Welcome to NYAYVERSE AI"}
-function closeAuth(){ $("authModal").style.display="none" }
-function authFormMode(mode){authMode=mode;$("authStart").classList.add("hidden");$("authFields").classList.remove("hidden");$("authMessage").textContent="";
-  $("nameWrap").classList.toggle("hidden",mode!=="signup");$("confirmWrap").classList.toggle("hidden",mode!=="signup");$("consentWrap").classList.toggle("hidden",mode!=="signup");
-  $("passwordWrap").classList.toggle("hidden",mode==="forgot"||mode==="verify");$("otpWrap").classList.toggle("hidden",mode!=="verify");
-  $("authTitle").textContent=mode==="signup"?"Create your account":mode==="verify"?"Verify your email":mode==="forgot"?"Reset your password":"Log in";
-  $("authSubmit").textContent=mode==="signup"?"Create account":mode==="verify"?"Verify OTP":mode==="forgot"?"Send reset instructions":"Log in";
-  $("forgotLink").classList.toggle("hidden",mode!=="login");
-  $("authEmail").value=$("entryEmail").value.trim();
+function openAuth(){$("authModal").style.display="flex";authMode="start";$("authStart").classList.remove("hidden");$("authFields").classList.add("hidden");$("authTitle").textContent="Welcome to NYAYVERSE AI"}
+function closeAuth(){$("authModal").style.display="none"}
+function setSidebar(open){
+ const side=$("sidebar"),back=$("backdrop"),btn=$("menuBtn");
+ side.classList.toggle("open",open);side.classList.toggle("collapsed",!open&&window.innerWidth>700);
+ back.classList.toggle("show",open);side.setAttribute("aria-hidden",String(!open&&window.innerWidth<=700));
+ btn.setAttribute("aria-expanded",String(open));btn.setAttribute("aria-label",open?"Close sidebar":"Open sidebar");
+ document.body.classList.toggle("sidebar-lock",open&&window.innerWidth<=700);
 }
-function navigate(page){closeSidebar();$("home").classList.toggle("hidden",page!=="home");$("page").classList.toggle("hidden",page==="home");document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));if(page==="home")return;renderPage(page)}
-function closeSidebar(){$("sidebar").classList.remove("open");$("backdrop").classList.remove("show")}
-function moduleShell(title,desc,cls,body){$("page").className="";$("page").innerHTML=`<section class="module ${cls||""}"><div class="module-head"><div><h1>${title}</h1><div class="muted">${desc}</div></div><button class="btn" id="backHome">← Back</button></div>${body}</section>`;$("backHome").onclick=()=>navigate("home")}
+function toggleSidebar(){const open=$("sidebar").classList.contains("open")||(!$("sidebar").classList.contains("collapsed")&&window.innerWidth>700);setSidebar(!open)}
+function closeSidebar(){setSidebar(false)}
+function buildSidebar(page){
+ const nav=$("sidebarNav");
+ const global=`<div class="nav-label">WORKSPACE</div><button data-page="home">⌂ Main AI Chat</button><button data-page="history">◷ Chat History</button><button data-page="saved">☆ Saved Answers</button><button data-page="searches">⌕ Recent Searches</button><div class="nav-label">SPECIALIST MODULES</div><button data-page="image">✦ Create Image</button><button data-page="video">▶ Create Video</button><button data-page="checker">⌕ Fake Media Checker</button><button data-page="assistant">✧ Personal AI Assistant</button><button data-page="medical">✚ Medical & Healthcare AI</button><button data-page="english">文 English Learning</button><button data-page="divya">🪷 Divya Drishti · दिव्य दृष्टि</button><div class="nav-label">MORE</div><button data-page="projects">▦ Projects & Documents</button><button data-page="law">⚖ Law & Knowledge</button><button data-page="account">⚙ Account & Security</button><button data-page="plans">◇ Membership & Plans</button><div class="nav-label">POLICIES</div><button data-page="about">About NYAYVERSE AI</button><button data-page="terms">Terms & Conditions</button><button data-page="privacy">Privacy Policy</button><button data-page="agreement">User Agreement</button><button id="logoutBtn">↪ Sign Out</button>`;
+ if(moduleMeta[page]){
+  const m=moduleMeta[page];
+  nav.innerHTML=`<div class="nav-label">${m.label}</div><button data-module-home="${page}">⌂ ${m.title} Home</button><div class="nav-label">THIS MODULE'S FEATURES</div>${m.features.map((f,i)=>`<button data-feature="${i}" data-module="${page}">${f.icon} ${f.name}</button>`).join("")}`;
+ }else nav.innerHTML=global;
+ nav.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
+ nav.querySelectorAll("[data-feature]").forEach(b=>b.addEventListener("click",()=>openModuleFeature(b.dataset.module,Number(b.dataset.feature))));
+ nav.querySelectorAll("[data-module-home]").forEach(b=>b.addEventListener("click",()=>{closeSidebar();renderModuleHome(b.dataset.module)}));
+ const logout=$("logoutBtn");if(logout)logout.onclick=logoutUser;
+}
+function navigate(page){
+ closeSidebar();currentPage=page;currentModule=moduleMeta[page]?page:null;currentFeature=null;
+ $("home").classList.toggle("hidden",page!=="home");$("page").classList.toggle("hidden",page==="home");
+ buildSidebar(page);
+ if(page==="home")return;
+ renderPage(page);
+}
+function moduleShell(title,desc,cls,body){
+ $("page").className="";$("page").innerHTML=`<section class="module ${cls||""}"><div class="module-head"><div><h1>${title}</h1><div class="muted">${desc}</div></div><button class="btn" id="backHome">← Back to module home</button></div>${body}</section>`;
+ $("backHome").onclick=()=>currentModule?renderModuleHome(currentModule):navigate("home");
+}
 const moduleMeta={
- image:["Create Image","AI Image Workspace","",`<div class="panel"><label>Describe your image</label><textarea id="modulePrompt" placeholder="Describe the image you want to create..."></textarea><label>Reference image (optional)</label><input id="moduleFile" type="file" accept="image/*"><label>Aspect ratio</label><select id="ratio"><option>1:1</option><option>9:16</option><option>16:9</option><option>4:5</option></select><button class="btn primary" id="moduleRun">Generate Image</button><div class="status" id="moduleStatus">Generation service must be enabled and verified in Worker.</div></div>`],
- video:["Create Video","AI Video Workspace","",`<div class="panel"><label>Describe your video</label><textarea id="modulePrompt" placeholder="Describe scenes, motion and style..."></textarea><label>Reference image/video (if supported)</label><input id="moduleFile" type="file" accept="image/*,video/*"><label>Duration (provider-supported)</label><select id="duration"><option>5 seconds</option><option>10 seconds</option><option>15 seconds</option></select><button class="btn primary" id="moduleRun">Generate Video</button><div class="status" id="moduleStatus">Video queue/status adapter must be verified in Worker.</div></div>`],
- checker:["Fake Media Checker","Image, video and audio forensics","checker",`<div class="panel"><label>Upload media</label><input id="moduleFile" type="file" accept="image/*,video/*,audio/*"><label>Optional instructions</label><textarea id="modulePrompt" placeholder="What should be checked?"></textarea><button class="btn primary" id="moduleRun">Analyze Media</button><div class="status" id="moduleStatus">Analysis reports must include confidence and limitations.</div></div>`],
- assistant:["Personal AI Assistant","Your user-controlled personal workspace","",`<div class="panel"><label>What would you like help with?</label><textarea id="modulePrompt" placeholder="Plan my day, organize a task, draft a document..."></textarea><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">Memory, planner and document actions require their protected backend services.</div></div>`],
- medical:["Medical & Healthcare AI","Medical information and report understanding","",`<div class="panel"><label>Ask a health information question</label><textarea id="modulePrompt" placeholder="What would you like explained?"></textarea><label>Attach report or prescription (optional)</label><input id="moduleFile" type="file" accept="image/*,.pdf"><button class="btn primary" id="moduleRun">Analyze / Ask</button><div class="status" id="moduleStatus">Informational only; not a diagnosis. Unclear handwriting or doses must not be guessed.</div></div>`],
- english:["English Learning","Friendly AI Tutor","english",`<div class="panel"><label>Choose practice</label><select id="lesson"><option>Daily vocabulary with Hindi meaning</option><option>Daily life sentences</option><option>Grammar and sentence formation</option><option>Speaking practice</option><option>Interview preparation</option><option>Writing correction</option></select><label>Your answer / request</label><textarea id="modulePrompt" placeholder="Let's practice English..."></textarea><button class="btn primary" id="moduleRun">Start Practice</button><div class="status" id="moduleStatus">Voice/pronunciation features depend on configured speech services.</div></div>`],
- divya:["Divya Drishti · दिव्य दृष्टि","Panchang • Kundali • Muhurat","soul",`<div class="grid"><button class="tile" data-tool="Daily Panchang">🪷<b>Daily Panchang</b><small>Tithi, Nakshatra, Yoga, Karana</small></button><button class="tile" data-tool="Janma Kundali">☼<b>Janma Kundali</b><small>Birth chart and Dasha</small></button><button class="tile" data-tool="Shubh Muhurat">✧<b>Shubh Muhurat</b><small>Event, place and date range</small></button><button class="tile" data-tool="Kundali Milan">♡<b>Kundali Milan</b><small>Details for both persons</small></button><button class="tile" data-tool="Horoscope">☾<b>Horoscope</b><small>Rashi and Nakshatra</small></button><button class="tile" data-tool="Astrologer Consultation">♧<b>Astrologer Consultation</b><small>Consultation request</small></button></div><div class="panel"><p>Explore More: regional calendars, D1–D60, Vimshottari Dasha, Ashta Kuta, Dosha/Yoga, festivals, vrat, puja, mantras, Vastu, numerology, palmistry, tarot and other approved tools.</p><label>Your question / details</label><textarea id="modulePrompt" placeholder="अपना प्रश्न लिखें / Enter your question..."></textarea><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">Astrology is interpretive guidance, not guaranteed prediction.</div></div>`]
+ image:{title:"Create Image",desc:"AI Image Workspace",label:"CREATE IMAGE",cls:"",features:[
+  {name:"Text to Image",icon:"✦",desc:"Create a new image from a written prompt."},{name:"Image to Image",icon:"▧",desc:"Use an uploaded reference image to guide a new result."},{name:"Edit Image",icon:"✎",desc:"Describe the edits you want applied to an image."},{name:"Style & Aspect Ratio",icon:"◈",desc:"Choose a visual style and output dimensions."},{name:"Generation History",icon:"◷",desc:"Review previously generated images when history is connected."}]},
+ video:{title:"Create Video",desc:"AI Video Workspace",label:"CREATE VIDEO",cls:"",features:[
+  {name:"Text to Video",icon:"▶",desc:"Create a video from a written scene description."},{name:"Image to Video",icon:"▧",desc:"Animate a supported reference image."},{name:"Video Style & Motion",icon:"◈",desc:"Set visual style, camera movement and motion direction."},{name:"Duration & Format",icon:"◷",desc:"Choose provider-supported duration and aspect ratio."},{name:"Video History",icon:"▤",desc:"Review previous video jobs when history is connected."}]},
+ checker:{title:"Fake Media Checker",desc:"Image, video and audio forensics",label:"FAKE MEDIA CHECKER",cls:"checker",features:[
+  {name:"Image Authenticity",icon:"▧",desc:"Inspect an image for manipulation indicators."},{name:"Video Deepfake Check",icon:"▶",desc:"Analyze a video for synthetic-media indicators."},{name:"Audio Deepfake Check",icon:"♫",desc:"Analyze audio for possible synthetic or altered content."},{name:"Metadata & Provenance",icon:"⌕",desc:"Review available metadata and provenance signals."},{name:"Analysis Reports",icon:"▤",desc:"Review reports, confidence and limitations when available."}]},
+ assistant:{title:"Personal AI Assistant",desc:"Your user-controlled personal workspace",label:"PERSONAL AI ASSISTANT",cls:"",features:[
+  {name:"Personal AI Chat",icon:"✧",desc:"Ask for help with personal and work tasks."},{name:"Planner & Tasks",icon:"☑",desc:"Organize tasks, priorities and schedules."},{name:"Documents & Writing",icon:"▤",desc:"Draft and organize documents and messages."},{name:"Research & Verification",icon:"⌕",desc:"Research topics and verify current information."},{name:"Career & Learning",icon:"▣",desc:"Prepare for interviews, learning and career goals."},{name:"Projects & Ideas",icon:"▦",desc:"Organize project plans and ideas."},{name:"Voice Assistant",icon:"🎙",desc:"Use voice where supported by the browser and backend."}]},
+ medical:{title:"Medical & Healthcare AI",desc:"Medical information and report understanding",label:"MEDICAL & HEALTHCARE AI",cls:"",features:[
+  {name:"Health Information",icon:"✚",desc:"Understand general health topics and terminology."},{name:"Report Explanation",icon:"▤",desc:"Explain uploaded laboratory or medical reports."},{name:"Prescription Understanding",icon:"▧",desc:"Help interpret clearly readable prescription text; never guess unclear doses."},{name:"Medicine Information",icon:"℞",desc:"General medicine information and safety considerations."},{name:"Health Summary",icon:"▣",desc:"Organize information to discuss with a qualified clinician."}]},
+ english:{title:"English Learning",desc:"Friendly AI Tutor",label:"ENGLISH LEARNING",cls:"english",features:[
+  {name:"Daily Vocabulary",icon:"文",desc:"Learn useful English words with meanings."},{name:"Daily Sentences",icon:"✎",desc:"Practice everyday English sentences with Hindi support."},{name:"Grammar & Formation",icon:"▤",desc:"Learn grammar and build correct sentences."},{name:"Speaking Practice",icon:"🎙",desc:"Practice conversations and spoken English."},{name:"Pronunciation & Listening",icon:"♫",desc:"Practice listening and pronunciation where voice services are available."},{name:"Interview Preparation",icon:"▣",desc:"Practice job interviews and workplace conversations."},{name:"Writing Correction",icon:"✓",desc:"Improve your written English."}]},
+ divya:{title:"Divya Drishti · दिव्य दृष्टि",desc:"Panchang • Kundali • Muhurat",label:"दिव्य दृष्टि · DIVYA DRISHTI",cls:"soul",features:[
+  {name:"अपना भविष्य जानें · Know Your Future",icon:"✧",desc:"जन्म विवरण के आधार पर पारंपरिक ज्योतिषीय मार्गदर्शन। Interpretive guidance, not guaranteed prediction."},{name:"Daily Panchang",icon:"🪷",desc:"Tithi, Nakshatra, Yoga and Karana."},{name:"Janma Kundali",icon:"☼",desc:"Birth chart and Dasha."},{name:"Shubh Muhurat",icon:"✧",desc:"Event, location and preferred date range."},{name:"Kundali Milan",icon:"♡",desc:"Compatibility details for both persons."},{name:"Daily Horoscope",icon:"☾",desc:"Rashi and Nakshatra based horoscope."},{name:"Astrologer Consultation",icon:"♧",desc:"Consultation request and service information."},{name:"Vrat, Festivals & Calendar",icon:"☼",desc:"Hindu calendar, observances and festivals."},{name:"Vastu, Mantra & Spiritual Tools",icon:"ॐ",desc:"Vastu, puja, mantras and spiritual resources."},{name:"Numerology, Palmistry & Tarot",icon:"✧",desc:"Traditional interpretive tools."},{name:"Dosha, Dasha & Divisional Charts",icon:"◈",desc:"Dasha, dosha and D1–D60 chart tools."}]}
 };
+function renderModuleHome(p){
+ currentPage=p;currentModule=p;currentFeature=null;buildSidebar(p);closeSidebar();
+ const m=moduleMeta[p];if(!m)return;
+ const cards=m.features.slice(0,p==="divya"?7:Math.min(6,m.features.length));
+ const html=`<div class="module-feature-grid">${cards.map((f,i)=>`<button class="tile" data-home-feature="${i}"><span>${f.icon}</span><b>${f.name}</b><small>${f.desc}</small></button>`).join("")}</div><div class="panel"><p class="muted">Explore this module's complete feature list from its Sidebar. Choose a feature to open its workspace.</p></div>`;
+ moduleShell(m.title,m.desc,m.cls,html);
+ $("backHome").textContent="← Main AI Chat";
+ $("backHome").onclick=()=>navigate("home");
+ $("page").querySelectorAll("[data-home-feature]").forEach(b=>b.onclick=()=>openModuleFeature(p,Number(b.dataset.homeFeature)));
+}
+function openModuleFeature(p,index){
+ closeSidebar();currentPage=p;currentModule=p;currentFeature=index;buildSidebar(p);
+ const m=moduleMeta[p],f=m?.features[index];if(!f)return;
+ let body="";
+ if(p==="divya"){
+  body=`<div class="panel"><p>${f.desc}</p><label>जन्म तिथि / Date of birth (if relevant)</label><input id="birthDate" type="date"><label>जन्म समय / Time of birth (if relevant)</label><input id="birthTime" type="time"><label>जन्म स्थान / Place (if relevant)</label><input id="birthPlace" placeholder="City, State, Country"><label>Event / प्रश्न / Details</label><textarea id="modulePrompt" placeholder="अपना प्रश्न लिखें / Enter your question..."></textarea><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">Astrology is traditional interpretive guidance, not a guaranteed prediction. Location and date are required for location-sensitive calculations.</div></div>`;
+ }else if(p==="image"){
+  body=`<div class="panel"><p>${f.desc}</p><label>Describe your image or requested edit</label><textarea id="modulePrompt" placeholder="Describe the image you want..."></textarea><label>Reference image (optional)</label><input id="moduleFile" type="file" accept="image/*"><label>Aspect ratio</label><select id="ratio"><option>1:1</option><option>9:16</option><option>16:9</option><option>4:5</option></select><button class="btn primary" id="moduleRun">Generate Image</button><div class="status" id="moduleStatus">Image generation requires an eligible server-side entitlement and configured provider.</div></div>`;
+ }else if(p==="video"){
+  body=`<div class="panel"><p>${f.desc}</p><label>Describe your video</label><textarea id="modulePrompt" placeholder="Describe scenes, motion and style..."></textarea><label>Reference image/video (if supported)</label><input id="moduleFile" type="file" accept="image/*,video/*"><label>Duration</label><select id="duration"><option>5 seconds</option><option>10 seconds</option><option>15 seconds</option></select><button class="btn primary" id="moduleRun">Generate Video</button><div class="status" id="moduleStatus">Video creation is available only to eligible Premium Video members when backend services are enabled.</div></div>`;
+ }else if(p==="checker"){
+  body=`<div class="panel"><p>${f.desc}</p><label>Upload image, video or audio</label><input id="moduleFile" type="file" accept="image/*,video/*,audio/*"><label>Optional instructions</label><textarea id="modulePrompt" placeholder="What should be checked?"></textarea><button class="btn primary" id="moduleRun">Analyze Media</button><div class="status" id="moduleStatus">Results must explain confidence, evidence and limitations; no detector can guarantee authenticity.</div></div>`;
+ }else if(p==="medical"){
+  body=`<div class="panel"><p>${f.desc}</p><label>Your question / details</label><textarea id="modulePrompt" placeholder="What would you like explained?"></textarea><label>Attach report or prescription (optional)</label><input id="moduleFile" type="file" accept="image/*,.pdf"><button class="btn primary" id="moduleRun">Analyze / Ask</button><div class="status" id="moduleStatus">Informational support only, not diagnosis or a substitute for a clinician. Unclear handwriting or dosage must not be guessed.</div></div>`;
+ }else if(p==="english"){
+  body=`<div class="panel"><p>${f.desc}</p><label>Practice request</label><textarea id="modulePrompt" placeholder="Write a sentence or tell me what you want to practice..."></textarea><button class="btn primary" id="moduleRun">Start Practice</button><div class="status" id="moduleStatus">Speaking and pronunciation require browser or configured speech services.</div></div>`;
+ }else{
+  body=`<div class="panel"><p>${f.desc}</p><label>What would you like help with?</label><textarea id="modulePrompt" placeholder="Describe your request..."></textarea><label>Attach a relevant file (optional)</label><input id="moduleFile" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,image/*"><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">This workspace requires its matching authenticated backend service. This screen does not imply that an unconnected feature is live.</div></div>`;
+ }
+ moduleShell(f.name,f.desc,m.cls,`<div class="feature-screen">${body}</div>`);
+ $("backHome").onclick=()=>renderModuleHome(p);
+ const run=$("moduleRun");if(run)run.onclick=()=>runModule(p);
+}
 function renderPage(p){
- if(moduleMeta[p]){const m=moduleMeta[p];moduleShell(m[0],m[1],m[2],m[3]);const run=$("moduleRun");if(run)run.onclick=()=>runModule(p);document.querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{$("modulePrompt").value="I want help with: "+b.dataset.tool});return}
+ if(moduleMeta[p]){renderModuleHome(p);return}
  const pages={
- history:["Chat History","Your saved conversation history is loaded from your account after backend integration."],
- saved:["Saved Answers","Saved responses and notes are account-specific."],
- searches:["Recent Searches","Recent searches are account-specific."],
- projects:["Projects & Documents","Create and manage research, writing and document projects."],
- law:["Law & Knowledge","Ask Main AI Chat for current Indian law, judgments and official sources. No separate education panel."],
- account:["Account & Security","Manage verified account, password, sessions and privacy settings."],
- plans:["Membership & Plans","Plans and credits are proposals until the server-side catalog and payment checks are completed."],
- about:["About NYAYVERSE AI","NYAYVERSE AI is a multilingual AI platform with one universal chat and seven specialist workspaces."],
- terms:["Terms & Conditions","Publish reviewed service terms before public launch. The final text must match actual service behavior."],
- privacy:["Privacy Policy","Publish an accurate policy describing data, AI providers, files, voice, retention, deletion, user rights and grievance handling."],
- agreement:["User Agreement","Explain user consent, responsibilities and acceptable use; obtain required consent without pre-checked boxes."]
+ history:["Chat History","Your saved conversation history is loaded from your account after backend integration."],saved:["Saved Answers","Saved responses and notes are account-specific."],searches:["Recent Searches","Recent searches are account-specific."],projects:["Projects & Documents","Create and manage research, writing and document projects."],law:["Law & Knowledge","Ask Main AI Chat for current Indian law, judgments and official sources. No separate education panel."],account:["Account & Security","Manage verified account, password, sessions and privacy settings."],plans:["Membership & Plans","Plans and credits are proposals until the server-side catalog and payment checks are completed."],about:["About NYAYVERSE AI","NYAYVERSE AI is a multilingual AI platform with one universal chat and seven specialist workspaces."],terms:["Terms & Conditions","Publish reviewed service terms before public launch. The final text must match actual service behavior."],privacy:["Privacy Policy","Publish an accurate policy describing data, AI providers, files, voice, retention, deletion, user rights and grievance handling."],agreement:["User Agreement","Explain user consent, responsibilities and acceptable use; obtain required consent without pre-checked boxes."]
  };
  const x=pages[p]||["NYAYVERSE AI","Page not found."];
  moduleShell(x[0],x[1],"",`<div class="panel"><p>${x[1]}</p><p class="muted">This information page is a frontend placeholder until the reviewed content and matching backend behavior are published.</p></div>`);
 }
 async function runModule(key){
- const prompt=$("modulePrompt")?.value.trim()||"";const file=$("moduleFile")?.files?.[0];if(!prompt&&!file){$("moduleStatus").textContent="Enter a request or choose a file.";return}
+ const prompt=$("modulePrompt")?.value.trim()||"",file=$("moduleFile")?.files?.[0];
+ if(!prompt&&!file){$("moduleStatus").textContent="Enter a request or choose a file.";return}
  const route=key==="image"?ROUTES.image:key==="video"?ROUTES.video:key==="checker"?ROUTES.checker:null;
  if(!route){$("moduleStatus").textContent="The matching authenticated Worker endpoint is not yet wired in this frontend build. Do not treat this control as live.";return}
  if(!token()){openAuth();return}
  $("moduleStatus").textContent="Preparing secure request…";
  try{
   const payload={prompt,action:key,aspect_ratio:$("ratio")?.value,duration:$("duration")?.value};
-  if(file){payload.file_name=file.name;payload.file_type=file.type;payload.file_size=file.size;payload.note="Upload transport must be implemented server-side; do not send secrets or trust client metadata."}
-  const result=await request(route,payload);
-  $("moduleStatus").textContent=JSON.stringify(result,null,2);
+  if(file){payload.file_name=file.name;payload.file_type=file.type;payload.file_size=file.size;payload.note="Upload transport is not implemented by this metadata-only request."}
+  const result=await request(route,payload);$("moduleStatus").textContent=JSON.stringify(result,null,2);
  }catch(e){$("moduleStatus").textContent="Request failed: "+e.message}
 }
 function addMessage(text,who){const row=document.createElement("div");row.className="msg "+who;const b=document.createElement("div");b.className="bubble";b.textContent=text;row.appendChild(b);$("chat").appendChild(row);row.scrollIntoView({behavior:"smooth",block:"end"});return b}
@@ -161,22 +219,24 @@ async function sendChat(){
  addMessage(prompt||"Please analyze the attached files.","user");$("prompt").value="";const reply=addMessage("Thinking…","ai");
  try{
   const attachments=[];for(const f of selectedFiles){if(f.size>20*1024*1024)throw new Error("A selected file exceeds the 20 MB frontend safety limit.");attachments.push({name:f.name,type:f.type,size:f.size})}
-  const d=await request(ROUTES.chat,{message:prompt,language:detectLanguage(prompt),attachments,provider_policy:"server-managed"}, "POST",aborter.signal);
+  const d=await request(ROUTES.chat,{message:prompt,language:detectLanguage(prompt),attachments,provider_policy:"server-managed"},"POST",aborter.signal);
   reply.textContent=d.reply||d.response||d.answer||d.text||"The service returned no readable answer.";
  }catch(e){reply.textContent=e.name==="AbortError"?"Request stopped.":("I could not complete this request: "+e.message+" Please retry shortly.");}
  finally{busy=false;aborter=null;$("sendBtn").disabled=false;$("stopBtn").disabled=true;selectedFiles=[];$("files").value="";$("fileInfo").textContent="Ask in your preferred language · Attach files or use voice"}
 }
+async function logoutUser(){try{if(token())await request(ROUTES.logout,{})}catch(e){}localStorage.removeItem("nyayverse_auth_token");$("loginTop").textContent="Log in";navigate("home")}
 $("sendBtn").onclick=sendChat;$("stopBtn").onclick=()=>aborter?.abort();$("prompt").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat()}});
 $("attachBtn").onclick=()=>$("files").click();$("files").onchange=e=>{selectedFiles=Array.from(e.target.files||[]).slice(0,5);$("fileInfo").textContent=selectedFiles.map(f=>f.name).join(", ")||"No files selected"};
 $("micBtn").onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("Voice input is not supported in this browser.");return}recognition=new SR();recognition.lang="hi-IN";recognition.interimResults=false;recognition.onresult=e=>$("prompt").value+=($("prompt").value?" ":"")+e.results[0][0].transcript;recognition.onerror=e=>alert("Voice input error: "+e.error);recognition.start()};
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",e=>{e.preventDefault();navigate(b.dataset.page)}));
-$("menuBtn").onclick=()=>{$("sidebar").classList.add("open");$("backdrop").classList.add("show")};
+$("menuBtn").onclick=toggleSidebar;$("sidebarClose").onclick=closeSidebar;$("backdrop").onclick=closeSidebar;
 $("loginTop").onclick=openAuth;$("closeAuth").onclick=closeAuth;$("authModal").addEventListener("click",e=>{if(e.target===$("authModal"))closeAuth()});
 $("googleBtn").onclick=()=>{window.location.href=API_URL+ROUTES.googleStart+"?return_to="+encodeURIComponent(location.origin+location.pathname)};
 $("continueEmail").onclick=()=>{const email=$("entryEmail").value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert("Enter a valid email address.");return}authFormMode("login")};
 $("createLink").onclick=e=>{e.preventDefault();authFormMode("signup")};
 $("forgotLink").onclick=()=>authFormMode("forgot");
 $("authBack").onclick=()=>{authFormMode("start");$("authStart").classList.remove("hidden");$("authFields").classList.add("hidden")};
+function authFormMode(mode){authMode=mode;$("authStart").classList.add("hidden");$("authFields").classList.remove("hidden");$("authMessage").textContent="";$("nameWrap").classList.toggle("hidden",mode!=="signup");$("confirmWrap").classList.toggle("hidden",mode!=="signup");$("consentWrap").classList.toggle("hidden",mode!=="signup");$("passwordWrap").classList.toggle("hidden",mode==="forgot"||mode==="verify");$("otpWrap").classList.toggle("hidden",mode!=="verify");$("authTitle").textContent=mode==="signup"?"Create your account":mode==="verify"?"Verify your email":mode==="forgot"?"Reset your password":"Log in";$("authSubmit").textContent=mode==="signup"?"Create account":mode==="verify"?"Verify OTP":mode==="forgot"?"Send reset instructions":"Log in";$("forgotLink").classList.toggle("hidden",mode!=="login");$("authEmail").value=$("entryEmail").value.trim()}
 $("authForm").onsubmit=async e=>{
  e.preventDefault();const email=$("authEmail").value.trim(),password=$("password").value;
  try{
@@ -188,20 +248,18 @@ $("authForm").onsubmit=async e=>{
    const d=await request(ROUTES.signup,{full_name:$("fullName").value.trim(),gender,email,password,consent:{terms:true,privacy:true}});
    authFormMode("verify");$("authEmail").value=email;$("authMessage").textContent=d.message||"We sent a verification code to your email. Enter it below.";
   }else if(authMode==="verify"){
-   const d=await request(ROUTES.verifyEmail,{email,otp:$("otp").value.trim()});
-   if(d.token)localStorage.setItem("nyayverse_auth_token",d.token);
-   $("authMessage").textContent=d.message||"Email verified. You can now sign in.";
-   authFormMode("login");$("authEmail").value=email;
+   const d=await request(ROUTES.verifyEmail,{email,otp:$("otp").value.trim()});if(d.token)localStorage.setItem("nyayverse_auth_token",d.token);$("authMessage").textContent=d.message||"Email verified. You can now sign in.";authFormMode("login");$("authEmail").value=email;
   }else if(authMode==="forgot"){
    const d=await request(ROUTES.forgot,{email});$("authMessage").textContent=d.message||"If the account exists, reset instructions have been sent.";
   }else{
-   const d=await request(ROUTES.login,{email,password});
-   if(!d.token)throw new Error("The login service did not return a session token.");
-   localStorage.setItem("nyayverse_auth_token",d.token);closeAuth();$("loginTop").textContent="My Account";
+   const d=await request(ROUTES.login,{email,password});if(!d.token)throw new Error("The login service did not return a session token.");localStorage.setItem("nyayverse_auth_token",d.token);closeAuth();$("loginTop").textContent="My Account";
   }
  }catch(err){showStatus(err.message)}
 };
-$("logoutBtn").onclick=async()=>{try{if(token())await request(ROUTES.logout,{})}catch(e){}localStorage.removeItem("nyayverse_auth_token");$("loginTop").textContent="Log in";navigate("home")};
+$("logoutBtn")?.addEventListener("click",logoutUser);
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSidebar();closeAuth()}});
+document.addEventListener("click",e=>{if(!$("sidebar").classList.contains("open"))return;if($("sidebar").contains(e.target)||$("menuBtn").contains(e.target))return;closeSidebar()});
+window.addEventListener("resize",()=>{if(window.innerWidth>700){$("sidebar").classList.remove("open");$("backdrop").classList.remove("show");document.body.classList.remove("sidebar-lock");$("sidebar").classList.remove("collapsed")}else if(!$("sidebar").classList.contains("open")){$("sidebar").classList.remove("collapsed");document.body.classList.remove("sidebar-lock")}});
+buildSidebar("home");setSidebar(false);
 </script>
 </body></html>
