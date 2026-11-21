@@ -1,260 +1,805 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PL4NJZZWWP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-PL4NJZZWWP');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090909">
-<meta name="description" content="Explore NYAYVERSE AI, an AI workspace for chat and Indian legal information, with more AI tools and learning features being developed.">
-<meta name="robots" content="index, follow">
-<title>NYAYVERSE AI – AI Chat & Legal Information</title>
+
+<title>NYAYVERSE AI – All-in-One AI Platform | Chat, Legal, Image & Video</title>
+<meta name="description" content="Explore NYAYVERSE AI, an all-in-one platform for universal chat, legal research, image and video creation, media verification, healthcare information, English learning and SoulSphere.">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://nyayverseai.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NYAYVERSE AI">
+<meta property="og:title" content="NYAYVERSE AI – All-in-One Platform">
+<meta property="og:description" content="Universal chat, legal research, image and video creation, media verification, healthcare information and learning.">
+<meta property="og:url" content="https://nyayverseai.com/">
+<meta property="og:image" content="https://nyayverseai.com/og-image.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NYAYVERSE AI – All-in-One Platform">
+<meta name="twitter:description" content="Explore the NYAYVERSE AI platform.">
+<meta name="twitter:image" content="https://nyayverseai.com/og-image.jpg">
+
 <style>
-:root{--bg:#090909;--panel:#141414;--panel2:#201c14;--border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;--accent:#c9a44c;--accent2:#e2c477}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}
-.sidebar{width:250px;min-width:250px;flex-basis:250px;background:#0d0d0c;border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;gap:17px;flex-shrink:0;transition:.25s;overflow-x:hidden}
-.logo{display:flex;align-items:center;gap:10px;padding:6px}.logo-icon,.hero-logo{background:linear-gradient(135deg,#9c762d,#e3c477);color:#111;display:grid;place-items:center;font-weight:bold}.logo-icon{width:42px;height:42px;border-radius:13px;font-size:22px}.logo h2{font-size:16px;margin:0;letter-spacing:1px}.logo small{font-size:10px;color:var(--muted)}.sidebar-head{display:flex;align-items:center;justify-content:space-between}.sidebar-close{display:none;background:none;border:0;color:white;font-size:25px}.nav-title{font-size:10px;color:#a18a5c;margin:10px 8px 5px}.nav-item{display:block;width:100%;padding:11px 12px;margin:3px 0;text-align:left;background:transparent;color:#d5cbb9;border:0;border-radius:9px;font-size:13px}.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}.sidebar-bottom{margin-top:auto}.main{flex:1;min-width:0;display:flex;flex-direction:column}.topbar{min-height:65px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 22px;background:#0d0d0c;gap:10px}.topbar h3{font-size:15px;margin:0}.top-actions{display:flex;gap:8px;align-items:center}.small-btn,.secondary-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}.mobile-menu{display:block}.sidebar-backdrop{display:none}
-@media(min-width:701px){.sidebar.desktop-closed{width:0!important;min-width:0!important;flex-basis:0!important;padding-left:0!important;padding-right:0!important;border-right:0!important;overflow:hidden!important}}
-.content{width:100%;max-width:1150px;margin:auto;padding:25px 20px;flex:1}.hero{text-align:center;margin:18px auto 25px}.hero h1{font-size:29px;margin:0 0 10px}.hero p{color:var(--muted);font-size:15px;line-height:1.6}.gradient{background:linear-gradient(90deg,#c9a44c,#f2d990);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-logo{width:60px;height:60px;margin:auto auto 15px;border-radius:18px;font-size:28px}.section-heading{font-size:17px;margin:25px 0 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}.card{background:linear-gradient(145deg,#171717,#201b12);border:1px solid var(--border);padding:18px;border-radius:14px;color:var(--text);text-align:left;min-height:115px}.card:hover{border-color:var(--accent);transform:translateY(-2px)}.card .ico{font-size:25px;display:block;margin-bottom:10px}.card b{display:block;font-size:14px;margin-bottom:6px}.card small{color:var(--muted);font-size:11px;line-height:1.5}.panel{background:var(--panel);border:1px solid var(--border);padding:20px;border-radius:14px;margin:15px 0}.panel h2,.panel h3{margin-top:0}.panel p,.muted{color:var(--muted);font-size:13px;line-height:1.6}.label{display:block;font-size:12px;color:#dfc98e;margin:14px 0 7px}.field,textarea,select{width:100%;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:white;outline:none}textarea{min-height:110px;resize:vertical}.field:focus,textarea:focus,select:focus{border-color:var(--accent)}.primary-btn{padding:11px 17px;border:0;border-radius:9px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;font-weight:bold}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.status{margin-top:13px;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:#dfc98e;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.chat-area{display:flex;flex-direction:column;gap:15px;margin:20px 0}.message{display:flex;gap:10px;align-items:flex-start}.message.user{flex-direction:row-reverse}.avatar{width:32px;height:32px;flex-shrink:0;border-radius:10px;background:var(--panel2);display:grid;place-items:center}.bubble{max-width:85%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.user .bubble{background:#292316;border-color:#67532a}.composer{position:sticky;bottom:0;padding:12px;background:var(--bg);z-index:2}.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #66532e;border-radius:15px;padding:12px}.composer textarea{border:0;background:transparent;min-height:55px}.composer-bottom{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.composer-bottom small{color:var(--muted);font-size:10px}.send{border:0;border-radius:9px;padding:10px 17px;background:var(--accent2);font-weight:bold}.send:disabled{opacity:.5}.footer{text-align:center;color:#938873;font-size:10px;padding:16px}.badge{display:inline-block;padding:5px 9px;border:1px solid var(--border);border-radius:20px;font-size:10px;color:#dfc477;margin:3px}.modal-bg{display:none;position:fixed;inset:0;background:#000c;z-index:50;align-items:center;justify-content:center;padding:15px}.modal{width:100%;max-width:430px;max-height:90vh;overflow:auto;background:#17150f;border:1px solid var(--border);border-radius:16px;padding:23px}.modal input{margin:8px 0}.close{float:right;background:none;border:0;color:white;font-size:22px}.hidden{display:none!important}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:11px;border-bottom:1px solid var(--border);text-align:left}th{color:#dfc477}.link{color:#dfc477;text-decoration:none}
-.module-shell{--m-bg:#101018;--m-panel:#191925;--m-border:#37304f;--m-accent:#a78bfa;--m-accent2:#e9d5ff;background:radial-gradient(ellipse at 80% 0%,color-mix(in srgb,var(--m-accent) 15%,transparent),transparent 45%),var(--m-bg);border:1px solid var(--m-border);border-radius:20px;padding:22px;min-height:70vh}.module-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--m-border);padding-bottom:16px}.module-top h1{font-size:25px;margin:5px 0}.module-top p{color:#bcb9c9;font-size:13px;margin:4px 0}.module-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;margin-top:18px}.module-nav{background:color-mix(in srgb,var(--m-panel) 88%,transparent);border:1px solid var(--m-border);border-radius:14px;padding:12px;height:max-content}.module-nav details{border-bottom:1px solid var(--m-border);padding:7px 2px}.module-nav details:last-child{border:0}.module-nav summary{cursor:pointer;color:var(--m-accent2);font-size:12px;font-weight:bold;padding:7px;list-style:none}.module-nav summary:after{content:"＋";float:right}.module-nav details[open] summary:after{content:"−"}.module-nav button{display:block;width:100%;text-align:left;background:transparent;border:0;color:#d8d5e2;padding:9px;border-radius:8px;font-size:12px}.module-nav button:hover,.module-nav button.selected{background:color-mix(in srgb,var(--m-accent) 18%,transparent);color:white}.module-work{min-width:0}.module-work .panel{background:var(--m-panel);border-color:var(--m-border)}.module-work .primary-btn{background:linear-gradient(100deg,var(--m-accent),var(--m-accent2));color:#101018}.module-work .label{color:var(--m-accent2)}.module-work .field,.module-work textarea,.module-work select{border-color:var(--m-border)}.module-work .status{border-color:var(--m-border)}.module-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}.kpi{padding:14px;border:1px solid var(--m-border);background:var(--m-panel);border-radius:12px}.kpi b{display:block;font-size:17px;color:var(--m-accent2)}.kpi small{font-size:10px;color:#bcb9c9}.module-home-card{border:1px solid var(--m-border);background:var(--m-panel);padding:17px;border-radius:13px}.module-home-card b{display:block;margin-bottom:6px}.module-home-card small{color:#bcb9c9;line-height:1.5}.google-btn,.auth-choice{width:100%;padding:12px;margin:7px 0;background:#242018;border:1px solid #51452c;border-radius:10px;color:#f5f1e8;text-align:center}.auth-choice:hover,.google-btn:hover{border-color:var(--accent2)}.auth-divider{display:flex;align-items:center;gap:10px;color:#938873;font-size:11px;margin:12px 0}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:var(--border);flex:1}
-@media(max-width:850px){.sidebar{width:215px;min-width:215px;flex-basis:215px}}@media(max-width:700px){.sidebar{display:flex;position:fixed;z-index:25;top:0;bottom:0;left:0;width:280px;min-width:0;max-width:85vw;flex-basis:280px;overflow-y:auto;transform:translateX(-110%);box-shadow:10px 0 30px #0008;padding:20px 14px}.sidebar.open{transform:translateX(0)}.sidebar-close{display:block}.sidebar-backdrop{display:block;position:fixed;inset:0;background:#0009;z-index:24;opacity:0;visibility:hidden;transition:.2s}.sidebar-backdrop.open{opacity:1;visibility:visible}.topbar{padding:10px 12px}.content{padding:18px 12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.card{padding:13px;min-height:105px}.hero h1{font-size:23px}.bubble{max-width:90%;font-size:13px}.module-layout{grid-template-columns:1fr}.module-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.module-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.module-shell{padding:13px}}
-
-/* NYAYVERSE AI module workspaces: retain the platform's Black-Gold identity */
-.module-shell{--m-bg:#090909!important;--m-panel:#15130f!important;--m-border:#574522!important;--m-accent:#c9a44c!important;--m-accent2:#f0d58b!important;position:relative;overflow:hidden;background:radial-gradient(ellipse at 85% 0%,rgba(201,164,76,.17),transparent 38%),linear-gradient(135deg,#090909,#12100b 58%,#090909)!important;color:#f5f1e8!important}
-.module-shell:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(rgba(201,164,76,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(201,164,76,.08) 1px,transparent 1px);background-size:34px 34px}
-.module-shell>*{position:relative;z-index:1}
-.module-shell .module-nav,.module-shell .module-work .panel,.module-shell .kpi,.module-shell .module-home-card{background:rgba(21,19,15,.94)!important;border-color:#574522!important;color:#f5f1e8}
-.module-shell .module-nav summary,.module-shell .module-nav button:hover,.module-shell .module-nav button.selected,.module-shell .kpi b,.module-shell .module-nav button{color:#f0d58b}
-.module-shell .module-work .primary-btn{background:linear-gradient(100deg,#a47b2f,#e2c477)!important;color:#111!important}
-.module-shell .module-work .label{color:#e2c477!important}
-.module-shell .module-work .field,.module-shell .module-work textarea,.module-shell .module-work select{background:#0b0b0a!important;color:#fff!important;border-color:#574522!important}
-.module-shell .module-work .status{background:#0b0b0a!important;color:#e2c477;border-color:#574522!important}
-.module-shell .module-top p,.module-shell .muted,.module-shell .module-home-card small,.module-shell .kpi small{color:#c4b99f!important}
-.module-layout{grid-template-columns:minmax(0,245px) minmax(0,1fr)}
-.module-nav-wrap{min-width:0;transition:width .25s,opacity .2s}
-.module-layout.nav-collapsed{grid-template-columns:0 minmax(0,1fr)}
-.module-layout.nav-collapsed .module-nav-wrap{width:0;opacity:0;overflow:hidden;pointer-events:none}
-.module-nav-tools{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.module-nav-tools button{background:#211b10;border:1px solid #574522;color:#f0d58b;border-radius:8px;padding:7px 10px}
-.module-workbar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.module-workbar button{background:#211b10;border:1px solid #574522;color:#f0d58b;border-radius:8px;padding:8px 11px}
-.module-main-card{border:1px solid #715a2d!important;background:linear-gradient(145deg,rgba(25,22,16,.97),rgba(12,12,11,.98))!important}
-.module-main-card h2{color:#f0d58b}
-.module-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
-.module-feature{padding:13px;border:1px solid #574522;border-radius:11px;background:#17140e;color:#f5f1e8;text-align:left}
-.module-feature b{display:block;color:#f0d58b;margin-bottom:5px;font-size:13px}
-.module-feature small{color:#c4b99f;line-height:1.5}
-.module-domain-art{min-height:110px;border:1px solid #574522;border-radius:13px;margin:12px 0;padding:18px;display:flex;align-items:center;gap:16px;background:radial-gradient(circle at 80% 30%,rgba(201,164,76,.25),transparent 38%),linear-gradient(110deg,#21190c,#0d0d0b)}
-.module-domain-art .art-icon{font-size:42px}
-.module-shell.soul-theme{--m-bg:#281503!important;--m-panel:#3a210b!important;--m-border:#a96c1d!important;--m-accent:#e9a23b!important;--m-accent2:#ffe0a0!important;background:radial-gradient(ellipse at 80% 0%,rgba(255,153,35,.30),transparent 42%),linear-gradient(140deg,#241203,#4a2608 55%,#1b0e04)!important}
-.module-shell.soul-theme .module-nav,.module-shell.soul-theme .module-work .panel,.module-shell.soul-theme .kpi,.module-shell.soul-theme .module-home-card{background:rgba(54,29,7,.94)!important;border-color:#a96c1d!important}
-.module-shell.soul-theme .module-work .primary-btn{background:linear-gradient(100deg,#bd6c16,#ffd17a)!important}
-.module-shell.soul-theme .module-domain-art{background:radial-gradient(circle at 80% 30%,rgba(255,188,80,.3),transparent 40%),linear-gradient(110deg,#63320a,#2a1505)}
-.module-shell.medical-theme .module-domain-art{background:radial-gradient(circle at 80% 30%,rgba(93,174,190,.18),transparent 40%),linear-gradient(110deg,#211b11,#0b1111)}
-.module-shell.ai-theme .module-domain-art{background:radial-gradient(circle at 80% 30%,rgba(201,164,76,.24),transparent 40%),linear-gradient(110deg,#19150d,#090b0e)}
-.soul-language{display:flex;gap:8px;align-items:center;margin-left:auto}
-.soul-language select{width:auto;min-width:125px;padding:8px;background:#2a1707;color:#ffe0a0;border:1px solid #a96c1d;border-radius:8px}
-@media(max-width:700px){.module-layout{grid-template-columns:minmax(0,1fr)}.module-layout.nav-collapsed{grid-template-columns:minmax(0,1fr)}.module-nav-wrap{width:100%}.module-layout.nav-collapsed .module-nav-wrap{display:none}.module-nav{display:block!important}.module-nav details{width:100%}.module-feature-grid{grid-template-columns:1fr}.module-shell{padding:12px}}
-
+:root{
+ --bg:#090909;--panel:#141414;--panel2:#201c14;
+ --border:#3b3221;--text:#f5f1e8;--muted:#b5aa96;
+ --accent:#c9a44c;--accent2:#e2c477;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#0d0d0c;border-right:1px solid var(--border);padding:20px 15px;display:flex;flex-direction:column;gap:17px;flex-shrink:0;transition:.25s}
+.app.sidebar-collapsed .sidebar{width:0;padding:0;overflow:hidden;border:0}
+.logo{display:flex;align-items:center;gap:11px;padding:5px}
+.logo-icon,.hero-logo{background:linear-gradient(135deg,#9c762d,#e3c477);color:#111;display:grid;place-items:center;font-weight:bold}
+.logo-icon{width:42px;height:42px;border-radius:13px;font-size:22px}
+.logo h2{font-size:17px;margin:0;letter-spacing:1px}
+.logo small{color:var(--muted);font-size:10px}
+.new-chat,.primary-btn,.send{border:0;background:linear-gradient(100deg,#a47b2f,#e2c477);color:#111;font-weight:bold;border-radius:10px;padding:12px 15px}
+.new-chat{width:100%}
+.nav-title{font-size:11px;color:#a18a5c;margin:8px}
+.nav-item{display:block;width:100%;padding:10px 12px;margin:2px 0;text-align:left;background:transparent;color:#d5cbb9;border:0;border-radius:9px;font-size:13px}
+.nav-item:hover,.nav-item.active{background:var(--panel2);color:#f0cf79}
+.sidebar-bottom{margin-top:auto}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{min-height:66px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#0d0d0c;gap:10px}
+.top-left,.top-actions{display:flex;align-items:center;gap:10px}
+.topbar h3{font-size:15px;margin:0}
+.small-btn,.secondary-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:9px 12px;border-radius:9px}
+.content{width:100%;max-width:1150px;margin:0 auto;padding:25px 22px;flex:1}
+.hero{text-align:center;margin:20px auto 25px}
+.hero h1{font-size:29px;margin:0 0 10px}
+.gradient{background:linear-gradient(90deg,#c9a44c,#f2d990);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p,.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.home-prompt{font-size:20px!important}
+.studio-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:20px 0}
+.studio-card{background:linear-gradient(145deg,#171717,#201b12);border:1px solid var(--border);padding:17px;border-radius:15px;text-align:left;color:var(--text);min-height:115px;transition:.2s}
+.studio-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.studio-icon{font-size:27px;display:block;margin-bottom:12px;color:#d6b45d}
+.studio-card b{display:block;font-size:14px;margin-bottom:6px}
+.studio-card small{color:var(--muted);font-size:11px;line-height:1.5}
+.ai-assistant-card{border-color:#8a6b32}
+.composer{position:sticky;bottom:0;padding:12px 15px 18px;background:linear-gradient(transparent,var(--bg) 20%);z-index:2}
+.composer-inner{max-width:850px;margin:auto;background:var(--panel);border:1px solid #66532e;border-radius:16px;padding:12px;box-shadow:0 10px 35px #0005}
+.composer textarea{width:100%;resize:vertical;min-height:60px;max-height:170px;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:14px}
+.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.composer-bottom small,.disclaimer,.footer{color:#938873;font-size:10px}
+.voice-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.voice-tools button,.speak-btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px}
+.send{padding:9px 17px}
+.chat-area{display:none;flex-direction:column;gap:15px;margin:22px 0}
+.message{display:flex;gap:10px;align-items:flex-start}
+.avatar{flex-shrink:0;width:32px;height:32px;border-radius:10px;background:var(--panel2);display:grid;place-items:center}
+.bubble{max-width:88%;background:var(--panel);border:1px solid var(--border);padding:13px 15px;border-radius:4px 13px 13px 13px;line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user{flex-direction:row-reverse}
+.user .bubble{background:#292316;border-color:#67532a}
+.page-panel,.tool-panel,.workspace-panel{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:20px;margin:15px 0}
+.page-panel h2,.tool-panel h2,.workspace-panel h2{margin:0 0 10px}
+.page-panel p,.tool-panel p,.workspace-panel p{color:var(--muted);font-size:13px;line-height:1.7}
+.sub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:15px}
+.sub-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:13px;color:var(--text);text-align:left}
+.sub-card:hover{border-color:var(--accent)}
+.tool-label{display:block;font-size:12px;color:#dfc98e;margin:15px 0 7px}
+.tool-input,.tool-select,.tool-textarea{width:100%;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:10px;color:white;outline:none}
+.tool-textarea{min-height:110px;resize:vertical}
+.tool-input:focus,.tool-select:focus,.tool-textarea:focus{border-color:var(--accent)}
+.tool-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.tool-status{margin-top:14px;padding:12px;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:#dfc98e;font-size:12px;line-height:1.6;white-space:pre-wrap}
+.preview{display:none;max-width:100%;max-height:350px;margin-top:15px;border-radius:12px;border:1px solid var(--border)}
+.file-info{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
+.workspace-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:15px}
+.workspace-nav{background:#10100e;border:1px solid var(--border);border-radius:14px;padding:12px;height:max-content}
+.workspace-nav button{display:block;width:100%;padding:11px;text-align:left;background:transparent;border:0;border-radius:8px;color:#d5cbb9;font-size:12px}
+.workspace-nav button:hover,.workspace-nav button.active{background:var(--panel2);color:#f0cf79}
+.workspace-main{min-width:0}
+.workspace-section{margin-bottom:12px}
+.workspace-section summary{cursor:pointer;color:#dfc477;font-size:13px;padding:10px 0}
+.workspace-section .sub-card{width:100%;margin:4px 0}
+.modal-bg{display:none;position:fixed;inset:0;background:#000b;align-items:center;justify-content:center;padding:18px;z-index:10}
+.modal{width:100%;max-width:420px;max-height:90vh;overflow:auto;background:#17150f;border:1px solid var(--border);border-radius:18px;padding:24px}
+.modal h2{margin:0 0 7px}
+.modal p{font-size:12px;color:var(--muted);line-height:1.5}
+.modal input{display:block;width:100%;padding:13px;margin:12px 0;background:#0b0b0a;border:1px solid var(--border);border-radius:9px;color:white}
+.modal .primary{width:100%;padding:13px;background:linear-gradient(100deg,#a47b2f,#d7b45d);color:#111;border:0;border-radius:9px;font-weight:bold}
+.modal-links{display:flex;justify-content:space-between;gap:8px;margin-top:15px;flex-wrap:wrap}
+.modal-links button{background:none;border:0;color:#dfc477;font-size:12px}
+.close{float:right;background:none;border:0;color:white;font-size:22px}
+.footer{text-align:center;padding:15px;line-height:1.8}
+.footer a{color:#d7b45d;text-decoration:none;margin:0 5px}
+.disclaimer{text-align:center;margin:15px 0;line-height:1.6}
+.back-btn{margin-bottom:12px}
+@media(max-width:850px){.studio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){
+ .sidebar{display:none;position:fixed;z-index:8;inset:0 auto 0 0;width:270px;overflow:auto}
+ .sidebar.open{display:flex}
+ .topbar{padding:10px 13px}
+ .content{padding:17px 12px}
+ .hero h1{font-size:24px}
+ .workspace-layout{grid-template-columns:1fr}
+ .workspace-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .bubble{max-width:92%;font-size:13px}
+ .composer{padding:9px}
+ .sub-grid{grid-template-columns:1fr}
+ .topbar h3{font-size:13px}
+}
 </style>
 </head>
+
 <body>
-<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMenu()"></div>
-<div class="app">
+<div class="app" id="app">
+
 <aside class="sidebar" id="sidebar">
- <div class="sidebar-head"><div class="logo"><div class="logo-icon">⚖</div><div><h2>NYAYVERSE AI</h2><small>YOUR AI PLATFORM</small></div></div><button class="sidebar-close" onclick="closeMenu()">×</button></div>
- <button class="primary-btn" style="width:100%" onclick="newChat()">＋ New Chat</button>
- <div><div class="nav-title">WORKSPACE</div>
- <button class="nav-item active" onclick="showPage('home',this)">⌂ Home</button>
- <button class="nav-item" onclick="showPage('history',this)">◷ Chat History</button>
- <button class="nav-item" onclick="showPage('saved',this)">☆ Saved Answers</button>
- <button class="nav-item" onclick="showPage('projects',this)">📁 Projects</button></div>
- <div><div class="nav-title">AI SERVICES</div>
- <button class="nav-item" onclick="showPage('assistant',this)">✧ Personal AI Assistant</button>
- <button class="nav-item" onclick="showPage('medical',this)">🩺 Medical & Healthcare AI</button>
- <button class="nav-item" onclick="showPage('english',this)">📚 English Learning</button>
- <button class="nav-item" onclick="showPage('image',this)">🎨 Create Image</button>
- <button class="nav-item" onclick="showPage('video',this)">🎬 Create Video</button>
- <button class="nav-item" onclick="showPage('checker',this)">🔍 Fake Media Checker</button>
- <button class="nav-item" onclick="showPage('soulsphere',this)">🪷 SoulSphere</button></div>
- <div><div class="nav-title">ACCOUNT</div>
- <button class="nav-item" onclick="showPage('membership',this)">⭐ Membership & Plans</button>
- <button class="nav-item" onclick="showPage('credits',this)">🪙 Credits & Usage</button>
- <button class="nav-item" onclick="showPage('account',this)">⚙ Account & Security</button>
- <button class="nav-item" onclick="openAuth('welcome')">⇥ Login / Sign Up</button>
- <button class="nav-item" onclick="logout()">↪ Sign Out</button></div>
- <div><div class="nav-title">POLICIES & SUPPORT</div><button class="nav-item" onclick="showPage('policies',this)">Policies & Support</button></div>
- <div class="sidebar-bottom"><div class="nav-title">ADMINISTRATION</div><button class="nav-item hidden" id="adminNav" onclick="showPage('admin',this)">🛡 Admin Control Panel</button><button class="nav-item hidden" id="securityNav" onclick="showPage('security',this)">🔐 Security Operations</button><div class="nav-title">NYAYVERSE AI · BETA</div></div>
+ <div class="logo">
+  <div class="logo-icon">⚖</div>
+  <div><h2>NYAYVERSE AI</h2><small>ALL-IN-ONE PLATFORM</small></div>
+ </div>
+
+ <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+
+ <div>
+  <div class="nav-title">MAIN WORKSPACE</div>
+  <button class="nav-item active" data-nav="home" onclick="showHome()">⌂ Home</button>
+  <button class="nav-item" onclick="openUtility('Chat History')">◷ Chat History</button>
+  <button class="nav-item" onclick="openUtility('Saved Answers')">☆ Saved Answers</button>
+  <button class="nav-item" onclick="openUtility('Recent Searches')">⌕ Recent Searches</button>
+ </div>
+
+ <div>
+  <div class="nav-title">SPECIALIST TOOLS</div>
+  <button class="nav-item" onclick="openModule('image')">▧ Create Image</button>
+  <button class="nav-item" onclick="openModule('video')">▷ Create Video</button>
+  <button class="nav-item" onclick="openModule('checker')">◈ Fake Media Checker</button>
+  <button class="nav-item" onclick="openModule('assistant')">✧ Personal AI Assistant</button>
+  <button class="nav-item" onclick="openModule('medical')">✚ Medical & Healthcare AI</button>
+  <button class="nav-item" onclick="openModule('english')">文 English Learning</button>
+  <button class="nav-item" onclick="openModule('soul')">☯ SoulSphere</button>
+ </div>
+
+ <div>
+  <div class="nav-title">PLATFORM</div>
+  <button class="nav-item" onclick="openDepartment('projects')">📁 Projects</button>
+  <button class="nav-item" onclick="openDepartment('library')">⚖ Law Library</button>
+  <button class="nav-item" onclick="openDepartment('academy')">📚 Law Academy</button>
+  <button class="nav-item" onclick="openDepartment('exams')">🎓 Law Exams</button>
+  <button class="nav-item" onclick="openDepartment('news')">📰 Law News</button>
+  <button class="nav-item" onclick="openDepartment('cases')">⚖ Case Studies</button>
+  <button class="nav-item" onclick="openDepartment('history')">📜 Law History</button>
+ </div>
+
+ <div>
+  <div class="nav-title">ACCOUNT</div>
+  <button class="nav-item" onclick="openDepartment('account')">⚙ Account & Security</button>
+  <button class="nav-item" onclick="openModal('login')">⇥ Login / Sign Up</button>
+ </div>
+
+ <div class="sidebar-bottom">
+  <div class="nav-title">POLICIES</div>
+  <button class="nav-item" onclick="openDepartment('terms')">Terms & Conditions</button>
+  <button class="nav-item" onclick="openDepartment('privacy')">Privacy Policy</button>
+ </div>
 </aside>
+
 <main class="main">
-<header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="small-btn mobile-menu" onclick="toggleMenu()">☰</button><h3>⚖ NYAYVERSE AI</h3></div><div class="top-actions"><span class="muted" style="font-size:10px">AI Platform</span><button class="small-btn" id="authTop" onclick="openAuth('welcome')">Login</button></div></header>
-<section class="content" id="page">
-<div id="homePage">
- <div class="hero"><div class="hero-logo">⚖</div><h1>Hello! I am <span class="gradient">NYAYVERSE AI</span></h1><p>How can I help you?</p></div>
- <div class="composer" id="mainComposer"><div class="composer-inner"><textarea id="question" placeholder="Ask me anything..."></textarea><div class="composer-bottom"><small>Automatic response language detection</small><div class="actions"><input type="file" id="chatFiles" hidden multiple accept="image/*,video/*,application/pdf"><button class="secondary-btn" onclick="document.getElementById('chatFiles').click()">＋ Attach</button><button class="secondary-btn" onclick="voiceInput()">🎙 Voice</button><button class="send" id="sendBtn" onclick="sendChat()">Send ➤</button></div></div><div id="fileNames" class="muted"></div></div><div class="footer">AI can make mistakes. Verify important information.</div></div>
- <div id="chatArea" class="chat-area"></div>
- <h3 class="section-heading">Explore NYAYVERSE AI</h3>
- <div class="grid">
-  <button class="card" onclick="showPage('image')"><span class="ico">🎨</span><b>Create Image</b><small>AI image generation</small></button>
-  <button class="card" onclick="showPage('video')"><span class="ico">🎬</span><b>Create Video</b><small>AI video generation</small></button>
-  <button class="card" onclick="showPage('checker')"><span class="ico">🔍</span><b>Fake Media Checker</b><small>Image and video authenticity analysis</small></button>
-  <button class="card" onclick="showPage('assistant')"><span class="ico">✧</span><b>Personal AI Assistant</b><small>Your personalized AI companion</small></button>
-  <button class="card" onclick="showPage('medical')"><span class="ico">🩺</span><b>Medical & Healthcare AI</b><small>Reports and prescription understanding</small></button>
-  <button class="card" onclick="showPage('english')"><span class="ico">📚</span><b>English Learning</b><small>Speaking and learning practice</small></button>
-  <button class="card" onclick="showPage('soulsphere')"><span class="ico">🪷</span><b>SoulSphere</b><small>Spiritual Guidance</small></button>
+<header class="topbar">
+ <div class="top-left">
+  <button class="small-btn" onclick="toggleSidebar()">☰</button>
+  <h3>⚖ NYAYVERSE AI</h3>
+ </div>
+ <div class="top-actions">
+  <span style="font-size:11px;color:var(--muted)">Universal Workspace</span>
+  <button class="small-btn" onclick="openModal('login')">Login</button>
+ </div>
+</header>
+
+<section class="content" id="home">
+ <div class="hero">
+  <h1>Welcome to <span class="gradient">NYAYVERSE AI</span></h1>
+  <p class="home-prompt">One platform. Multiple possibilities. How can I help you?</p>
+ </div>
+
+ <div class="composer" id="composer">
+  <div class="composer-inner">
+   <textarea id="question" placeholder="Ask anything — law, education, science, technology, research or any other topic..." onkeydown="handleKey(event)"></textarea>
+   <div class="composer-bottom">
+    <small>⚖ Universal Chat · Automatic language detection</small>
+    <div class="voice-tools">
+     <button type="button" onclick="startVoiceInput()">🎙 Voice Input</button>
+     <button type="button" onclick="stopSpeaking()">■ Stop</button>
+     <button class="send" id="sendBtn" onclick="sendMessage()">Send ➤</button>
+    </div>
+   </div>
+  </div>
+  <div class="footer">AI can make mistakes. Verify important information with reliable sources.</div>
+ </div>
+
+ <div class="studio-grid">
+  <button class="studio-card" onclick="openModule('image')"><span class="studio-icon">▧</span><b>Create Image</b><small>Image creation and editing</small></button>
+  <button class="studio-card" onclick="openModule('video')"><span class="studio-icon">▷</span><b>Create Video</b><small>Video creation workspace</small></button>
+  <button class="studio-card" onclick="openModule('checker')"><span class="studio-icon">◈</span><b>Fake Media Checker</b><small>Image, video and audio authenticity checks</small></button>
+  <button class="studio-card ai-assistant-card" onclick="openModule('assistant')"><span class="studio-icon">✧</span><b>Personal AI Assistant</b><small>Planning, productivity and research</small></button>
+  <button class="studio-card" onclick="openModule('medical')"><span class="studio-icon">✚</span><b>Medical & Healthcare AI</b><small>Health information and medical research</small></button>
+  <button class="studio-card" onclick="openModule('english')"><span class="studio-icon">文</span><b>English Learning</b><small>Speaking, grammar and practice</small></button>
+  <button class="studio-card" onclick="openModule('soul')"><span class="studio-icon">☯</span><b>SoulSphere</b><small>Astrology and personal insights</small></button>
+  <button class="studio-card" onclick="openDepartment('library')"><span class="studio-icon">⚖</span><b>Law Library</b><small>Legal research and learning resources</small></button>
+ </div>
+
+ <div class="disclaimer">NYAYVERSE AI provides general information for educational purposes. It is not a substitute for professional legal, medical or financial advice.</div>
+ <div class="footer">© 2026 NYAYVERSE AI · <a href="#" onclick="openDepartment('terms');return false">Terms</a> · <a href="#" onclick="openDepartment('privacy');return false">Privacy</a></div>
+</section>
+
+<section class="content" id="departmentPage" style="display:none">
+ <button class="small-btn back-btn" onclick="showHome()">← Back to Home</button>
+ <div id="departmentContent"></div>
+</section>
+</main>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+ <div class="modal">
+  <button class="close" onclick="closeModal()">×</button>
+  <h2 id="modalTitle">Welcome Back</h2>
+  <p id="modalDesc">Login to your NYAYVERSE AI account.</p>
+  <input id="authName" type="text" placeholder="Full name" style="display:none">
+  <input id="authEmail" type="email" placeholder="Email address">
+  <input id="authPassword" type="password" placeholder="Password">
+  <input id="authConfirm" type="password" placeholder="Confirm password" style="display:none">
+  <button class="primary" onclick="authNotice()" id="authAction">Continue</button>
+  <div class="modal-links" id="modalLinks">
+   <button onclick="openModal('forgot')">Forgot Password?</button>
+   <button onclick="openModal('signup')">Create Account</button>
+  </div>
+  <p id="authNote">Your account controls will be available here.</p>
  </div>
 </div>
-<div id="otherPage" class="hidden"></div>
-</section>
-</main></div>
-
-<!-- ChatGPT-style authentication -->
-<div class="modal-bg" id="authModal"><div class="modal">
- <button class="close" onclick="closeAuth()">×</button>
- <div id="authWelcome"><h2 style="text-align:center;margin:12px 0">Welcome to NYAYVERSE AI</h2><p class="muted" style="text-align:center">Log in or create an account to continue</p>
-  <button class="google-btn" onclick="googleLogin()">🌐 Continue with Google</button>
-  <div class="auth-divider">OR</div>
-  <button class="auth-choice" onclick="openAuth('emailLogin')">✉ Continue with Email</button>
-  <button class="auth-choice" onclick="openAuth('mobileLogin')">▣ Continue with Mobile</button>
-  <button class="primary-btn" style="width:100%;margin-top:12px" onclick="openAuth('signup')">Create Account / Sign Up</button>
-  <p style="text-align:center"><button class="link" style="background:none;border:0" onclick="openAuth('forgot')">Forgot password?</button></p>
- </div>
- <div id="authForm" class="hidden"><h2 id="authTitle">Login</h2><p class="muted" id="authDescription"></p>
-  <div id="signupFields" class="hidden">
-   <label class="label">Full Name *</label><input class="field" id="authName" autocomplete="name" placeholder="Enter your full name">
-   <label class="label">Email Address (Optional)</label><input class="field" id="authEmail" type="email" autocomplete="email" placeholder="Enter email address">
-   <label class="label">Mobile Number (Optional)</label><input class="field" id="authMobile" type="tel" inputmode="numeric" autocomplete="tel" maxlength="15" placeholder="Enter mobile number">
-   <p class="muted">Email या Mobile Number में से कम-से-कम एक भरना अनिवार्य है। दोनों भरना भी संभव है।</p>
-   <label class="label">Gender *</label><select class="field" id="authGender"><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
-  </div>
-  <label class="label" id="identifierLabel">Email Address *</label><input class="field" id="authIdentifier" autocomplete="username" placeholder="Enter email address">
-  <label class="label" id="passwordLabel">Password *</label><input class="field" id="authPassword" type="password" autocomplete="current-password" placeholder="Enter password">
-  <div id="confirmField" class="hidden"><label class="label">Confirm Password *</label><input class="field" id="authConfirm" type="password" autocomplete="new-password" placeholder="Re-enter password"></div>
-  <button class="primary-btn" style="width:100%;margin-top:15px" id="authSubmit" onclick="submitAuth()">Continue</button>
-  <div class="actions"><button class="secondary-btn" onclick="openAuth('welcome')">← Back</button><button class="secondary-btn" onclick="openAuth('signup')">Sign Up</button><button class="secondary-btn" onclick="openAuth('forgot')">Forgot Password</button></div>
- </div><p id="authStatus" class="status" role="status" style="display:none"></p>
-</div></div>
 
 <script>
 "use strict";
+
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-const TOKEN_KEY="nyayverse_auth_token",USER_KEY="nyayverse_auth_user",GUEST_KEY="nyayverse_guest_messages";
-let currentPage="home",selectedFiles=[],busy=false,authMode="welcome",moduleKey=null;
-const $=id=>document.getElementById(id);
-function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function token(){return localStorage.getItem(TOKEN_KEY)}
-function user(){try{return JSON.parse(localStorage.getItem(USER_KEY)||"null")}catch(e){return null}}
-function getHeaders(){const h={"Content-Type":"application/json"};if(token())h.Authorization="Bearer "+token();return h}
-async function api(path,body,method="POST"){const r=await fetch(API_URL+path,{method,headers:getHeaders(),...(body===undefined?{}:{body:JSON.stringify(body)})});const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw new Error(d.error||d.message||"Request failed");return d}
-function setStatus(id,msg){const el=$(id);if(el){el.textContent=msg;el.style.display="block"}}
-function language(t){if(/[\u0900-\u097F]/.test(t))return" Hindi";const w=(t.toLowerCase().match(/[a-z]+/g)||[]),h=["hai","hain","kya","kaise","kyun","nahi","mujhe","mera","meri","aap","batao","samjhao","karna","chahiye"];return w.filter(x=>h.includes(x)).length>=2?"Hinglish":"English"}
-function toggleMenu(){const s=$("sidebar"),b=$("sidebarBackdrop");if(innerWidth<=700){s.classList.toggle("open");b.classList.toggle("open",s.classList.contains("open"))}else s.classList.toggle("desktop-closed")}
-function closeMenu(){const s=$("sidebar"),b=$("sidebarBackdrop");s.classList.remove("open");b.classList.remove("open");if(innerWidth>700)s.classList.add("desktop-closed")}
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMenu();closeAuth()}});
-window.addEventListener("resize",()=>{if(innerWidth>700){$("sidebar").classList.remove("open");$("sidebarBackdrop").classList.remove("open")}else $("sidebar").classList.remove("desktop-closed")});
-function showPage(page,button){currentPage=page;moduleKey=modules[page]?page:null;$("homePage").classList.toggle("hidden",page!=="home");$("otherPage").classList.toggle("hidden",page==="home");if(page!=="home")renderPage(page);document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));if(button)button.classList.add("active");closeMenu();scrollTo({top:0,behavior:"smooth"})}
-function newChat(){$("chatArea").innerHTML="";$("question").value="";selectedFiles=[];$("chatFiles").value="";$("fileNames").textContent="";showPage("home")}
-function addMessage(text,type){const row=document.createElement("div");row.className="message "+type;const a=document.createElement("div");a.className="avatar";a.textContent=type==="user"?"👤":"⚖";const b=document.createElement("div");b.className="bubble";b.textContent=text;row.append(a,b);$("chatArea").append(row);row.scrollIntoView({behavior:"smooth",block:"end"});return b}
-$("question").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat()}});
-$("chatFiles").addEventListener("change",e=>{selectedFiles=Array.from(e.target.files||[]).slice(0,5);const total=selectedFiles.reduce((n,f)=>n+f.size,0);if(total>20*1024*1024){selectedFiles=[];e.target.value="";alert("Maximum total attachment size is 20 MB.")}$("fileNames").textContent=selectedFiles.map(f=>f.name).join(", ")});
-async function sendChat(){if(busy)return;const q=$("question").value.trim();if(!q&&!selectedFiles.length)return;if(!token()){const count=Number(localStorage.getItem(GUEST_KEY)||0);if(count>=10){openAuth("welcome");setStatus("authStatus","Your 10 guest messages are used. Please log in or create an account.");return}busy=true;$("sendBtn").disabled=true;const prompt=q||"Please analyze my attached files.";addMessage(prompt,"user");$("question").value="";const b=addMessage("Guest chat access is ready. Connect the Main AI Chat Worker to receive AI responses.","ai");localStorage.setItem(GUEST_KEY,String(count+1));b.textContent="Guest message "+(count+1)+" of 10. The guest counter is stored in this browser for this prototype. AI response requires the authenticated/guest Worker endpoint.";busy=false;$("sendBtn").disabled=false;return}
-busy=true;$("sendBtn").disabled=true;const prompt=q||"Please analyze my attached files.";addMessage(prompt,"user");$("question").value="";const bubble=addMessage("Thinking...","ai");try{const attachments=[];for(const f of selectedFiles){const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error("File reading failed"));r.readAsDataURL(f)});attachments.push({name:f.name,type:f.type,size:f.size,dataUrl})}selectedFiles=[];$("chatFiles").value="";$("fileNames").textContent="";const r=await fetch(API_URL,{method:"POST",headers:getHeaders(),body:JSON.stringify({message:prompt,language:language(prompt),attachments})});const d=await r.json();if(!r.ok)throw new Error(d.error||"Chat request failed");bubble.textContent=d.reply||d.response||d.answer||d.text||"No response received."}catch(e){bubble.textContent="Error: "+e.message}finally{busy=false;$("sendBtn").disabled=false}}
-function openAuth(mode="welcome"){authMode=mode;$("authModal").style.display="flex";$("authWelcome").classList.toggle("hidden",mode!=="welcome");$("authForm").classList.toggle("hidden",mode==="welcome");$("authStatus").style.display="none";if(mode==="welcome")return;const signup=mode==="signup",forgot=mode==="forgot";$("signupFields").classList.toggle("hidden",!signup);$("confirmField").classList.toggle("hidden",!signup);$("identifierLabel").classList.toggle("hidden",signup);$("authIdentifier").classList.toggle("hidden",signup);$("authPassword").classList.toggle("hidden",forgot);$("passwordLabel").classList.toggle("hidden",forgot);$("authTitle").textContent=signup?"Create your account":forgot?"Reset password":"Log in";$("authDescription").textContent=signup?"Enter your details to create your NYAYVERSE AI account.":forgot?"Enter your registered email or mobile number.":"Continue with your registered credentials.";if(mode==="emailLogin"){$("identifierLabel").textContent="Email Address *";$("authIdentifier").placeholder="name@example.com";$("authIdentifier").type="email"}else if(mode==="mobileLogin"){$("identifierLabel").textContent="Mobile Number *";$("authIdentifier").placeholder="Enter mobile number";$("authIdentifier").type="tel"}else{$("identifierLabel").textContent="Email Address or Mobile Number *";$("authIdentifier").placeholder="Enter email or mobile number";$("authIdentifier").type="text"}$("authSubmit").textContent=signup?"Create Account":forgot?"Send reset instructions":"Continue"}
-function closeAuth(){$("authModal").style.display="none"}
-function googleLogin(){setStatus("authStatus","Google OAuth needs the Worker-side OAuth start/callback routes and configured Google Client ID. It is not enabled by this HTML alone.")}
-async function submitAuth(){const name=$("authName").value.trim(),email=$("authEmail").value.trim(),mobile=$("authMobile").value.trim(),gender=$("authGender").value,id=$("authIdentifier").value.trim(),pw=$("authPassword").value,confirm=$("authConfirm").value;const status=m=>setStatus("authStatus",m);
-if(authMode==="signup"){if(!name)return status("Please enter your full name.");if(!email&&!mobile)return status("Enter at least an email address or mobile number.");if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return status("Enter a valid email address.");if(mobile&&!/^\+?[0-9]{10,15}$/.test(mobile))return status("Enter a valid mobile number.");if(!gender)return status("Please select Male or Female.");if(pw.length<8)return status("Password must be at least 8 characters.");if(pw!==confirm)return status("Passwords do not match.");}
-if(!["signup"].includes(authMode)&&!id)return status("Please enter your registered identifier.");if(!["forgot"].includes(authMode)&&pw.length<8)return status("Password must be at least 8 characters.");
-const btn=$("authSubmit");btn.disabled=true;status("Please wait...");
-try{let d;if(authMode==="signup"){d=await api("auth/signup",{full_name:name,identifier:email||mobile,email:email||null,mobile:mobile||null,gender,password:pw});status(d.message||"Registration request submitted. Verify your account as instructed.");}
-else if(authMode==="forgot"){d=await api("auth/forgot-password",{identifier:id});status(d.message||"If the account exists, reset instructions will be sent.");}
-else{d=await api("auth/login",{identifier:id,password:pw});if(!d.token)throw new Error("Login token missing.");localStorage.setItem(TOKEN_KEY,d.token);localStorage.setItem(USER_KEY,JSON.stringify(d.user||{}));closeAuth();updateAuthUI();} }catch(e){status(e.message)}finally{btn.disabled=false}}
-function updateAuthUI(){const u=user(),logged=!!token();$("authTop").textContent=logged?(u?.full_name||"My Account"):"Login";const role=String(u?.role||"").toLowerCase(),admin=["owner","admin"].includes(role);$("adminNav").classList.toggle("hidden",!admin);$("securityNav").classList.toggle("hidden",!admin)}
-async function logout(){try{if(token())await api("auth/logout",{})}catch(e){}localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);updateAuthUI();closeMenu();alert("Signed out.")}
-function shell(title,desc,content){$("otherPage").innerHTML=`<button class="secondary-btn" onclick="showPage('home')">← Home</button><div class="hero" style="text-align:left"><h1><span class="gradient">${escapeHTML(title)}</span></h1><p>${escapeHTML(desc)}</p></div>${content}`}
-const palettes={
- image:{name:"Create Image",tag:"LUXURY CREATIVE STUDIO",desc:"Create, edit and enhance original visuals in one creative workspace.",colors:["#111018","#241b35","#9d73ff","#f0d8a8"],groups:{"Image Creation":["Create New Image","Text to Image","Image to Image"],"Editing Studio":["Edit Image","Remove Background","Replace Background","Object Removal"],"Enhancement":["HD Upscale","Image Restoration","Face Enhancement","Color Correction"],"Creative Tools":["AI Portrait","Logo Maker","Poster Maker","Thumbnail Maker","Social Media Design"],"Style Studio":["Realistic","3D","Anime","Cinematic","Illustration"],"My Workspace":["My Creations","Recent Images","Favorites","Saved Prompts"],"Export":["Download","Format Selection","Share"]}},
- video:{name:"Create Video",tag:"CINEMATIC AI STUDIO",desc:"Plan scenes, generate motion and prepare creator-ready videos.",colors:["#071323","#102b48","#36a4ff","#d5e2f1"],groups:{"Video Creation":["Text to Video","Image to Video","Video to Video"],"Video Editing":["Trim","Crop","Merge","Split","Extend Video"],"AI Effects":["Animation","Cinematic Effects","Motion Effects","Transitions"],"Audio Studio":["Voiceover","AI Voice","Background Music","Sound Effects"],"Creator Studio":["YouTube Shorts","Reels","Explainer Videos","Advertisements"],"Workspace":["My Videos","Drafts","Generation History","Favorites"],"Export":["Download","Export Settings","Share"]}},
- checker:{name:"Fake Media Checker",tag:"CYBER FORENSICS",desc:"Inspect media for signs of manipulation. Results are probabilistic, not absolute proof.",colors:["#090f12","#10231f","#36d6a0","#b9f5ed"],groups:{"Media Analysis":["Image Analysis","Video Analysis","Audio Analysis"],"Deepfake Detection":["Face Swap Detection","AI Face Detection","Voice Cloning Detection"],"Manipulation Detection":["Image Editing Detection","Video Tampering","Audio Manipulation"],"Verification":["Metadata Analysis","Source Verification","Digital Provenance"],"Fraud Detection":["Fake Video Call","Impersonation Media","Scam Media"],"Evidence Report":["Authenticity Score","Detection Indicators","Detailed Report"],"Workspace & Privacy":["Previous Checks","Saved Reports","Export Report","Delete Uploaded Files"]}},
- assistant:{name:"Personal AI Assistant",tag:"PERSONAL INTELLIGENCE",desc:"A personal space for conversations, planning, routines and productivity.",colors:["#1b1022","#30203c","#b99ae8","#e9b8c9"],groups:{"Personal Assistant":["Personal AI Chat","Voice Conversation"],"Daily Life":["Daily Planner","Routine Manager","To-Do List","Goals"],"Reminders":["Daily Reminders","Important Dates","Notifications"],"Personal Memory":["Personal Memory","Saved Information","Memory Controls"],"Communication":["Message Drafts","Email Drafts","Conversation Help"],"Productivity":["Task Management","Time Management","Smart Suggestions"],"Personalization":["AI Personality","Voice Style","Language","Conversation Style"],"Privacy & History":["Chat History","Saved Conversations","Memory Permissions","Data Controls"]}},
- medical:{name:"Medical & Healthcare AI",tag:"MEDICAL INTELLIGENCE",desc:"Understand health information and prepare for informed conversations with clinicians.",colors:["#f5fbff","#e5f4fa","#4abecb","#b9e8ed"],groups:{"Medical Assistant":["Medical AI Chat","Health Questions"],"Report Intelligence":["Blood Test Analysis","Lab Report Analysis","Medical Document Analysis"],"Medicine Information":["Medicine Details","Uses","Side Effects","Interactions"],"Health Records":["Medical History","Saved Reports","Health Documents"],"Health Monitoring":["Health Metrics","Symptom Journal","Wellness Tracking"],"Medical Knowledge":["Diseases","Symptoms","Treatments","Medical Research"],"Healthcare Support":["Doctor Visit Preparation","Questions for Doctor"],"Privacy":["Medical Data Permissions","Secure Records","Delete Records"]}},
- english:{name:"English Learning",tag:"GLOBAL LANGUAGE ACADEMY",desc:"Build practical English skills through guided speaking, lessons and feedback.",colors:["#101d39","#1e3562","#e4ad48","#fff0c9"],groups:{"Learning Dashboard":["My Learning","Daily Goals","Learning Progress"],"Speaking":["AI Speaking Practice","Free Conversation","Roleplay"],"Pronunciation":["Pronunciation Practice","Accent Training","Speech Feedback"],"Grammar":["Grammar Lessons","Sentence Correction","Common Mistakes"],"Vocabulary":["Daily Vocabulary","Word Practice","Vocabulary Tests"],"Professional English":["Interview English","Office English","Business Communication"],"Practical English":["Travel English","Banking English","Customer Handling"],"Assessments":["Speaking Test","Grammar Test","Mock Interview"],"Personal Progress":["Performance Report","Weak Areas","Learning History"]}},
- soulsphere:{name:"SoulSphere",tag:"SPIRITUAL GUIDANCE",desc:"Explore spiritual traditions, calendars and reflective practices with respect for all faiths.",colors:["#24170b","#422b12","#e3a33b","#f7e5bd"],groups:{"Spiritual Dashboard":["Daily Spiritual Guidance","Daily Calendar"],"Astrology":["Kundli","Horoscope","Birth Chart","Planetary Positions"],"Panchang":["Daily Panchang","Tithi","Nakshatra","Vrat","Festivals"],"Muhurat":["Marriage Muhurat","Griha Pravesh","Travel Muhurat"],"Religious Knowledge":["Hinduism","Islam","Christianity","Sikhism","Buddhism","Jainism","Other Traditions"],"Sacred Learning":["Bhagavad Gita","Ramayana","Quran","Bible","Guru Granth Sahib","Other Scriptures"],"Spiritual Wellness":["Meditation","Prayer","Mindfulness","Peace Practices"],"Life Guidance":["Personal Reflection","Values","Life Planning"],"My Spiritual Space":["Saved Readings","Favorites","History"]}}
-};
-const modules=palettes;
-let soulLanguage="en";
-function soulText(en,hi){return soulLanguage==="hi"?hi:en}
-function moduleQuickStart(key){
- const m=modules[key];
- const art=key==="soulsphere"?["🪷",soulText("A calm space for traditions, reflection and spiritual learning.","परंपराओं, आत्मचिंतन और आध्यात्मिक ज्ञान के लिए एक शांत स्थान।")]:
- key==="medical"?["✚","Medical intelligence workspace · reports, prescriptions and health documents"]:
- key==="image"?["✦","AI creative studio · describe an image and start creating"]:
- key==="video"?["▶","AI video studio · prompt, upload a reference and create scenes"]:
- key==="checker"?["⌕","Digital forensics workspace · upload media for authenticity checks"]:
- key==="assistant"?["✧","Personal intelligence workspace · ask, plan and organize"]:
- ["AI","Learning workspace · practice, improve and track your progress"];
- let controls="";
- if(key==="image"||key==="video"){
-  const isV=key==="video";
-  controls=`<label class="label">${isV?"Describe your video":"Describe the image you want to create"}</label><textarea id="modulePrompt" placeholder="${isV?"A cinematic scene of...":"A beautiful, detailed image of..."}"></textarea>${isV?'<label class="label">Reference image or video (optional)</label><input class="field" type="file" id="moduleFile" accept="image/*,video/*">':'<label class="label">Reference image (optional)</label><input class="field" type="file" id="moduleFile" accept="image/*">'}<div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));margin:10px 0"><div><label class="label">Aspect ratio</label><select id="moduleRatio">${(isV?["9:16","16:9","1:1"]:["1:1","9:16","16:9","4:5"]).map(x=>`<option>${x}</option>`).join("")}</select></div><div><label class="label">Quality</label><select id="moduleQuality"><option>Standard</option><option>HD</option><option>Ultra HD</option></select></div></div><button class="primary-btn" onclick="moduleGenerate('${key}','${isV?"Create Video":"Create Image"}')">${isV?"🎬 Create Video":"🎨 Create Image"}</button>`;
- }else if(key==="medical"){
-  controls=`<label class="label">Ask Medical AI</label><textarea id="modulePrompt" placeholder="Describe your health question or what you want explained..."></textarea><label class="label">Attach a medical photo, report or prescription</label><input class="field" type="file" id="moduleFile" accept="image/*,application/pdf"><div class="actions"><button class="primary-btn" onclick="moduleUpload('medical','Medical report / prescription analysis')">📎 Analyze Attachment</button><button class="secondary-btn" onclick="moduleMessage('medical','Medical AI Chat')">Ask Medical AI</button></div><p class="muted">Supports report and prescription understanding. It does not replace a qualified clinician.</p>`;
- }else if(key==="checker"){
-  controls=`<label class="label">Upload image, video or audio</label><input class="field" type="file" id="moduleFile" accept="image/*,video/*,audio/*"><label class="label">What should be checked? (optional)</label><textarea id="modulePrompt" placeholder="Check for signs of AI generation, face swap or manipulation..."></textarea><button class="primary-btn" onclick="moduleUpload('checker','Media authenticity check')">🔍 Check Media</button><p class="muted">Results should include confidence, indicators and uncertainty; no automated check is absolute proof.</p>`;
- }else if(key==="soulsphere"){
-  controls=`<label class="label">${soulText("What would you like guidance about?","आप किस विषय पर मार्गदर्शन चाहते हैं?")}</label><textarea id="modulePrompt" placeholder="${soulText("Ask about Panchang, scriptures, traditions, meditation or personal reflection...","पंचांग, शास्त्र, परंपराओं, ध्यान या आत्मचिंतन के बारे में पूछें...")}"></textarea><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));margin:10px 0"><div><label class="label">${soulText("Tradition / topic","परंपरा / विषय")}</label><select id="soulTopic"><option>${soulText("General spiritual guidance","सामान्य आध्यात्मिक मार्गदर्शन")}</option><option>Panchang / पंचांग</option><option>Kundli / कुंडली</option><option>Scriptures / शास्त्र</option><option>Meditation / ध्यान</option></select></div><div><label class="label">${soulText("Response language","उत्तर की भाषा")}</label><select id="soulResponseLang" onchange="soulLanguage=this.value;renderModule('soulsphere')"><option value="en" ${soulLanguage==="en"?"selected":""}>English</option><option value="hi" ${soulLanguage==="hi"?"selected":""}>हिंदी</option></select></div></div><button class="primary-btn" onclick="moduleMessage('soulsphere','Spiritual Guidance')">🪷 ${soulText("Explore Guidance","मार्गदर्शन प्राप्त करें")}</button>`;
- }else{
-  controls=`<label class="label">What can I help you with?</label><textarea id="modulePrompt" placeholder="Tell NYAYVERSE AI what you need..."></textarea><div class="actions"><button class="primary-btn" onclick="moduleMessage('${key}','${key==="assistant"?"Personal AI Assistant":"English Learning"}')">Continue</button></div>`;
+
+let busy=false,recognition=null,currentModule=null,selectedMediaUrl=null;
+
+const moduleData={
+ image:{
+  title:"Create Image",icon:"🎨",
+  description:"Create images by describing your subject, style and preferred output.",
+  sections:{
+   "Image Creation":["Text to Image","Image Styles","Poster & Thumbnail Design","Social Media Images"],
+   "Image Editing":["Image Variation","Background Editing","Image Enhancement"],
+   "My Creations":["Generated Images","Recent Creations"]
+  },
+  fields:[
+   {id:"imagePrompt",label:"Describe the image",type:"textarea",placeholder:"Describe the image, subject, style, lighting, composition and details..."},
+   {id:"imageRatio",label:"Aspect Ratio",type:"select",options:["1:1","9:16","16:9","4:5"]},
+   {id:"imageStyle",label:"Visual Style",type:"select",options:["Realistic","Cinematic","Professional","Illustration","3D","Minimal","Artistic"]}
+  ],
+  action:"Create Image"
+ },
+ video:{
+  title:"Create Video",icon:"🎬",
+  description:"Prepare your video concept and select the preferred output format.",
+  sections:{
+   "Video Creation":["Text to Video","Image to Video","Scene Generation","Cinematic Video"],
+   "Video Settings":["Aspect Ratio","Duration","Visual Style","Camera Movement"],
+   "My Creations":["Generated Videos","Recent Projects"]
+  },
+  fields:[
+   {id:"videoPrompt",label:"Video Description",type:"textarea",placeholder:"Describe the scene, subject, camera movement, style and background..."},
+   {id:"videoRatio",label:"Aspect Ratio",type:"select",options:["9:16","16:9","1:1"]},
+   {id:"videoDuration",label:"Duration",type:"select",options:["5 seconds","10 seconds","15 seconds","30 seconds"]},
+   {id:"videoStyle",label:"Video Style",type:"select",options:["Realistic","Cinematic","Animation","Documentary","Commercial"]}
+  ],
+  action:"Create Video"
+ },
+ checker:{
+  title:"Fake Media Checker",icon:"🔍",
+  description:"Inspect images, videos and audio for signs of manipulation. Results are probabilistic, not absolute proof.",
+  sections:{
+   "Media Analysis":["Image Analysis","Video Analysis","Audio Analysis"],
+   "Deepfake Detection":["Face Swap Detection","AI Face Detection","Voice Cloning Detection"],
+   "Manipulation Detection":["Image Editing Detection","Video Tampering","Audio Manipulation"],
+   "Verification":["Metadata Analysis","Source Verification","Digital Provenance"],
+   "Fraud Detection":["Fake Video Call","Impersonation Media","Scam Media"],
+   "Evidence Report":["Authenticity Score","Detection Indicators","Detailed Report"],
+   "Your Records":["Previous Checks","Saved Reports","Export Report","Delete Uploaded Files"]
+  },
+  fields:[
+   {id:"checkerFile",label:"Upload Image, Video or Audio",type:"file"},
+   {id:"checkerNotes",label:"What should be checked? (Optional)",type:"textarea",placeholder:"Describe your concerns or provide relevant context..."}
+  ],
+  action:"Check Media"
+ },
+ assistant:{
+  title:"Personal AI Assistant",icon:"✧",
+  description:"Your personal space for planning, productivity, writing, research and everyday assistance.",
+  sections:{
+   "Personal Assistance":["Ask My Assistant","Daily Planning","Personal Productivity","Goal Planning"],
+   "Work & Writing":["Email & Message Drafting","Document Writing","Ideas & Brainstorming","Summaries"],
+   "Research":["Research Assistant","Learning Support","Task Organization"],
+   "My Workspace":["Saved Work","Recent Activity"]
+  },
+  fields:[
+   {id:"assistantPrompt",label:"What would you like help with?",type:"textarea",placeholder:"Tell your assistant what you need..."}
+  ],
+  action:"Submit Request"
+ },
+ medical:{
+  title:"Medical & Healthcare AI",icon:"✚",
+  description:"Explore healthcare information and medical research. Always verify medical decisions with qualified healthcare professionals.",
+  sections:{
+   "Medical Information":["General Health Questions","Symptoms Information","Medical Conditions","Health Education"],
+   "Medicines & Drugs":["Medicine Information","Drug Interactions","Drug Safety & Warnings"],
+   "Reports & Documents":["Upload Medical Report","Understand Lab Reports","Prescription Information"],
+   "Wellness":["Nutrition Information","Fitness & Wellness","Preventive Healthcare"]
+  },
+  fields:[
+   {id:"medicalPrompt",label:"Describe your question",type:"textarea",placeholder:"Enter your general health information question..."},
+   {id:"medicalFile",label:"Attach Report or Document (Optional)",type:"file"}
+  ],
+  action:"Submit Medical Query"
+ },
+ english:{
+  title:"English Learning",icon:"文",
+  description:"Improve your English through structured learning, speaking exercises and communication practice.",
+  sections:{
+   "Learn English":["Grammar","Vocabulary","Sentence Formation","Pronunciation"],
+   "Speaking Practice":["Daily Conversation","Interview Practice","Professional Communication","Role Play"],
+   "Writing":["Email Writing","Paragraph Writing","Correction & Improvement"],
+   "My Learning":["Practice History","Learning Goals","Vocabulary List"]
+  },
+  fields:[
+   {id:"englishPrompt",label:"What do you want to practise?",type:"textarea",placeholder:"Example: Help me practise an insurance sales job interview in English..."},
+   {id:"englishLevel",label:"Your Level",type:"select",options:["Beginner","Elementary","Intermediate","Advanced"]},
+   {id:"englishMode",label:"Practice Mode",type:"select",options:["Speaking","Grammar","Vocabulary","Interview","Writing"]}
+  ],
+  action:"Start Practice"
+ },
+ soul:{
+  title:"SoulSphere",icon:"☯",
+  description:"Explore astrology, traditional calculations and personal self-reflection. Interpretations are informational, not guaranteed predictions.",
+  sections:{
+   "Astrology":["Birth Chart / Kundli","Daily Horoscope","Planetary Positions","Zodiac Insights"],
+   "Vedic Tools":["Panchang","Muhurat","Nakshatra","Compatibility"],
+   "Personal Insights":["Self Reflection","Personal Guidance","Spiritual Learning"],
+   "My Reports":["Saved Charts","Previous Reports"]
+  },
+  fields:[
+   {id:"soulPrompt",label:"What would you like to explore?",type:"textarea",placeholder:"Enter your astrology or self-reflection question..."},
+   {id:"soulDate",label:"Date of Birth (Optional)",type:"text",placeholder:"DD-MM-YYYY"},
+   {id:"soulTime",label:"Time of Birth (Optional)",type:"text",placeholder:"HH:MM AM/PM"},
+   {id:"soulPlace",label:"Place of Birth (Optional)",type:"text",placeholder:"City, Country"}
+  ],
+  action:"Submit Request"
  }
- const title=key==="image"?"Create an image":key==="video"?"Create a video":key==="medical"?"Medical AI Assistant":key==="checker"?"Check media authenticity":key==="soulsphere"?soulText("Your spiritual space","आपका आध्यात्मिक संसार"):key==="assistant"?"Talk to your Personal AI":"Start learning English";
- return `<div class="module-domain-art"><span class="art-icon">${art[0]}</span><div><b>${escapeHTML(title)}</b><div class="muted">${escapeHTML(art[1])}</div></div></div><div class="panel module-main-card"><span class="badge">${escapeHTML(m.tag)}</span><h2>${escapeHTML(title)}</h2>${controls}<div class="status" id="moduleStatus">Your request will be securely processed when the matching Worker service is connected.</div>${key==="medical"?'<p class="muted">For emergencies or severe symptoms, seek urgent medical care.</p>':""}${key==="soulsphere"?`<p class="muted">${soulText("Astrology is traditional guidance, not guaranteed science. All faiths are treated respectfully.","ज्योतिष पारंपरिक मार्गदर्शन है, निश्चित विज्ञान नहीं। सभी धर्मों का समान सम्मान किया जाता है।")}</p>`:""}</div>`;
-}
-function renderModule(key){
- const m=modules[key],c=m.colors;
- const nav=Object.entries(m.groups).map(([g,items])=>`<details><summary>${escapeHTML(g)}</summary>${items.map(x=>`<button onclick="moduleAction('${key}',${JSON.stringify(x).replace(/'/g,"&#39;")},this)">${escapeHTML(x)}</button>`).join("")}</details>`).join("");
- const tiles=Object.entries(m.groups).flatMap(([g,items])=>items.slice(0,2).map(x=>`<button class="module-feature" onclick="moduleAction('${key}',${JSON.stringify(x).replace(/'/g,"&#39;")},this)"><b>${escapeHTML(x)}</b><small>${escapeHTML(g)} · Open this tool</small></button>`)).slice(0,8).join("");
- const themeClass=key==="soulsphere"?"soul-theme":key==="medical"?"medical-theme":(["image","video","assistant","english"].includes(key)?"ai-theme":"");
- $("otherPage").innerHTML=`<div class="module-shell ${themeClass}" style="--m-bg:${c[0]};--m-panel:${c[1]};--m-border:${c[2]}66;--m-accent:${c[2]};--m-accent2:${c[3]}">
- <div class="module-top"><div><span class="badge">${escapeHTML(m.tag)}</span><h1>${escapeHTML(m.name)}</h1><p>${escapeHTML(m.desc)}</p></div><div class="actions"><button class="secondary-btn" onclick="toggleModuleNav()">☰ ${key==="soulsphere"?"विकल्प":"Tools"}</button>${key==="soulsphere"?`<div class="soul-language"><select aria-label="Language" onchange="soulLanguage=this.value;renderModule('soulsphere')"><option value="en" ${soulLanguage==="en"?"selected":""}>English</option><option value="hi" ${soulLanguage==="hi"?"selected":""}>हिंदी</option></select></div>`:""}<button class="secondary-btn" onclick="showPage('home')">⌂ Homepage</button></div></div>
- <div class="module-kpis"><div class="kpi"><b>${Object.values(m.groups).flat().length}</b><small>Workspace functions</small></div><div class="kpi"><b>01</b><small>Dedicated module</small></div><div class="kpi"><b>AI</b><small>NYAYVERSE AI</small></div></div>
- <div class="module-layout" id="moduleLayout"><div class="module-nav-wrap"><aside class="module-nav"><div class="module-nav-tools"><b style="font-size:12px;color:#f0d58b">MODULE NAVIGATION</b><button onclick="toggleModuleNav()">× Close</button></div>${nav}</aside></div><div class="module-work" id="moduleWork"><div class="module-workbar"><b>Workspace</b><button onclick="toggleModuleNav()">☰ Show / Hide Tools</button></div>${moduleQuickStart(key)}<h3 class="section-heading">Explore ${escapeHTML(m.name)} tools</h3><div class="module-feature-grid">${tiles}</div></div></div></div>`;
-}
-function toggleModuleNav(){const l=$("moduleLayout");if(l)l.classList.toggle("nav-collapsed")}
-function moduleAction(key,action,btn){
- document.querySelectorAll(".module-nav button").forEach(b=>b.classList.remove("selected"));if(btn)btn.classList.add("selected");
- const m=modules[key];
- let controls=`<label class="label">Your request / details</label><textarea id="modulePrompt" placeholder="Describe what you need for ${escapeHTML(action)}..."></textarea><button class="primary-btn" onclick="moduleMessage('${key}','${escapeHTML(action)}')">Continue</button>`;
- if(key==="image"||key==="video")controls=`<label class="label">Prompt</label><textarea id="modulePrompt" placeholder="Describe what you want to create..."></textarea><label class="label">Upload reference (optional)</label><input class="field" id="moduleFile" type="file" accept="${key==="image"?"image/*":"image/*,video/*"}"><label class="label">Aspect ratio</label><select id="moduleRatio"><option>1:1</option><option>9:16</option><option>16:9</option><option>4:5</option></select><button class="primary-btn" onclick="moduleGenerate('${key}','${escapeHTML(action)}')">${key==="image"?"Create Image":"Create Video"}</button>`;
- if(key==="medical"||key==="checker")controls=`<label class="label">Attach file</label><input class="field" type="file" id="moduleFile" accept="${key==="medical"?"image/*,application/pdf":"image/*,video/*,audio/*"}"><label class="label">Question / analysis instructions</label><textarea id="modulePrompt" placeholder="What should be reviewed?"></textarea><button class="primary-btn" onclick="moduleUpload('${key}','${escapeHTML(action)}')">${key==="medical"?"Analyze Report / Prescription":"Analyze Media"}</button>`;
- if(key==="soulsphere")controls=`<label class="label">प्रश्न / Your question</label><textarea id="modulePrompt" placeholder="${soulLanguage==="hi"?"अपना प्रश्न यहाँ लिखें...":"Write your question here..."}"></textarea><label class="label">Language / भाषा</label><select onchange="soulLanguage=this.value;renderModule('soulsphere')"><option value="en" ${soulLanguage==="en"?"selected":""}>English</option><option value="hi" ${soulLanguage==="hi"?"selected":""}>हिंदी</option></select><button class="primary-btn" onclick="moduleMessage('soulsphere','${escapeHTML(action)}')">Continue / आगे बढ़ें</button>`;
- $("moduleWork").innerHTML=`<div class="module-workbar"><b>${escapeHTML(action)}</b><button onclick="toggleModuleNav()">☰ ${key==="soulsphere"?"विकल्प":"Tools"}</button></div><div class="panel module-main-card"><span class="badge">${escapeHTML(m.tag)}</span><h2>${escapeHTML(action)}</h2><p>${escapeHTML(m.desc)}</p>${controls}<div class="status" id="moduleStatus">This feature requires its matching protected Worker service.</div>${key==="medical"?'<p class="muted">Informational only; not a substitute for professional medical care.</p>':""}${key==="checker"?'<p class="muted">Detection is probabilistic and must include uncertainty.</p>':""}</div>`;
-}
-async function moduleGenerate(key,action){const p=$("modulePrompt").value.trim();if(!p)return setStatus("moduleStatus","Please enter a description.");if(!token())return openAuth("welcome");setStatus("moduleStatus","Request prepared. Worker endpoint, provider routing, credit reservation and cost validation will be connected in the matching Worker.js update.")}
-async function moduleUpload(key,action){const f=$("moduleFile").files[0];if(!f)return setStatus("moduleStatus","Please select a file.");if(f.size>20*1024*1024)return setStatus("moduleStatus","File exceeds the current 20 MB frontend limit.");if(!token())return openAuth("welcome");setStatus("moduleStatus","Secure upload and analysis endpoint will be connected in the Worker.js update.")}
-async function moduleMessage(key,action){const p=$("modulePrompt").value.trim();if(!p)return setStatus("moduleStatus","Please enter your message.");if(!token())return openAuth("welcome");setStatus("moduleStatus","This action's service endpoint will be connected in the Worker.js update.")}
-const pages={
- history:["Chat History","Your previous conversations",`<div class="panel"><p id="historyStatus">Your previous conversations.</p><button class="primary-btn" onclick="loadResource('history','historyStatus')">Refresh</button></div>`],
- saved:["Saved Answers","Your saved AI responses",`<div class="panel"><p id="savedStatus">Your saved answers.</p><button class="primary-btn" onclick="loadResource('saved','savedStatus')">Refresh</button></div>`],
- projects:["Projects","Organize your research and workspaces",`<div class="panel"><p>Project storage and sharing will be connected through the backend.</p><button class="primary-btn" onclick="comingSoon('Projects')">Create Project</button></div>`],
- membership:["Membership & Plans","Choose a suitable NYAYVERSE AI membership",`<div class="grid"><div class="card"><b>Core AI Pro</b><h2>₹2,999/year</h2><small>Proposed annual price</small></div><div class="card"><b>Core AI Ultra</b><h2>₹7,999/year</h2><small>Proposed annual price</small></div><div class="card"><b>Personal AI Assistant</b><h2>₹1,999/year</h2></div><div class="card"><b>Medical AI</b><h2>₹2,499/year</h2></div><div class="card"><b>English Learning</b><h2>₹999/year</h2></div></div><div class="panel"><p>Working proposal only; prices require cost validation. Monthly credit allowances and explicit renewal consent are required.</p></div>`],
- credits:["Credits & Usage","View your available credits and usage",`<div class="panel"><p id="creditsStatus">Credit balance will be loaded from the backend.</p><button class="primary-btn" onclick="loadResource('credits','creditsStatus')">Refresh Credits</button></div>`],
- account:["Account & Security","Manage your account and security settings",`<div class="panel"><p id="accountStatus">Account information requires login.</p><button class="secondary-btn" onclick="loadResource('account','accountStatus')">Refresh Profile</button><p>Security options must be enforced by the backend.</p></div>`],
- policies:["Policies & Support","Platform policies and support",`<div class="panel"><p>Final reviewed policy documents must be published before public launch.</p><div class="grid">${["About Us","Privacy Policy","Terms & Conditions","Refund & Cancellation","Security Policy","Contact & Grievance"].map(x=>`<div class="card"><b>${x}</b></div>`).join("")}</div></div>`],
- admin:["Admin Control Panel","Restricted administration interface",`<div class="panel"><p>Every admin action must be authorized by the Worker. Hiding this page in HTML is not security authorization.</p><p id="adminStatus">Admin data requires protected backend APIs.</p><button class="primary-btn" onclick="loadResource('admin','adminStatus')">Load Admin Data</button></div>`],
- security:["Security Operations","Private Owner Security Operations interface",`<div class="panel"><p>Security actions require backend authorization, audit logging and mandatory MFA for Owner/Admin.</p><p id="securityStatus">Security monitoring API integration pending.</p><button class="primary-btn" onclick="loadResource('security','securityStatus')">Refresh Security Status</button></div>`]
 };
-function renderPage(page){if(modules[page])return renderModule(page);const p=pages[page];shell(p?p[0]:"NYAYVERSE AI",p?p[1]:"Page unavailable",p?p[2]:"<div class='panel'>Page not found.</div>")}
-function comingSoon(n){alert(n+" will be available after backend integration.")}
-async function loadResource(name,id){if(!token()){openAuth("welcome");return}setStatus(id,"Loading...");try{const d=await api("user/"+name,undefined,"GET");setStatus(id,JSON.stringify(d,null,2))}catch(e){setStatus(id,"Backend endpoint not connected: "+e.message)}}
-function voiceInput(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("Voice input is not supported in this browser.");return}const r=new SR();r.lang="hi-IN";r.interimResults=false;r.onresult=e=>{const t=e.results[0][0].transcript;if(currentPage==="home")$("question").value+=(" "+t).trim();else{const f=document.querySelector("#modulePrompt");if(f)f.value+=(" "+t).trim()}};r.onerror=e=>alert("Voice input error: "+e.error);r.start()}
-document.addEventListener("DOMContentLoaded",()=>{updateAuthUI();if(token())api("auth/me",undefined,"GET").then(d=>{if(d.user)localStorage.setItem(USER_KEY,JSON.stringify(d.user));updateAuthUI()}).catch(()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);updateAuthUI()})});
+
+const departments={
+ projects:{title:"Projects",desc:"Your research and project workspace.",items:["Create New Project","My Projects","Shared Projects"]},
+ library:{title:"Law Library",desc:"Explore Indian legal documents, legislation and legal research topics.",items:["Constitution of India","Central Acts","State Acts","BNS – Bharatiya Nyaya Sanhita","BNSS – Bharatiya Nagarik Suraksha Sanhita","BSA – Bharatiya Sakshya Adhiniyam","Rules & Regulations","Consumer Law","Motor Vehicles Act","Family Law","Labour Laws"]},
+ academy:{title:"Law Academy",desc:"Legal education and academic learning resources.",items:["3-Year LLB","5-Year Integrated BA LLB","BBA LLB / BCom LLB / BSc LLB","LLM Programmes","PhD in Law","Diploma & Certificate Courses","Colleges & Universities","Admissions & Eligibility","Course Fees","Study Material"]},
+ exams:{title:"Law Exams",desc:"Prepare for legal entrance and professional examinations.",items:["Judiciary / Civil Judge","APO – Assistant Prosecution Officer","APP / Public Prosecutor","AIBE","UGC NET Law","CLAT PG","Legal Officer","Government Legal Jobs","Syllabus & Previous Papers","Mock Tests"]},
+ news:{title:"Law News",desc:"Legal developments and official notifications.",items:["Supreme Court Updates","High Court Updates","Government Legal Updates","New Acts & Amendments","Legal Notifications","Regulatory Updates"]},
+ cases:{title:"Case Studies",desc:"Explore important judgments and legal principles.",items:["Supreme Court Judgments","High Court Judgments","Landmark Cases","Constitution Bench Decisions","Criminal Cases","Civil Cases","Judgment PDFs & Sources"]},
+ history:{title:"Law History",desc:"Historical development of law and legal institutions.",items:["Ancient Indian Legal Systems","Medieval Legal History","British Era","Colonial Judiciary","High Courts in India","Supreme Court History","Constitution-Making History","Modern Legal Reforms","World Legal History"]},
+ terms:{title:"Terms & Conditions",desc:"Review the terms governing use of the platform.",items:["Platform Use","User Responsibilities","Acceptable Use","AI Limitations"]},
+ privacy:{title:"Privacy Policy",desc:"Review information about privacy and data practices.",items:["Information Collection","Use of Information","Data Security","Data Retention","Privacy Choices"]},
+ account:{title:"Account & Security",desc:"Manage your account and security preferences.",items:["Login & Sign Up","Email Verification","Password Reset","User Profile","Change Email","Change Password","Chat History","Saved Answers","Recent Searches","Download My Data","Account Deletion"]},
+ policies:{title:"Policies & Support",desc:"Platform policies and support information.",items:["About Us","Privacy Policy","Terms & Conditions","Legal Disclaimer","Cookie Policy","Security Policy","Contact & Support","Feedback"]}
+};
+
+function esc(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function toggleSidebar(){
+ if(innerWidth<=720)document.getElementById("sidebar").classList.toggle("open");
+ else document.getElementById("app").classList.toggle("sidebar-collapsed");
+}
+function closeMenu(){document.getElementById("sidebar").classList.remove("open");}
+
+function showHome(){
+ closeMenu();
+ document.getElementById("departmentPage").style.display="none";
+ document.getElementById("home").style.display="block";
+ const composer=document.getElementById("composer");
+ document.getElementById("home").insertBefore(composer,document.querySelector("#home .studio-grid"));
+ composer.style.display="block";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function newChat(){
+ document.getElementById("chatArea")?.remove();
+ document.getElementById("question").value="";
+ stopSpeaking();
+ showHome();
+}
+
+function showPage(title,html){
+ document.getElementById("home").style.display="none";
+ document.getElementById("departmentPage").style.display="block";
+ document.getElementById("departmentContent").innerHTML=`
+  <button class="small-btn back-btn" onclick="showHome()">← Back to Home</button>
+  <div class="hero" style="text-align:left"><h1><span class="gradient">${esc(title)}</span></h1></div>
+  ${html}`;
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function openDepartment(key){
+ closeMenu();
+ const d=departments[key];
+ if(!d)return;
+ const cards=d.items.map(item=>`<button class="sub-card" onclick="askTopic('${esc(item).replace(/'/g,"&#39;")}')">${esc(item)} →</button>`).join("");
+ showPage(d.title,`<div class="page-panel"><p>${esc(d.desc)}</p><div class="sub-grid">${cards}</div></div>`);
+}
+
+function askTopic(topic){
+ showHome();
+ const q=document.getElementById("question");
+ q.value="Please explain "+topic+" in clear, structured language. Include relevant official sources where available.";
+ q.focus();
+}
+
+function openUtility(name){
+ showPage(name,`<div class="page-panel"><h2>${esc(name)}</h2><p>This feature is not available yet.</p></div>`);
+}
+
+/* ALL SEVEN SPECIALIST WORKSPACES */
+function openModule(key){
+ closeMenu();
+ const m=moduleData[key];
+ if(!m)return;
+ currentModule=key;
+
+ const nav=Object.entries(m.sections).map(([group,items],i)=>`
+  <details class="workspace-section" ${i===0?"open":""}>
+   <summary>${esc(group)}</summary>
+   ${items.map(item=>`<button class="sub-card" onclick="selectModuleCategory('${esc(item).replace(/'/g,"&#39;")}')">${esc(item)} →</button>`).join("")}
+  </details>`).join("");
+
+ const fields=m.fields.map(f=>{
+  if(f.type==="textarea"){
+   return `<label class="tool-label" for="${f.id}">${esc(f.label)}</label><textarea class="tool-textarea" id="${f.id}" placeholder="${esc(f.placeholder||"")}"></textarea>`;
+  }
+  if(f.type==="file"){
+   const accept=key==="checker"?'accept="image/*,video/*,audio/*"':'accept=".pdf,.jpg,.jpeg,.png,.webp"';
+   return `<label class="tool-label" for="${f.id}">${esc(f.label)}</label><input class="tool-input" id="${f.id}" type="file" ${accept}>`;
+  }
+  if(f.type==="select"){
+   return `<label class="tool-label" for="${f.id}">${esc(f.label)}</label><select class="tool-select" id="${f.id}">${f.options.map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
+  }
+  return `<label class="tool-label" for="${f.id}">${esc(f.label)}</label><input class="tool-input" id="${f.id}" placeholder="${esc(f.placeholder||"")}">`;
+ }).join("");
+
+ const html=`
+ <div class="workspace-layout">
+  <aside class="workspace-nav">
+   <b style="color:#dfc477;font-size:13px">${m.icon} ${esc(m.title)}</b>
+   <p class="muted">TOOLS & FEATURES</p>
+   ${nav}
+  </aside>
+  <div class="workspace-main">
+   <div class="workspace-panel">
+    <h2>${m.icon} ${esc(m.title)}</h2>
+    <p>${esc(m.description)}</p>
+    ${fields}
+    <div class="tool-actions">
+     <button class="primary-btn" onclick="submitModule('${key}')">${esc(m.action)}</button>
+     <button class="secondary-btn" onclick="clearModule()">Clear</button>
+    </div>
+    ${key==="checker"?'<div id="mediaPreview" class="file-info">No media selected.</div><img id="mediaImage" class="preview" alt="Selected image preview"><video id="mediaVideo" class="preview" controls></video><audio id="mediaAudio" class="preview" controls></audio>':""}
+    <div class="tool-status" id="moduleStatus">Ready when you are.</div>
+   </div>
+  </div>
+ </div>`;
+
+ showPage(m.title,html);
+
+ if(key==="checker"){
+  document.getElementById("checkerFile")?.addEventListener("change",previewMedia);
+ }
+}
+
+function selectModuleCategory(name){
+ const status=document.getElementById("moduleStatus");
+ if(status)status.textContent=name+" selected.";
+}
+
+function clearModule(){
+ document.querySelectorAll("#departmentContent input,#departmentContent textarea").forEach(el=>{
+  if(el.type==="file")el.value="";
+  else el.value="";
+ });
+
+ const status=document.getElementById("moduleStatus");
+ if(status)status.textContent="Your entries have been cleared.";
+
+ if(selectedMediaUrl){
+  URL.revokeObjectURL(selectedMediaUrl);
+  selectedMediaUrl=null;
+ }
+
+ document.querySelectorAll("#departmentContent .preview").forEach(el=>{
+  el.pause?.();
+  el.removeAttribute("src");
+  el.load?.();
+  el.style.display="none";
+ });
+
+ const info=document.getElementById("mediaPreview");
+ if(info)info.textContent="No media selected.";
+}
+
+function previewMedia(e){
+ const file=e.target.files?.[0];
+ if(!file)return;
+
+ const status=document.getElementById("moduleStatus");
+ const info=document.getElementById("mediaPreview");
+
+ if(file.size>100*1024*1024){
+  e.target.value="";
+  status.textContent="This file is larger than the 100 MB upload limit.";
+  return;
+ }
+
+ if(selectedMediaUrl)URL.revokeObjectURL(selectedMediaUrl);
+ selectedMediaUrl=URL.createObjectURL(file);
+
+ info.textContent=file.name+" · "+(file.size/1024/1024).toFixed(2)+" MB · "+file.type;
+
+ const img=document.getElementById("mediaImage");
+ const vid=document.getElementById("mediaVideo");
+ const aud=document.getElementById("mediaAudio");
+
+ [img,vid,aud].forEach(el=>{
+  el.style.display="none";
+  el.removeAttribute("src");
+ });
+
+ if(file.type.startsWith("image/")){
+  img.src=selectedMediaUrl;
+  img.style.display="block";
+ }else if(file.type.startsWith("video/")){
+  vid.src=selectedMediaUrl;
+  vid.style.display="block";
+ }else if(file.type.startsWith("audio/")){
+  aud.src=selectedMediaUrl;
+  aud.style.display="block";
+ }
+
+ status.textContent="Media selected. Review the file before continuing.";
+}
+
+function submitModule(key){
+ const m=moduleData[key];
+ const status=document.getElementById("moduleStatus");
+ if(!m||!status)return;
+
+ const values={};
+
+ for(const f of m.fields){
+  const el=document.getElementById(f.id);
+  if(!el)continue;
+
+  if(f.type==="file"){
+   if(el.files?.[0])values[f.id]=el.files[0].name;
+  }else{
+   values[f.id]=el.value.trim();
+  }
+ }
+
+ const textFields=m.fields.filter(f=>f.type==="textarea");
+
+ if(textFields.length&&!values[textFields[0].id]){
+  status.textContent="Please enter the required information before continuing.";
+  return;
+ }
+
+ if(key==="checker"&&!document.getElementById("checkerFile")?.files?.length){
+  status.textContent="Please select an image, video or audio file first.";
+  return;
+ }
+
+ status.textContent="Your information has been prepared. This feature is not available yet.";
+}
+
+/* UNIVERSAL CHAT */
+function detectLanguage(text){
+ if(/[\u0900-\u097F]/.test(text))return "Hindi";
+ const words=text.toLowerCase().match(/[a-z]+/g)||[];
+ const hints=["kya","hai","hain","kaise","kyun","kyu","nahi","nahin","mujhe","mera","meri","aap","batao","samjhao","kanoon","kanun","dhara","karna","chahiye","mein","aur"];
+ return words.filter(w=>hints.includes(w)).length>=2?"Hinglish":"English";
+}
+
+function addMessage(text,type){
+ let area=document.getElementById("chatArea");
+
+ if(!area){
+  area=document.createElement("div");
+  area.id="chatArea";
+  area.className="chat-area";
+
+  const homeVisible=document.getElementById("home").style.display!=="none";
+  const target=homeVisible?document.getElementById("home"):document.getElementById("departmentPage");
+  const composer=document.getElementById("composer");
+
+  if(composer.parentElement===target)target.insertBefore(area,composer);
+  else target.appendChild(area);
+ }
+
+ area.style.display="flex";
+
+ const row=document.createElement("div");
+ row.className="message "+type;
+
+ const avatar=document.createElement("div");
+ avatar.className="avatar";
+ avatar.textContent=type==="user"?"👤":"⚖️";
+
+ const bubble=document.createElement("div");
+ bubble.className="bubble";
+ bubble.textContent=text;
+
+ row.append(avatar,bubble);
+ area.appendChild(row);
+ row.scrollIntoView({behavior:"smooth",block:"end"});
+ return bubble;
+}
+
+function handleKey(e){
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  sendMessage();
+ }
+}
+
+async function sendMessage(){
+ const input=document.getElementById("question");
+ const question=input.value.trim();
+
+ if(!question||busy)return;
+
+ busy=true;
+ const btn=document.getElementById("sendBtn");
+ btn.disabled=true;
+ input.value="";
+
+ addMessage(question,"user");
+ const answer=addMessage("Thinking... Please wait.","ai");
+
+ try{
+  const response=await fetch(API_URL,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({message:question,language:detectLanguage(question)})
+  });
+
+  const data=await response.json();
+
+  if(!response.ok)throw new Error(data.error||data.message||("Server error: "+response.status));
+
+  const reply=data.reply||data.response||data.answer||(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("\n");
+
+  answer.textContent=reply||"No response received. Please try again.";
+
+  const speak=document.createElement("button");
+  speak.className="speak-btn";
+  speak.type="button";
+  speak.textContent="🔊 Listen to Answer";
+  speak.onclick=()=>speakText(reply||"");
+
+  answer.append(document.createElement("br"),speak);
+
+ }catch(error){
+  answer.textContent="Sorry, we could not process your request right now. Please try again later.";
+ }finally{
+  busy=false;
+  btn.disabled=false;
+ }
+}
+
+/* VOICE */
+function startVoiceInput(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+ if(!SR){
+  alert("Voice input is not supported in this browser. Please use updated Chrome.");
+  return;
+ }
+
+ stopSpeaking();
+ recognition=new SR();
+ recognition.lang="hi-IN";
+ recognition.interimResults=false;
+ recognition.maxAlternatives=1;
+
+ recognition.onresult=e=>{
+  const input=document.getElementById("question");
+  input.value=(input.value+" "+e.results[0][0].transcript).trim();
+  input.focus();
+ };
+
+ recognition.onerror=()=>alert("Voice input could not be completed. Please try again.");
+ recognition.onend=()=>recognition=null;
+ recognition.start();
+}
+
+function speakText(text){
+ if(!("speechSynthesis" in window)){
+  alert("Text-to-speech is not supported.");
+  return;
+ }
+
+ window.speechSynthesis.cancel();
+
+ const u=new SpeechSynthesisUtterance(text);
+ u.lang=detectLanguage(text)==="English"?"en-IN":"hi-IN";
+ u.rate=.95;
+ window.speechSynthesis.speak(u);
+}
+
+function stopSpeaking(){
+ if("speechSynthesis" in window)window.speechSynthesis.cancel();
+
+ if(recognition){
+  try{recognition.stop();}catch(e){}
+  recognition=null;
+ }
+}
+
+/* ACCOUNT INTERFACE */
+function openModal(type){
+ const title=document.getElementById("modalTitle");
+ const desc=document.getElementById("modalDesc");
+ const pass=document.getElementById("authPassword");
+ const confirm=document.getElementById("authConfirm");
+ const name=document.getElementById("authName");
+ const links=document.getElementById("modalLinks");
+ const action=document.getElementById("authAction");
+
+ name.style.display="none";
+ confirm.style.display="none";
+ pass.style.display="block";
+
+ if(type==="signup"){
+  title.textContent="Create Account";
+  desc.textContent="Join NYAYVERSE AI.";
+  name.style.display="block";
+  confirm.style.display="block";
+  action.textContent="Create Account";
+  links.innerHTML='<button onclick="openModal(\'login\')">Already registered? Login</button>';
+
+ }else if(type==="forgot"){
+  title.textContent="Reset Password";
+  desc.textContent="Enter your email to request a password reset.";
+  pass.style.display="none";
+  action.textContent="Send Reset Link";
+  links.innerHTML='<button onclick="openModal(\'login\')">Back to Login</button>';
+
+ }else{
+  title.textContent="Welcome Back";
+  desc.textContent="Login to your NYAYVERSE AI account.";
+  action.textContent="Continue";
+  links.innerHTML='<button onclick="openModal(\'forgot\')">Forgot Password?</button><button onclick="openModal(\'signup\')">Create Account</button>';
+ }
+
+ document.getElementById("modalBg").style.display="flex";
+}
+
+function closeModal(){
+ document.getElementById("modalBg").style.display="none";
+}
+
+function authNotice(){
+ alert("Sign-in is temporarily unavailable. Please try again later.");
+}
 </script>
 </body>
 </html>
