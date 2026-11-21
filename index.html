@@ -107,7 +107,19 @@
 <script>
 "use strict";
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-const ROUTES={chat:"",signup:"auth/signup",verifyEmail:"auth/verify-email",login:"auth/login",forgot:"auth/forgot-password",logout:"auth/logout",googleStart:"auth/google/start",image:"image/generate",video:"video/generate",checker:"media/check"};
+const ROUTES={
+  chat:"",
+  signup:"auth/signup",
+  verifyEmail:"auth/verify-email",
+  login:"auth/login",
+  forgot:"auth/forgot-password",
+  logout:"auth/logout",
+  googleStart:"auth/google/start",
+  image:"image/generate",
+  video:"video/generate",
+  checker:"media/check",
+  personalAssistant:"api/personal-assistant/chat"
+};
 const $=id=>document.getElementById(id);let authMode="start",busy=false,aborter=null,recognition=null,selectedFiles=[],currentPage="home",currentModule=null,currentFeature=null;
 const token=()=>localStorage.getItem("nyayverse_auth_token")||"";
 function headers(){const h={"Content-Type":"application/json"};if(token())h.Authorization="Bearer "+token();return h}
@@ -282,20 +294,130 @@ function renderPage(p){
  moduleShell(x[0],x[1],"",`<div class="panel"><p>${x[1]}</p><p class="muted">This information page is a frontend placeholder until the reviewed content and matching backend behavior are published.</p></div>`);
 }
 async function runModule(key){
- const prompt=$("modulePrompt")?.value.trim()||"",file=$("moduleFile")?.files?.[0];
- if(!prompt&&!file){$("moduleStatus").textContent="Enter a request or choose a file.";return}
- const route=key==="image"?ROUTES.image:key==="video"?ROUTES.video:key==="checker"?ROUTES.checker:null;
- if(!route){$("moduleStatus").textContent="The matching authenticated Worker endpoint is not yet wired in this frontend build. Do not treat this control as live.";return}
- if(!token()){openAuth();return}
- $("moduleStatus").textContent="Preparing secure request…";
+
+ const prompt = $("modulePrompt")?.value.trim() || "";
+ const file = $("moduleFile")?.files?.[0];
+
+ if(!prompt && !file){
+   $("moduleStatus").textContent =
+     "कृपया पहले अपना सवाल या निर्देश लिखें।";
+   return;
+ }
+
+ // Login check
+ if(!token()){
+   openAuth();
+   $("moduleStatus").textContent =
+     "Personal AI Assistant इस्तेमाल करने के लिए पहले लॉगिन करें।";
+   return;
+ }
+
+ // File upload safety
+ if(key === "assistant" && file){
+   $("moduleStatus").textContent =
+     "इस समय इस मॉड्यूल में वास्तविक File Upload कनेक्ट नहीं है। कृपया फाइल का जरूरी टेक्स्ट कॉपी करके अपने सवाल के साथ भेजें।";
+   return;
+ }
+
+ // Personal AI Assistant
+ if(key === "assistant"){
+
+   const featureName =
+     moduleMeta.assistant.features[currentFeature]?.name ||
+     "Personal AI Chat";
+
+   $("moduleStatus").textContent =
+     "NYAYVERSE AI आपका जवाब तैयार कर रहा है...";
+
+   try{
+
+     const result = await request(
+       ROUTES.personalAssistant,
+       {
+         message: prompt,
+         language: detectLanguage(prompt),
+         feature: featureName,
+         provider_policy: "server-managed"
+       }
+     );
+
+     const answer =
+       result.answer ||
+       result.reply ||
+       result.response ||
+       result.text;
+
+     if(!answer){
+       throw new Error(
+         result.message ||
+         "Backend से कोई readable जवाब नहीं मिला।"
+       );
+     }
+
+     $("moduleStatus").textContent = answer;
+
+   }catch(error){
+
+     console.error("Personal AI Assistant Error:", error);
+
+     $("moduleStatus").textContent =
+       "Request failed: " + error.message;
+   }
+
+   return;
+ }
+
+ // Other module routes
+ const route =
+   key === "image" ? ROUTES.image :
+   key === "video" ? ROUTES.video :
+   key === "checker" ? ROUTES.checker :
+   null;
+
+ if(!route){
+   $("moduleStatus").textContent =
+     "इस मॉड्यूल का संबंधित Backend API अभी कनेक्ट नहीं है।";
+   return;
+ }
+
+ $("moduleStatus").textContent =
+   "Preparing secure request…";
+
  try{
-  const payload={prompt,action:key,aspect_ratio:$("ratio")?.value,duration:$("duration")?.value};
-  if(file){payload.file_name=file.name;payload.file_type=file.type;payload.file_size=file.size;payload.note="Upload transport is not implemented by this metadata-only request."}
-  const result=await request(route,payload);$("moduleStatus").textContent=JSON.stringify(result,null,2);
- }catch(e){$("moduleStatus").textContent="Request failed: "+e.message}
+
+   const payload = {
+     prompt: prompt,
+     action: key,
+     aspect_ratio: $("ratio")?.value,
+     duration: $("duration")?.value
+   };
+
+   if(file){
+     payload.file_name = file.name;
+     payload.file_type = file.type;
+     payload.file_size = file.size;
+     payload.note =
+       "File bytes are not uploaded by this request.";
+   }
+
+   const result = await request(route, payload);
+
+   $("moduleStatus").textContent =
+     JSON.stringify(result, null, 2);
+
+ }catch(error){
+
+   console.error("Module Error:", error);
+
+   $("moduleStatus").textContent =
+     "Request failed: " + error.message;
+ }
 }
 function addMessage(text,who){const row=document.createElement("div");row.className="msg "+who;const b=document.createElement("div");b.className="bubble";b.textContent=text;row.appendChild(b);$("chat").appendChild(row);row.scrollIntoView({behavior:"smooth",block:"end"});return b}
-function detectLanguage(s){if(/[ऀ-ॿ]/.test(s))return "hi";return "auto"}
+function detectLanguage(s){
+  if(/[ऀ-ॿ]/.test(s)) return "Hindi";
+  return "auto";
+}
 async function sendChat(){
  if(busy)return;const prompt=$("prompt").value.trim();if(!prompt&&!selectedFiles.length)return;
  busy=true;aborter=new AbortController();$("sendBtn").disabled=true;$("stopBtn").disabled=false;
