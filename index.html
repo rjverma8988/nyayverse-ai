@@ -123,8 +123,31 @@ const ROUTES={
 const $=id=>document.getElementById(id);let authMode="start",busy=false,aborter=null,recognition=null,selectedFiles=[],currentPage="home",currentModule=null,currentFeature=null;
 const token=()=>localStorage.getItem("nyayverse_auth_token")||"";
 function headers(){const h={"Content-Type":"application/json"};if(token())h.Authorization="Bearer "+token();return h}
-async function request(path,body,method="POST",signal){const r=await fetch(API_URL+path,{method,headers:headers(),...(body===undefined?{}:{body:JSON.stringify(body)}),signal});const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw new Error(d.error||d.message||"The service is temporarily unavailable.");return d}
-function showStatus(msg){$("authMessage").textContent=msg}
+
+async function request(path,body,method="POST",signal){
+ const r=await fetch(API_URL+path,{
+   method,
+   headers:headers(),
+   ...(body===undefined?{}:{body:JSON.stringify(body)}),
+   signal
+ });
+
+ const d=await r.json().catch(()=>({}));
+
+ if(!r.ok || d.success===false){
+   const error=new Error(
+     d.error || d.message || "The service is temporarily unavailable."
+   );
+
+   error.code=d.code || "";
+   error.status=r.status;
+   error.details=d;
+
+   throw error;
+ }
+
+ return d;
+}function showStatus(msg){$("authMessage").textContent=msg}
 function openAuth(){$("authModal").style.display="flex";authMode="start";$("authStart").classList.remove("hidden");$("authFields").classList.add("hidden");$("authTitle").textContent="Welcome to NYAYVERSE AI"}
 function closeAuth(){$("authModal").style.display="none"}
 function setSidebar(open){
@@ -274,7 +297,11 @@ function openModuleFeature(p,index){
  }
  const featureName=p==="divya"?divyaFeature(index).name:f.name;
  const featureDesc=p==="divya"?divyaFeature(index).desc:f.desc;
- moduleShell(featureName,featureDesc,m.cls,`<div class="feature-screen">${body}</div>`);
+ moduleShell(featureName,featureDesc,m.cls,`<div class="feature-screen">${body}</div>`);// Guest users get 100 lifetime Personal AI Assistant messages.
+if(p === "assistant" && !token()){
+  $("moduleStatus").textContent =
+    "Guest Mode: आप बिना Login किए 100 मुफ्त संदेश इस्तेमाल कर सकते हैं। हर सफल जवाब के बाद बचे हुए संदेश दिखेंगे।";
+}
  if(p==="divya"){
   const t=divyaTranslations[divyaLang];$("backHome").textContent=t.backModule;
   bindDivyaLanguage();
@@ -304,29 +331,19 @@ async function runModule(key){
    return;
  }
 
- // Login check
- if(!token()){
-   openAuth();
-   $("moduleStatus").textContent =
-     "Personal AI Assistant इस्तेमाल करने के लिए पहले लॉगिन करें।";
-   return;
- }
 
- // File upload safety
- if(key === "assistant" && file){
-   $("moduleStatus").textContent =
-     "इस समय इस मॉड्यूल में वास्तविक File Upload कनेक्ट नहीं है। कृपया फाइल का जरूरी टेक्स्ट कॉपी करके अपने सवाल के साथ भेजें।";
-   return;
- }
-
- // Personal AI Assistant
+// Login check
+// Personal AI Assistant supports limited guest access.
+// Personal AI Assistant — Guest + Logged-in Access
  if(key === "assistant"){
 
    const featureName =
      moduleMeta.assistant.features[currentFeature]?.name ||
      "Personal AI Chat";
 
-   $("moduleStatus").textContent =
+   const status = $("moduleStatus");
+
+   status.textContent =
      "NYAYVERSE AI आपका जवाब तैयार कर रहा है...";
 
    try{
@@ -354,21 +371,62 @@ async function runModule(key){
        );
      }
 
-     $("moduleStatus").textContent = answer;
+     // Show the AI answer.
+     status.textContent = answer;
+
+     // Show remaining guest messages.
+     if(!token() && result.guest_mode){
+
+       const remaining = Number(
+         result.guest_messages_remaining ?? 0
+       );
+
+       const limit = Number(
+         result.guest_message_limit ?? 100
+       );
+
+       const used = Number(
+         result.guest_messages_used ?? (limit - remaining)
+       );
+
+       const counter = document.createElement("p");
+       counter.className = "muted";
+       counter.textContent =
+         `मुफ्त Guest Messages: ${used}/${limit} इस्तेमाल हुए · ${remaining} बाकी`;
+
+       status.appendChild(document.createElement("br"));
+       status.appendChild(counter);
+     }
 
    }catch(error){
 
      console.error("Personal AI Assistant Error:", error);
 
-     $("moduleStatus").textContent =
-       "Request failed: " + error.message;
+     // Guest message limit reached.
+     if(error.code === "GUEST_LIMIT_REACHED"){
+
+       status.textContent =
+         "आपके 100 मुफ्त Guest Messages पूरे हो गए हैं। आगे Personal AI Assistant इस्तेमाल करने के लिए Login करें या नया Account बनाएँ।";
+
+       const loginButton = document.createElement("button");
+       loginButton.type = "button";
+       loginButton.className = "btn primary";
+       loginButton.textContent = "Login / Create Account";
+       loginButton.style.marginTop = "12px";
+       loginButton.onclick = openAuth;
+
+       status.appendChild(document.createElement("br"));
+       status.appendChild(loginButton);
+
+     }else{
+
+       status.textContent =
+         "Request failed: " + error.message;
+     }
    }
 
    return;
- }
-
- // Other module routes
- const route =
+ } const route =
    key === "image" ? ROUTES.image :
    key === "video" ? ROUTES.video :
    key === "checker" ? ROUTES.checker :
