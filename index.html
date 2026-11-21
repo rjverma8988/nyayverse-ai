@@ -19,6 +19,12 @@
 @media(max-width:700px){.sidebar{position:fixed;inset:0 auto 0 0;width:min(290px,86vw);height:100dvh;min-height:100dvh;transform:translateX(-110%);box-shadow:12px 0 35px #0009}.sidebar.open{transform:translateX(0)}.backdrop.show{display:block;position:fixed;inset:0;background:#0009;z-index:35}.content{padding:18px 12px}.grid,.module-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tile{padding:12px;min-height:105px}.topbar{padding:0 12px}.module{padding:13px}}
 @media(min-width:701px){.sidebar{transform:translateX(0)}.sidebar.collapsed{display:none}.sidebar.open{transform:translateX(0)}.backdrop.show{display:block;position:fixed;inset:0;background:#0008;z-index:35}}
 @media(max-width:390px){.grid,.module-feature-grid{grid-template-columns:1fr}.composer-tools{align-items:flex-start}}
+
+/* Divya Drishti language selector — isolated to this module only. */
+.divya-language{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap;margin:0 0 12px}
+.divya-language span{font-size:12px;color:#79664f}
+.divya-language button{border:1px solid #d8b77d;background:#fffaf0;color:#5b391d;padding:7px 13px;border-radius:20px;font-size:12px}
+.divya-language button.active{background:#bd6b20;border-color:#bd6b20;color:#fff;font-weight:700}
 </style>
 </head>
 <body>
@@ -123,7 +129,10 @@ function buildSidebar(page){
  const global=`<div class="nav-label">WORKSPACE</div><button data-page="home">⌂ Main AI Chat</button><button data-page="history">◷ Chat History</button><button data-page="saved">☆ Saved Answers</button><button data-page="searches">⌕ Recent Searches</button><div class="nav-label">SPECIALIST MODULES</div><button data-page="image">✦ Create Image</button><button data-page="video">▶ Create Video</button><button data-page="checker">⌕ Fake Media Checker</button><button data-page="assistant">✧ Personal AI Assistant</button><button data-page="medical">✚ Medical & Healthcare AI</button><button data-page="english">文 English Learning</button><button data-page="divya">🪷 Divya Drishti · दिव्य दृष्टि</button><div class="nav-label">MORE</div><button data-page="projects">▦ Projects & Documents</button><button data-page="law">⚖ Law & Knowledge</button><button data-page="account">⚙ Account & Security</button><button data-page="plans">◇ Membership & Plans</button><div class="nav-label">POLICIES</div><button data-page="about">About NYAYVERSE AI</button><button data-page="terms">Terms & Conditions</button><button data-page="privacy">Privacy Policy</button><button data-page="agreement">User Agreement</button><button id="logoutBtn">↪ Sign Out</button>`;
  if(moduleMeta[page]){
   const m=moduleMeta[page];
-  nav.innerHTML=`<div class="nav-label">${m.label}</div><button data-module-home="${page}">⌂ ${m.title} Home</button><div class="nav-label">THIS MODULE'S FEATURES</div>${m.features.map((f,i)=>`<button data-feature="${i}" data-module="${page}">${f.icon} ${f.name}</button>`).join("")}`;
+  if(page==="divya"){
+   const t=divyaTranslations[divyaLang];
+   nav.innerHTML=`<div class="nav-label">${t.title}</div><button data-module-home="${page}">⌂ ${t.home}</button><div class="nav-label">${t.featureHeading}</div>${m.features.map((f,i)=>{const x=divyaFeature(i);return `<button data-feature="${i}" data-module="${page}">${f.icon} ${x.name}</button>`}).join("")}`;
+  }else nav.innerHTML=`<div class="nav-label">${m.label}</div><button data-module-home="${page}">⌂ ${m.title} Home</button><div class="nav-label">THIS MODULE'S FEATURES</div>${m.features.map((f,i)=>`<button data-feature="${i}" data-module="${page}">${f.icon} ${f.name}</button>`).join("")}`;
  }else nav.innerHTML=global;
  nav.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
  nav.querySelectorAll("[data-feature]").forEach(b=>b.addEventListener("click",()=>openModuleFeature(b.dataset.module,Number(b.dataset.feature))));
@@ -157,14 +166,78 @@ const moduleMeta={
  divya:{title:"Divya Drishti · दिव्य दृष्टि",desc:"Panchang • Kundali • Muhurat",label:"दिव्य दृष्टि · DIVYA DRISHTI",cls:"soul",features:[
   {name:"अपना भविष्य जानें · Know Your Future",icon:"✧",desc:"जन्म विवरण के आधार पर पारंपरिक ज्योतिषीय मार्गदर्शन। Interpretive guidance, not guaranteed prediction."},{name:"Daily Panchang",icon:"🪷",desc:"Tithi, Nakshatra, Yoga and Karana."},{name:"Janma Kundali",icon:"☼",desc:"Birth chart and Dasha."},{name:"Shubh Muhurat",icon:"✧",desc:"Event, location and preferred date range."},{name:"Kundali Milan",icon:"♡",desc:"Compatibility details for both persons."},{name:"Daily Horoscope",icon:"☾",desc:"Rashi and Nakshatra based horoscope."},{name:"Astrologer Consultation",icon:"♧",desc:"Consultation request and service information."},{name:"Vrat, Festivals & Calendar",icon:"☼",desc:"Hindu calendar, observances and festivals."},{name:"Vastu, Mantra & Spiritual Tools",icon:"ॐ",desc:"Vastu, puja, mantras and spiritual resources."},{name:"Numerology, Palmistry & Tarot",icon:"✧",desc:"Traditional interpretive tools."},{name:"Dosha, Dasha & Divisional Charts",icon:"◈",desc:"Dasha, dosha and D1–D60 chart tools."}]}
 };
+
+/* Divya Drishti bilingual UI. Hindi is the first-visit default; this setting is isolated from every other module. */
+let divyaLang = localStorage.getItem("nyayverse_divya_lang") || "hi";
+const divyaTranslations = {
+ hi: {
+  title:"दिव्य दृष्टि", desc:"पंचांग • कुंडली • मुहूर्त", home:"दिव्य दृष्टि होम", featureHeading:"दिव्य दृष्टि के टूल", backMain:"← मुख्य AI चैट", backModule:"← दिव्य दृष्टि होम", explore:"सभी ज्योतिष टूल साइडबार में उपलब्ध हैं।", language:"भाषा चुनें", dob:"जन्म तिथि", birthTime:"जन्म समय", birthPlace:"जन्म स्थान", event:"कार्य / प्रश्न / विवरण", placePlaceholder:"शहर, राज्य, देश", promptPlaceholder:"अपना प्रश्न या विवरण लिखें...", continue:"आगे बढ़ें", status:"ज्योतिष पारंपरिक व्याख्यात्मक मार्गदर्शन है, निश्चित भविष्यवाणी नहीं। स्थान-आधारित गणना के लिए सही जन्म/कार्य स्थान और तारीख आवश्यक हो सकती है।", backend:"यह टूल परिणाम तभी देगा जब संबंधित ज्योतिष सेवा और बैकएंड कनेक्ट होंगे। अभी कोई गणना या भविष्यवाणी नहीं की गई है।", empty:"कृपया अपना प्रश्न या विवरण लिखें।",
+  features:[
+   ["अपना भविष्य जानें","जन्म विवरण के आधार पर पारंपरिक ज्योतिषीय मार्गदर्शन।"],
+   ["दैनिक पंचांग","तिथि, नक्षत्र, योग और करण की जानकारी।"],
+   ["जन्म कुंडली","जन्म कुंडली और दशा की पारंपरिक व्याख्या।"],
+   ["शुभ मुहूर्त","कार्य, स्थान और पसंदीदा तारीख के अनुसार मुहूर्त।"],
+   ["कुंडली मिलान","दो व्यक्तियों के जन्म विवरण के आधार पर पारंपरिक मिलान।"],
+   ["दैनिक राशिफल","राशि और नक्षत्र आधारित सामान्य राशिफल।"],
+   ["ज्योतिषी से परामर्श","ज्योतिषी परामर्श अनुरोध और सेवा की जानकारी।"],
+   ["व्रत, त्योहार और पंचांग","हिंदू कैलेंडर, व्रत, पर्व और त्योहार।"],
+   ["वास्तु, मंत्र और आध्यात्मिक टूल","वास्तु, पूजा, मंत्र और आध्यात्मिक संसाधन।"],
+   ["अंक ज्योतिष, हस्तरेखा और टैरो","अंक ज्योतिष, हस्तरेखा और टैरो के पारंपरिक व्याख्यात्मक टूल।"],
+   ["दोष, दशा और वर्ग कुंडली","दशा, दोष और D1–D60 वर्ग कुंडली टूल।"]
+  ]
+ },
+ en: {
+  title:"Divya Drishti", desc:"Panchang • Kundali • Muhurat", home:"Divya Drishti Home", featureHeading:"DIVYA DRISHTI TOOLS", backMain:"← Main AI Chat", backModule:"← Divya Drishti Home", explore:"All astrology tools are available in the sidebar.", language:"Choose language", dob:"Date of birth", birthTime:"Time of birth", birthPlace:"Place of birth", event:"Event / Question / Details", placePlaceholder:"City, State, Country", promptPlaceholder:"Enter your question or details...", continue:"Continue", status:"Astrology is traditional interpretive guidance, not a guaranteed prediction. Accurate birth/event location and date may be required for location-based calculations.", backend:"This tool will return results only after its relevant astrology service and backend are connected. No calculation or prediction has been performed yet.", empty:"Please enter your question or details.",
+  features:[
+   ["Know Your Future","Traditional astrological guidance based on birth details."],
+   ["Daily Panchang","Information about Tithi, Nakshatra, Yoga and Karana."],
+   ["Janma Kundali","Traditional interpretation of the birth chart and Dasha."],
+   ["Shubh Muhurat","Find an auspicious time based on event, location and preferred dates."],
+   ["Kundali Matching","Traditional compatibility matching based on both persons’ birth details."],
+   ["Daily Horoscope","General horoscope based on Rashi and Nakshatra."],
+   ["Astrologer Consultation","Astrologer consultation requests and service information."],
+   ["Vrat, Festivals & Panchang","Hindu calendar, fasts, observances and festivals."],
+   ["Vastu, Mantra & Spiritual Tools","Vastu, puja, mantras and spiritual resources."],
+   ["Numerology, Palmistry & Tarot","Traditional interpretive tools for numerology, palmistry and tarot."],
+   ["Dosha, Dasha & Divisional Charts","Dasha, dosha and D1–D60 divisional chart tools."]
+  ]
+ }
+};
+function divyaFeature(index){
+ const original=moduleMeta.divya.features[index], translated=divyaTranslations[divyaLang].features[index];
+ return {...original,name:translated[0],desc:translated[1]};
+}
+function divyaLanguageBar(){
+ return `<div class="divya-language"><span>${divyaTranslations[divyaLang].language}:</span><button type="button" data-divya-lang="hi" class="${divyaLang==="hi"?"active":""}" aria-pressed="${divyaLang==="hi"}">हिंदी</button><button type="button" data-divya-lang="en" class="${divyaLang==="en"?"active":""}" aria-pressed="${divyaLang==="en"}">English</button></div>`;
+}
+function bindDivyaLanguage(){
+ document.querySelectorAll("[data-divya-lang]").forEach(button=>button.addEventListener("click",()=>setDivyaLanguage(button.dataset.divyaLang)));
+}
+function setDivyaLanguage(language){
+ const values={};["birthDate","birthTime","birthPlace","modulePrompt"].forEach(id=>{const el=$(id);if(el)values[id]=el.value;});
+ divyaLang=language==="en"?"en":"hi";
+ localStorage.setItem("nyayverse_divya_lang",divyaLang);
+ if(currentModule==="divya"){
+  if(currentFeature===null)renderModuleHome("divya");else openModuleFeature("divya",currentFeature);
+  Object.keys(values).forEach(id=>{const el=$(id);if(el)el.value=values[id];});
+ }
+}
+
 function renderModuleHome(p){
  currentPage=p;currentModule=p;currentFeature=null;buildSidebar(p);closeSidebar();
  const m=moduleMeta[p];if(!m)return;
- const cards=m.features.slice(0,p==="divya"?7:Math.min(6,m.features.length));
- const html=`<div class="module-feature-grid">${cards.map((f,i)=>`<button class="tile" data-home-feature="${i}"><span>${f.icon}</span><b>${f.name}</b><small>${f.desc}</small></button>`).join("")}</div><div class="panel"><p class="muted">Explore this module's complete feature list from its Sidebar. Choose a feature to open its workspace.</p></div>`;
- moduleShell(m.title,m.desc,m.cls,html);
- $("backHome").textContent="← Main AI Chat";
- $("backHome").onclick=()=>navigate("home");
+ if(p==="divya"){
+  const t=divyaTranslations[divyaLang],cards=m.features.slice(0,7);
+  const html=`${divyaLanguageBar()}<div class="module-feature-grid">${cards.map((f,i)=>{const x=divyaFeature(i);return `<button class="tile" data-home-feature="${i}"><span>${f.icon}</span><b>${x.name}</b><small>${x.desc}</small></button>`}).join("")}</div><div class="panel"><p class="muted">${t.explore}</p></div>`;
+  moduleShell(t.title,t.desc,m.cls,html);
+  $("backHome").textContent=t.backMain;$("backHome").onclick=()=>navigate("home");
+  bindDivyaLanguage();
+ }else{
+  const cards=m.features.slice(0,Math.min(6,m.features.length));
+  const html=`<div class="module-feature-grid">${cards.map((f,i)=>`<button class="tile" data-home-feature="${i}"><span>${f.icon}</span><b>${f.name}</b><small>${f.desc}</small></button>`).join("")}</div><div class="panel"><p class="muted">Explore this module's complete feature list from its Sidebar. Choose a feature to open its workspace.</p></div>`;
+  moduleShell(m.title,m.desc,m.cls,html);
+  $("backHome").textContent="← Main AI Chat";$("backHome").onclick=()=>navigate("home");
+ }
  $("page").querySelectorAll("[data-home-feature]").forEach(b=>b.onclick=()=>openModuleFeature(p,Number(b.dataset.homeFeature)));
 }
 function openModuleFeature(p,index){
@@ -172,7 +245,8 @@ function openModuleFeature(p,index){
  const m=moduleMeta[p],f=m?.features[index];if(!f)return;
  let body="";
  if(p==="divya"){
-  body=`<div class="panel"><p>${f.desc}</p><label>जन्म तिथि / Date of birth (if relevant)</label><input id="birthDate" type="date"><label>जन्म समय / Time of birth (if relevant)</label><input id="birthTime" type="time"><label>जन्म स्थान / Place (if relevant)</label><input id="birthPlace" placeholder="City, State, Country"><label>Event / प्रश्न / Details</label><textarea id="modulePrompt" placeholder="अपना प्रश्न लिखें / Enter your question..."></textarea><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">Astrology is traditional interpretive guidance, not a guaranteed prediction. Location and date are required for location-sensitive calculations.</div></div>`;
+  const t=divyaTranslations[divyaLang],df=divyaFeature(index);
+  body=`${divyaLanguageBar()}<div class="panel"><p>${df.desc}</p><label>${t.dob}</label><input id="birthDate" type="date"><label>${t.birthTime}</label><input id="birthTime" type="time"><label>${t.birthPlace}</label><input id="birthPlace" placeholder="${t.placePlaceholder}"><label>${t.event}</label><textarea id="modulePrompt" placeholder="${t.promptPlaceholder}"></textarea><button class="btn primary" id="moduleRun">${t.continue}</button><div class="status" id="moduleStatus">${t.status} ${t.backend}</div></div>`;
  }else if(p==="image"){
   body=`<div class="panel"><p>${f.desc}</p><label>Describe your image or requested edit</label><textarea id="modulePrompt" placeholder="Describe the image you want..."></textarea><label>Reference image (optional)</label><input id="moduleFile" type="file" accept="image/*"><label>Aspect ratio</label><select id="ratio"><option>1:1</option><option>9:16</option><option>16:9</option><option>4:5</option></select><button class="btn primary" id="moduleRun">Generate Image</button><div class="status" id="moduleStatus">Image generation requires an eligible server-side entitlement and configured provider.</div></div>`;
  }else if(p==="video"){
@@ -186,9 +260,18 @@ function openModuleFeature(p,index){
  }else{
   body=`<div class="panel"><p>${f.desc}</p><label>What would you like help with?</label><textarea id="modulePrompt" placeholder="Describe your request..."></textarea><label>Attach a relevant file (optional)</label><input id="moduleFile" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,image/*"><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">This workspace requires its matching authenticated backend service. This screen does not imply that an unconnected feature is live.</div></div>`;
  }
- moduleShell(f.name,f.desc,m.cls,`<div class="feature-screen">${body}</div>`);
- $("backHome").onclick=()=>renderModuleHome(p);
- const run=$("moduleRun");if(run)run.onclick=()=>runModule(p);
+ const featureName=p==="divya"?divyaFeature(index).name:f.name;
+ const featureDesc=p==="divya"?divyaFeature(index).desc:f.desc;
+ moduleShell(featureName,featureDesc,m.cls,`<div class="feature-screen">${body}</div>`);
+ if(p==="divya"){
+  const t=divyaTranslations[divyaLang];$("backHome").textContent=t.backModule;
+  bindDivyaLanguage();
+ }else $("backHome").onclick=()=>renderModuleHome(p);
+ const run=$("moduleRun");
+ if(run){
+  if(p==="divya")run.onclick=()=>{$("moduleStatus").textContent=($("modulePrompt").value.trim()||$("birthDate").value||$("birthPlace").value.trim())?divyaTranslations[divyaLang].backend:divyaTranslations[divyaLang].empty;};
+  else run.onclick=()=>runModule(p);
+ }
 }
 function renderPage(p){
  if(moduleMeta[p]){renderModuleHome(p);return}
