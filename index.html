@@ -20,11 +20,47 @@
 @media(min-width:701px){.sidebar{transform:translateX(0)}.sidebar.collapsed{display:none}.sidebar.open{transform:translateX(0)}.backdrop.show{display:block;position:fixed;inset:0;background:#0008;z-index:35}}
 @media(max-width:390px){.grid,.module-feature-grid{grid-template-columns:1fr}.composer-tools{align-items:flex-start}}
 
-/* Divya Drishti language selector — isolated to this module only. */
-.divya-language{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap;margin:0 0 12px}
-.divya-language span{font-size:12px;color:#79664f}
-.divya-language button{border:1px solid #d8b77d;background:#fffaf0;color:#5b391d;padding:7px 13px;border-radius:20px;font-size:12px}
-.divya-language button.active{background:#bd6b20;border-color:#bd6b20;color:#fff;font-weight:700}
+/* Seven-module chat workspace: placed above each module's existing feature catalog. */
+.module-chat{margin:18px 0 22px;padding:16px;border:1px solid var(--m-line);border-radius:15px;background:var(--m-panel);color:inherit}
+.module-chat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.module-chat-head h2{font-size:17px;margin:0;color:inherit}
+.module-chat-actions,.module-chat-tools{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.module-chat-log{min-height:95px;max-height:340px;overflow:auto;padding:8px 2px;margin:8px 0 12px;border-bottom:1px solid var(--m-line)}
+.module-chat-empty{color:var(--muted);font-size:13px;padding:18px 8px;text-align:center}
+.module-chat-row{display:flex;margin:10px 0}
+.module-chat-row.user{justify-content:flex-end}
+.module-chat-bubble{max-width:min(88%,760px);white-space:pre-wrap;overflow-wrap:anywhere;padding:10px 13px;border:1px solid var(--m-line);border-radius:12px;background:#101010;color:#f6f1e6}
+.module-chat-row.user .module-chat-bubble{background:#292316}
+.module-chat-compose{display:flex;flex-direction:column;gap:9px}
+.module-chat-compose textarea{width:100%;min-height:62px;resize:vertical;background:#0c0c0c;color:#f6f1e6;border:1px solid var(--m-line);border-radius:10px;padding:11px}
+.module-chat-file-label{font-size:12px;color:var(--muted);align-self:center}
+.module-chat .btn:disabled{opacity:.5;cursor:not-allowed}
+.module-chat .module-chat-tools{justify-content:space-between}
+.module-chat .module-chat-tools-left{display:flex;gap:7px;flex-wrap:wrap}
+.module-chat-note{font-size:11px;color:var(--muted);margin-top:8px}
+.soul .module-chat-bubble{color:#f6f1e6}
+@media(max-width:520px){.module-chat{padding:11px}.module-chat-bubble{max-width:96%}.module-chat-tools{align-items:flex-start}}
+
+
+/* Approved module-specific chat presentation */
+.module-chat-title-wrap{min-width:220px;flex:1}
+.module-chat-title-wrap h2{font-size:19px;margin:0 0 4px}
+.module-chat-title-wrap p{font-size:13px;color:var(--muted);margin:0;max-width:760px}
+.module-chat-suggestions-label{font-size:12px;color:var(--accent);font-weight:700;margin:14px 0 7px}
+.module-chat-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.module-chat-suggestion{border:1px solid var(--m-line);background:#171717;color:inherit;border-radius:999px;padding:8px 11px;font-size:12px;text-align:left}
+.module-chat-suggestion:hover{border-color:var(--accent);background:#292316}
+.module-chat-log{background:#0d0d0d;border:1px solid var(--m-line);border-radius:12px;padding:10px;margin:12px 0;min-height:88px}
+.module-chat-compose{background:#111;border:1px solid var(--m-line);border-radius:13px;padding:10px}
+.module-chat-compose textarea{border:0;background:transparent;outline:0;min-height:58px;padding:7px}
+.module-chat-tools{padding-top:7px;border-top:1px solid #30291e}
+.module-chat-file-label{padding:2px 5px}
+.soul .module-chat-suggestion{background:#fffaf0;color:#302216}
+.soul .module-chat-log{background:#fff;color:#302216}
+.soul .module-chat-empty{color:#79664f}
+.english .module-chat-suggestion{background:#21183b;color:#f4eaff}
+@media(max-width:600px){.module-chat-head{align-items:flex-start}.module-chat-actions{width:100%}.module-chat-actions .btn{flex:1}.module-chat-tools{gap:10px}.module-chat-tools-left{width:100%}.module-chat-tools-left .btn{flex:1;padding:8px 9px;font-size:12px}.module-chat-suggestion{max-width:100%;white-space:normal}}
+
 </style>
 </head>
 <body>
@@ -107,47 +143,12 @@
 <script>
 "use strict";
 const API_URL="https://nyayverse-ai-backend.rjverma8988.workers.dev/";
-const ROUTES={
-  chat:"",
-  signup:"auth/signup",
-  verifyEmail:"auth/verify-email",
-  login:"auth/login",
-  forgot:"auth/forgot-password",
-  logout:"auth/logout",
-  googleStart:"auth/google/start",
-  image:"image/generate",
-  video:"video/generate",
-  checker:"media/check",
-  personalAssistant:"api/personal-assistant/chat"
-};
+const ROUTES={chat:"",signup:"auth/signup",verifyEmail:"auth/verify-email",login:"auth/login",forgot:"auth/forgot-password",logout:"auth/logout",googleStart:"auth/google/start",image:"image/generate",video:"video/generate",checker:"media/check"};
 const $=id=>document.getElementById(id);let authMode="start",busy=false,aborter=null,recognition=null,selectedFiles=[],currentPage="home",currentModule=null,currentFeature=null;
 const token=()=>localStorage.getItem("nyayverse_auth_token")||"";
 function headers(){const h={"Content-Type":"application/json"};if(token())h.Authorization="Bearer "+token();return h}
-
-async function request(path,body,method="POST",signal){
- const r=await fetch(API_URL+path,{
-   method,
-   headers:headers(),
-   ...(body===undefined?{}:{body:JSON.stringify(body)}),
-   signal
- });
-
- const d=await r.json().catch(()=>({}));
-
- if(!r.ok || d.success===false){
-   const error=new Error(
-     d.error || d.message || "The service is temporarily unavailable."
-   );
-
-   error.code=d.code || "";
-   error.status=r.status;
-   error.details=d;
-
-   throw error;
- }
-
- return d;
-}function showStatus(msg){$("authMessage").textContent=msg}
+async function request(path,body,method="POST",signal){const r=await fetch(API_URL+path,{method,headers:headers(),...(body===undefined?{}:{body:JSON.stringify(body)}),signal});const d=await r.json().catch(()=>({}));if(!r.ok||d.success===false)throw new Error(d.error||d.message||"The service is temporarily unavailable.");return d}
+function showStatus(msg){$("authMessage").textContent=msg}
 function openAuth(){$("authModal").style.display="flex";authMode="start";$("authStart").classList.remove("hidden");$("authFields").classList.add("hidden");$("authTitle").textContent="Welcome to NYAYVERSE AI"}
 function closeAuth(){$("authModal").style.display="none"}
 function setSidebar(open){
@@ -164,10 +165,7 @@ function buildSidebar(page){
  const global=`<div class="nav-label">WORKSPACE</div><button data-page="home">⌂ Main AI Chat</button><button data-page="history">◷ Chat History</button><button data-page="saved">☆ Saved Answers</button><button data-page="searches">⌕ Recent Searches</button><div class="nav-label">SPECIALIST MODULES</div><button data-page="image">✦ Create Image</button><button data-page="video">▶ Create Video</button><button data-page="checker">⌕ Fake Media Checker</button><button data-page="assistant">✧ Personal AI Assistant</button><button data-page="medical">✚ Medical & Healthcare AI</button><button data-page="english">文 English Learning</button><button data-page="divya">🪷 Divya Drishti · दिव्य दृष्टि</button><div class="nav-label">MORE</div><button data-page="projects">▦ Projects & Documents</button><button data-page="law">⚖ Law & Knowledge</button><button data-page="account">⚙ Account & Security</button><button data-page="plans">◇ Membership & Plans</button><div class="nav-label">POLICIES</div><button data-page="about">About NYAYVERSE AI</button><button data-page="terms">Terms & Conditions</button><button data-page="privacy">Privacy Policy</button><button data-page="agreement">User Agreement</button><button id="logoutBtn">↪ Sign Out</button>`;
  if(moduleMeta[page]){
   const m=moduleMeta[page];
-  if(page==="divya"){
-   const t=divyaTranslations[divyaLang];
-   nav.innerHTML=`<div class="nav-label">${t.title}</div><button data-module-home="${page}">⌂ ${t.home}</button><div class="nav-label">${t.featureHeading}</div>${m.features.map((f,i)=>{const x=divyaFeature(i);return `<button data-feature="${i}" data-module="${page}">${f.icon} ${x.name}</button>`}).join("")}`;
-  }else nav.innerHTML=`<div class="nav-label">${m.label}</div><button data-module-home="${page}">⌂ ${m.title} Home</button><div class="nav-label">THIS MODULE'S FEATURES</div>${m.features.map((f,i)=>`<button data-feature="${i}" data-module="${page}">${f.icon} ${f.name}</button>`).join("")}`;
+  nav.innerHTML=`<div class="nav-label">${m.label}</div><button data-module-home="${page}">⌂ ${m.title} Home</button><div class="nav-label">THIS MODULE'S FEATURES</div>${m.features.map((f,i)=>`<button data-feature="${i}" data-module="${page}">${f.icon} ${f.name}</button>`).join("")}`;
  }else nav.innerHTML=global;
  nav.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
  nav.querySelectorAll("[data-feature]").forEach(b=>b.addEventListener("click",()=>openModuleFeature(b.dataset.module,Number(b.dataset.feature))));
@@ -202,86 +200,146 @@ const moduleMeta={
   {name:"अपना भविष्य जानें · Know Your Future",icon:"✧",desc:"जन्म विवरण के आधार पर पारंपरिक ज्योतिषीय मार्गदर्शन। Interpretive guidance, not guaranteed prediction."},{name:"Daily Panchang",icon:"🪷",desc:"Tithi, Nakshatra, Yoga and Karana."},{name:"Janma Kundali",icon:"☼",desc:"Birth chart and Dasha."},{name:"Shubh Muhurat",icon:"✧",desc:"Event, location and preferred date range."},{name:"Kundali Milan",icon:"♡",desc:"Compatibility details for both persons."},{name:"Daily Horoscope",icon:"☾",desc:"Rashi and Nakshatra based horoscope."},{name:"Astrologer Consultation",icon:"♧",desc:"Consultation request and service information."},{name:"Vrat, Festivals & Calendar",icon:"☼",desc:"Hindu calendar, observances and festivals."},{name:"Vastu, Mantra & Spiritual Tools",icon:"ॐ",desc:"Vastu, puja, mantras and spiritual resources."},{name:"Numerology, Palmistry & Tarot",icon:"✧",desc:"Traditional interpretive tools."},{name:"Dosha, Dasha & Divisional Charts",icon:"◈",desc:"Dasha, dosha and D1–D60 chart tools."}]}
 };
 
-/* Divya Drishti bilingual UI. Hindi is the first-visit default; this setting is isolated from every other module. */
-let divyaLang = localStorage.getItem("nyayverse_divya_lang") || "hi";
-const divyaTranslations = {
- hi: {
-  title:"दिव्य दृष्टि", desc:"पंचांग • कुंडली • मुहूर्त", home:"दिव्य दृष्टि होम", featureHeading:"दिव्य दृष्टि के टूल", backMain:"← मुख्य AI चैट", backModule:"← दिव्य दृष्टि होम", explore:"सभी ज्योतिष टूल साइडबार में उपलब्ध हैं।", language:"भाषा चुनें", dob:"जन्म तिथि", birthTime:"जन्म समय", birthPlace:"जन्म स्थान", event:"कार्य / प्रश्न / विवरण", placePlaceholder:"शहर, राज्य, देश", promptPlaceholder:"अपना प्रश्न या विवरण लिखें...", continue:"आगे बढ़ें", status:"ज्योतिष पारंपरिक व्याख्यात्मक मार्गदर्शन है, निश्चित भविष्यवाणी नहीं। स्थान-आधारित गणना के लिए सही जन्म/कार्य स्थान और तारीख आवश्यक हो सकती है।", backend:"यह टूल परिणाम तभी देगा जब संबंधित ज्योतिष सेवा और बैकएंड कनेक्ट होंगे। अभी कोई गणना या भविष्यवाणी नहीं की गई है।", empty:"कृपया अपना प्रश्न या विवरण लिखें।",
-  features:[
-   ["अपना भविष्य जानें","जन्म विवरण के आधार पर पारंपरिक ज्योतिषीय मार्गदर्शन।"],
-   ["दैनिक पंचांग","तिथि, नक्षत्र, योग और करण की जानकारी।"],
-   ["जन्म कुंडली","जन्म कुंडली और दशा की पारंपरिक व्याख्या।"],
-   ["शुभ मुहूर्त","कार्य, स्थान और पसंदीदा तारीख के अनुसार मुहूर्त।"],
-   ["कुंडली मिलान","दो व्यक्तियों के जन्म विवरण के आधार पर पारंपरिक मिलान।"],
-   ["दैनिक राशिफल","राशि और नक्षत्र आधारित सामान्य राशिफल।"],
-   ["ज्योतिषी से परामर्श","ज्योतिषी परामर्श अनुरोध और सेवा की जानकारी।"],
-   ["व्रत, त्योहार और पंचांग","हिंदू कैलेंडर, व्रत, पर्व और त्योहार।"],
-   ["वास्तु, मंत्र और आध्यात्मिक टूल","वास्तु, पूजा, मंत्र और आध्यात्मिक संसाधन।"],
-   ["अंक ज्योतिष, हस्तरेखा और टैरो","अंक ज्योतिष, हस्तरेखा और टैरो के पारंपरिक व्याख्यात्मक टूल।"],
-   ["दोष, दशा और वर्ग कुंडली","दशा, दोष और D1–D60 वर्ग कुंडली टूल।"]
-  ]
- },
- en: {
-  title:"Divya Drishti", desc:"Panchang • Kundali • Muhurat", home:"Divya Drishti Home", featureHeading:"DIVYA DRISHTI TOOLS", backMain:"← Main AI Chat", backModule:"← Divya Drishti Home", explore:"All astrology tools are available in the sidebar.", language:"Choose language", dob:"Date of birth", birthTime:"Time of birth", birthPlace:"Place of birth", event:"Event / Question / Details", placePlaceholder:"City, State, Country", promptPlaceholder:"Enter your question or details...", continue:"Continue", status:"Astrology is traditional interpretive guidance, not a guaranteed prediction. Accurate birth/event location and date may be required for location-based calculations.", backend:"This tool will return results only after its relevant astrology service and backend are connected. No calculation or prediction has been performed yet.", empty:"Please enter your question or details.",
-  features:[
-   ["Know Your Future","Traditional astrological guidance based on birth details."],
-   ["Daily Panchang","Information about Tithi, Nakshatra, Yoga and Karana."],
-   ["Janma Kundali","Traditional interpretation of the birth chart and Dasha."],
-   ["Shubh Muhurat","Find an auspicious time based on event, location and preferred dates."],
-   ["Kundali Matching","Traditional compatibility matching based on both persons’ birth details."],
-   ["Daily Horoscope","General horoscope based on Rashi and Nakshatra."],
-   ["Astrologer Consultation","Astrologer consultation requests and service information."],
-   ["Vrat, Festivals & Panchang","Hindu calendar, fasts, observances and festivals."],
-   ["Vastu, Mantra & Spiritual Tools","Vastu, puja, mantras and spiritual resources."],
-   ["Numerology, Palmistry & Tarot","Traditional interpretive tools for numerology, palmistry and tarot."],
-   ["Dosha, Dasha & Divisional Charts","Dasha, dosha and D1–D60 divisional chart tools."]
-  ]
+const moduleChatControllers = Object.create(null);
+const moduleChatFiles = Object.create(null);
+function escapeHtml(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#39;");}
+function moduleChatMarkup(key){
+ const m=moduleMeta[key];
+ const feature=currentFeature===null?null:m.features[currentFeature];
+ const configs={
+  image:{title:"Create Image AI",intro:"आप क्या बनाना चाहते हैं? अपना विचार बताइए। मैं Image Prompt और Image Creation में मदद करूँगा।",placeholder:"अपना Image बनाने का विचार लिखें...",suggestions:["एक शानदार YouTube Thumbnail बनाओ","मेरे लिए एक AI Poster तैयार करो","मेरे आइडिया को Image Prompt में बदलो"]},
+  video:{title:"Create Video AI",intro:"बताइए आप किस तरह का वीडियो बनाना चाहते हैं। मैं वीडियो आइडिया, स्क्रिप्ट और prompts में मदद करूँगा।",placeholder:"अपने वीडियो का आइडिया लिखें...",suggestions:["30 सेकंड का वायरल Shorts वीडियो बनाओ","मेरी स्क्रिप्ट से वीडियो तैयार करो","Cinematic AI वीडियो का Prompt लिखो"]},
+  checker:{title:"Fake Media Checker",intro:"फोटो, वीडियो या ऑडियो की जाँच के लिए सवाल पूछें या मीडिया चुनें। निष्कर्ष उपलब्ध संकेतों और सीमाओं के साथ दिए जाएँगे।",placeholder:"Media के बारे में सवाल लिखें या जाँच का अनुरोध करें...",suggestions:["क्या यह फोटो AI से बनाई गई है?","इस वीडियो में Deepfake के संकेत जाँचो","इस ऑडियो में छेड़छाड़ के संकेत बताओ"]},
+  assistant:{title:"Personal AI Assistant",intro:"आज मैं आपकी किस काम में मदद करूँ? लिखने, योजना बनाने, रिसर्च और रोज़मर्रा के कामों में सहायता लें।",placeholder:"यहाँ अपना काम या सवाल लिखें...",suggestions:["मेरे लिए एक Email लिखो","मेरी Daily To-Do List बनाओ","किसी Document का सारांश बताओ"]},
+  medical:{title:"Medical & Healthcare AI",intro:"स्वास्थ्य से जुड़ा सवाल पूछें या रिपोर्ट समझने में मदद लें। यह जानकारी डॉक्टर की सलाह का विकल्प नहीं है।",placeholder:"अपना स्वास्थ्य संबंधी सवाल लिखें...",suggestions:["मेरी Blood Report समझाइए","इस मेडिकल टेस्ट का मतलब बताइए","सामान्य स्वास्थ्य और पोषण की जानकारी दें"]},
+  english:{title:"English Learning AI",intro:"Let's practice English together! आप Hindi या English में सवाल पूछ सकते हैं।",placeholder:"Type in Hindi or English...",suggestions:["Take my English speaking interview","Correct my English sentences","Teach me 10 useful daily English phrases"]},
+  divya:{title:"Divya Drishti",intro:"नमस्कार! ज्योतिष, पंचांग, कुंडली, मुहूर्त और आध्यात्मिक विषयों पर अपना प्रश्न पूछें।",placeholder:"अपना प्रश्न यहाँ लिखें...",suggestions:["आज का पंचांग और शुभ मुहूर्त बताइए","मेरी जन्म कुंडली का विश्लेषण करें","विवाह के लिए शुभ मुहूर्त बताइए"]}
+ };
+ const c=configs[key]||{title:m.title,intro:`${m.title} से संबंधित अपना प्रश्न पूछें।`,placeholder:"अपना सवाल लिखें...",suggestions:[]};
+ const title=feature?feature.name+" Assistant":c.title;
+ const intro=feature?feature.desc:c.intro;
+ const suggestionHtml=c.suggestions.map(x=>`<button class="module-chat-suggestion" type="button" data-chat-suggestion="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join("");
+ return `<section class="module-chat" data-module-chat="${key}" aria-label="${escapeHtml(title)} chat">
+  <div class="module-chat-head">
+   <div class="module-chat-title-wrap"><h2>✦ ${escapeHtml(title)}</h2><p>${escapeHtml(intro)}</p></div>
+   <div class="module-chat-actions">
+    <button class="btn" type="button" data-chat-new>＋ New Chat</button>
+    <button class="btn" type="button" data-chat-history>◷ Chat History</button>
+   </div>
+  </div>
+  <div class="module-chat-suggestions-label">${key==="english"?"Try asking":"आप ये भी पूछ सकते हैं"}</div>
+  <div class="module-chat-suggestions">${suggestionHtml}</div>
+  <div class="module-chat-log" data-chat-log aria-live="polite"><div class="module-chat-empty">${escapeHtml(intro)}</div></div>
+  <div class="module-chat-compose">
+   <textarea data-chat-prompt placeholder="${escapeHtml(c.placeholder)}" aria-label="${escapeHtml(title)}"></textarea>
+   <div class="module-chat-tools">
+    <div class="module-chat-tools-left">
+     <input data-chat-file type="file" hidden multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,image/*,audio/*,video/*">
+     <button class="btn" type="button" data-chat-attach>＋ Attach</button>
+     <button class="btn" type="button" data-chat-mic>🎙 Voice</button>
+     <button class="btn" type="button" data-chat-read>🔊 Read Replies</button>
+    </div>
+    <div class="module-chat-tools-left">
+     <button class="btn" type="button" data-chat-stop disabled>Stop</button>
+     <button class="btn primary" type="button" data-chat-send>Send ↑</button>
+    </div>
+   </div>
+   <div class="module-chat-file-label" data-chat-file-info>No file selected</div>
+  </div>
+  <div class="module-chat-note">Chat context: ${escapeHtml(m.title)}${feature?" · "+escapeHtml(feature.name):""}. File selection currently sends metadata only; actual file upload and module-specific processing require verified backend support.</div>
+ </section>`;
+}
+function moduleChatAdd(log,message,who){
+ const row=document.createElement("div");row.className="module-chat-row "+who;
+ const bubble=document.createElement("div");bubble.className="module-chat-bubble";bubble.textContent=message;
+ row.appendChild(bubble);log.appendChild(row);log.scrollTop=log.scrollHeight;return bubble;
+}
+function moduleChatHistoryKey(key){return "nyayverse_module_chat_history_"+key;}
+function bindModuleChat(key){
+ const root=document.querySelector(`[data-module-chat="${key}"]`);if(!root)return;
+ const log=root.querySelector("[data-chat-log]"),prompt=root.querySelector("[data-chat-prompt]");
+ const fileInput=root.querySelector("[data-chat-file]"),fileInfo=root.querySelector("[data-chat-file-info]");
+ const send=root.querySelector("[data-chat-send]"),stop=root.querySelector("[data-chat-stop]");
+ let files=[],readReplies=false;
+ const saved=JSON.parse(localStorage.getItem(moduleChatHistoryKey(key))||"[]");
+ if(saved.length){log.innerHTML="";saved.slice(-12).forEach(x=>moduleChatAdd(log,x.text,x.role));}
+ root.querySelectorAll("[data-chat-suggestion]").forEach(b=>b.onclick=()=>{prompt.value=b.dataset.chatSuggestion||"";prompt.focus();});
+ root.querySelector("[data-chat-attach]").onclick=()=>fileInput.click();
+ fileInput.onchange=()=>{files=Array.from(fileInput.files||[]).slice(0,5);fileInfo.textContent=files.map(f=>f.name).join(", ")||"No file selected";};
+ root.querySelector("[data-chat-new]").onclick=()=>{
+  moduleChatControllers[key]?.abort();log.innerHTML='<div class="module-chat-empty">New chat started. Ask your question below.</div>';prompt.value="";files=[];fileInput.value="";fileInfo.textContent="No file selected";
+ };
+ root.querySelector("[data-chat-history]").onclick=()=>{
+  const items=JSON.parse(localStorage.getItem(moduleChatHistoryKey(key))||"[]");
+  log.innerHTML="";
+  if(!items.length){log.innerHTML='<div class="module-chat-empty">No locally saved chat messages yet.</div>';return;}
+  items.slice(-30).forEach(x=>moduleChatAdd(log,x.text,x.role));
+ };
+ root.querySelector("[data-chat-read]").onclick=()=>{readReplies=!readReplies;root.querySelector("[data-chat-read]").textContent=readReplies?"🔊 Read Replies: On":"🔊 Read Replies";};
+ root.querySelector("[data-chat-mic]").onclick=()=>{
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert("Voice input is not supported in this browser.");return;}
+  const rec=new SR();rec.lang=key==="english"?"en-IN":"hi-IN";rec.interimResults=false;
+  rec.onresult=e=>{prompt.value+=(prompt.value?" ":"")+e.results[0][0].transcript;prompt.focus();};
+  rec.onerror=e=>alert("Voice input error: "+e.error);rec.start();
+ };
+ stop.onclick=()=>moduleChatControllers[key]?.abort();
+ async function sendModuleMessage(){
+  if(send.disabled)return;
+  const message=prompt.value.trim();if(!message&&!files.length)return;
+  const history=JSON.parse(localStorage.getItem(moduleChatHistoryKey(key))||"[]");
+  if(log.querySelector(".module-chat-empty"))log.innerHTML="";
+  moduleChatAdd(log,message||"Please consider the attached file(s).","user");
+  history.push({role:"user",text:message||"Please consider the attached file(s)."});
+  prompt.value="";
+  const reply=moduleChatAdd(log,"Thinking…","ai");
+  send.disabled=true;stop.disabled=false;
+  const controller=new AbortController();moduleChatControllers[key]=controller;
+  try{
+   const attachments=files.map(f=>({name:f.name,type:f.type,size:f.size}));
+   if(files.some(f=>f.size>20*1024*1024))throw new Error("A selected file exceeds the 20 MB frontend safety limit.");
+   const result=await request(ROUTES.chat,{
+    message:message||"Please consider the attached file(s).",
+    module:key,
+    module_title:moduleMeta[key].title,
+    feature:currentFeature===null?null:moduleMeta[key].features[currentFeature]?.name,
+    mode:"module_chat",
+    language:detectLanguage(message),
+    attachments,
+    provider_policy:"server-managed"
+   },"POST",controller.signal);
+   const answer=result.reply||result.response||result.answer||result.text||"The service returned no readable answer.";
+   reply.textContent=answer;history.push({role:"ai",text:answer});
+   if(readReplies&&"speechSynthesis" in window){window.speechSynthesis.cancel();window.speechSynthesis.speak(new SpeechSynthesisUtterance(answer));}
+  }catch(err){const msg=err.name==="AbortError"?"Response stopped.":"I could not complete this request: "+err.message;reply.textContent=msg;history.push({role:"ai",text:msg});}
+  finally{
+   localStorage.setItem(moduleChatHistoryKey(key),JSON.stringify(history.slice(-60)));
+   files=[];fileInput.value="";fileInfo.textContent="No file selected";send.disabled=false;stop.disabled=true;moduleChatControllers[key]=null;
+  }
  }
-};
-function divyaFeature(index){
- const original=moduleMeta.divya.features[index], translated=divyaTranslations[divyaLang].features[index];
- return {...original,name:translated[0],desc:translated[1]};
-}
-function divyaLanguageBar(){
- return `<div class="divya-language"><span>${divyaTranslations[divyaLang].language}:</span><button type="button" data-divya-lang="hi" class="${divyaLang==="hi"?"active":""}" aria-pressed="${divyaLang==="hi"}">हिंदी</button><button type="button" data-divya-lang="en" class="${divyaLang==="en"?"active":""}" aria-pressed="${divyaLang==="en"}">English</button></div>`;
-}
-function bindDivyaLanguage(){
- document.querySelectorAll("[data-divya-lang]").forEach(button=>button.addEventListener("click",()=>setDivyaLanguage(button.dataset.divyaLang)));
-}
-function setDivyaLanguage(language){
- const values={};["birthDate","birthTime","birthPlace","modulePrompt"].forEach(id=>{const el=$(id);if(el)values[id]=el.value;});
- divyaLang=language==="en"?"en":"hi";
- localStorage.setItem("nyayverse_divya_lang",divyaLang);
- if(currentModule==="divya"){
-  if(currentFeature===null)renderModuleHome("divya");else openModuleFeature("divya",currentFeature);
-  Object.keys(values).forEach(id=>{const el=$(id);if(el)el.value=values[id];});
- }
+ send.onclick=sendModuleMessage;
+ prompt.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendModuleMessage();}});
 }
 
 function renderModuleHome(p){
  currentPage=p;currentModule=p;currentFeature=null;buildSidebar(p);closeSidebar();
  const m=moduleMeta[p];if(!m)return;
- if(p==="divya"){
-  const t=divyaTranslations[divyaLang],cards=m.features.slice(0,7);
-  const html=`${divyaLanguageBar()}<div class="module-feature-grid">${cards.map((f,i)=>{const x=divyaFeature(i);return `<button class="tile" data-home-feature="${i}"><span>${f.icon}</span><b>${x.name}</b><small>${x.desc}</small></button>`}).join("")}</div><div class="panel"><p class="muted">${t.explore}</p></div>`;
-  moduleShell(t.title,t.desc,m.cls,html);
-  $("backHome").textContent=t.backMain;$("backHome").onclick=()=>navigate("home");
-  bindDivyaLanguage();
- }else{
-  const cards=m.features.slice(0,Math.min(6,m.features.length));
-  const html=`<div class="module-feature-grid">${cards.map((f,i)=>`<button class="tile" data-home-feature="${i}"><span>${f.icon}</span><b>${f.name}</b><small>${f.desc}</small></button>`).join("")}</div><div class="panel"><p class="muted">Explore this module's complete feature list from its Sidebar. Choose a feature to open its workspace.</p></div>`;
-  moduleShell(m.title,m.desc,m.cls,html);
-  $("backHome").textContent="← Main AI Chat";$("backHome").onclick=()=>navigate("home");
- }
+ const cards=m.features.slice(0,p==="divya"?7:Math.min(6,m.features.length));
+ const chat=moduleChatMarkup(p);
+ const html=`${chat}<h3 style="margin:22px 0 8px">Explore ${m.title} features</h3><div class="module-feature-grid">${cards.map((f,i)=>`<button class="tile" data-home-feature="${i}"><span>${f.icon}</span><b>${f.name}</b><small>${f.desc}</small></button>`).join("")}</div><div class="panel"><p class="muted">Explore this module's complete feature list from its Sidebar. Choose a feature to open its workspace. The chat stays at the top; module tools remain below.</p></div>`;
+ moduleShell(m.title,m.desc,m.cls,html);
+ $("backHome").textContent="← Main AI Chat";
+ $("backHome").onclick=()=>navigate("home");
  $("page").querySelectorAll("[data-home-feature]").forEach(b=>b.onclick=()=>openModuleFeature(p,Number(b.dataset.homeFeature)));
+ bindModuleChat(p);
 }
+
 function openModuleFeature(p,index){
  closeSidebar();currentPage=p;currentModule=p;currentFeature=index;buildSidebar(p);
  const m=moduleMeta[p],f=m?.features[index];if(!f)return;
  let body="";
  if(p==="divya"){
-  const t=divyaTranslations[divyaLang],df=divyaFeature(index);
-  body=`${divyaLanguageBar()}<div class="panel"><p>${df.desc}</p><label>${t.dob}</label><input id="birthDate" type="date"><label>${t.birthTime}</label><input id="birthTime" type="time"><label>${t.birthPlace}</label><input id="birthPlace" placeholder="${t.placePlaceholder}"><label>${t.event}</label><textarea id="modulePrompt" placeholder="${t.promptPlaceholder}"></textarea><button class="btn primary" id="moduleRun">${t.continue}</button><div class="status" id="moduleStatus">${t.status} ${t.backend}</div></div>`;
+  body=`<div class="panel"><p>${f.desc}</p><label>जन्म तिथि / Date of birth (if relevant)</label><input id="birthDate" type="date"><label>जन्म समय / Time of birth (if relevant)</label><input id="birthTime" type="time"><label>जन्म स्थान / Place (if relevant)</label><input id="birthPlace" placeholder="City, State, Country"><label>Event / प्रश्न / Details</label><textarea id="modulePrompt" placeholder="अपना प्रश्न लिखें / Enter your question..."></textarea><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">Astrology is traditional interpretive guidance, not a guaranteed prediction. Location and date are required for location-sensitive calculations.</div></div>`;
  }else if(p==="image"){
   body=`<div class="panel"><p>${f.desc}</p><label>Describe your image or requested edit</label><textarea id="modulePrompt" placeholder="Describe the image you want..."></textarea><label>Reference image (optional)</label><input id="moduleFile" type="file" accept="image/*"><label>Aspect ratio</label><select id="ratio"><option>1:1</option><option>9:16</option><option>16:9</option><option>4:5</option></select><button class="btn primary" id="moduleRun">Generate Image</button><div class="status" id="moduleStatus">Image generation requires an eligible server-side entitlement and configured provider.</div></div>`;
  }else if(p==="video"){
@@ -295,22 +353,10 @@ function openModuleFeature(p,index){
  }else{
   body=`<div class="panel"><p>${f.desc}</p><label>What would you like help with?</label><textarea id="modulePrompt" placeholder="Describe your request..."></textarea><label>Attach a relevant file (optional)</label><input id="moduleFile" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,image/*"><button class="btn primary" id="moduleRun">Continue</button><div class="status" id="moduleStatus">This workspace requires its matching authenticated backend service. This screen does not imply that an unconnected feature is live.</div></div>`;
  }
- const featureName=p==="divya"?divyaFeature(index).name:f.name;
- const featureDesc=p==="divya"?divyaFeature(index).desc:f.desc;
- moduleShell(featureName,featureDesc,m.cls,`<div class="feature-screen">${body}</div>`);// Guest users get 100 lifetime Personal AI Assistant messages.
-if(p === "assistant" && !token()){
-  $("moduleStatus").textContent =
-    "Guest Mode: आप बिना Login किए 100 मुफ्त संदेश इस्तेमाल कर सकते हैं। हर सफल जवाब के बाद बचे हुए संदेश दिखेंगे।";
-}
- if(p==="divya"){
-  const t=divyaTranslations[divyaLang];$("backHome").textContent=t.backModule;
-  bindDivyaLanguage();
- }else $("backHome").onclick=()=>renderModuleHome(p);
- const run=$("moduleRun");
- if(run){
-  if(p==="divya")run.onclick=()=>{$("moduleStatus").textContent=($("modulePrompt").value.trim()||$("birthDate").value||$("birthPlace").value.trim())?divyaTranslations[divyaLang].backend:divyaTranslations[divyaLang].empty;};
-  else run.onclick=()=>runModule(p);
- }
+ moduleShell(f.name,f.desc,m.cls,`${moduleChatMarkup(p)}<div class="feature-screen">${body}</div>`);
+ $("backHome").onclick=()=>renderModuleHome(p);
+ bindModuleChat(p);
+ const run=$("moduleRun");if(run)run.onclick=()=>runModule(p);
 }
 function renderPage(p){
  if(moduleMeta[p]){renderModuleHome(p);return}
@@ -321,161 +367,20 @@ function renderPage(p){
  moduleShell(x[0],x[1],"",`<div class="panel"><p>${x[1]}</p><p class="muted">This information page is a frontend placeholder until the reviewed content and matching backend behavior are published.</p></div>`);
 }
 async function runModule(key){
-
- const prompt = $("modulePrompt")?.value.trim() || "";
- const file = $("moduleFile")?.files?.[0];
-
- if(!prompt && !file){
-   $("moduleStatus").textContent =
-     "कृपया पहले अपना सवाल या निर्देश लिखें।";
-   return;
- }
-
-
-// Login check
-// Personal AI Assistant supports limited guest access.
-// Personal AI Assistant — Guest + Logged-in Access
- if(key === "assistant"){
-
-   const featureName =
-     moduleMeta.assistant.features[currentFeature]?.name ||
-     "Personal AI Chat";
-
-   const status = $("moduleStatus");
-
-   status.textContent =
-     "NYAYVERSE AI आपका जवाब तैयार कर रहा है...";
-
-   try{
-
-     const result = await request(
-       ROUTES.personalAssistant,
-       {
-         message: prompt,
-         language: detectLanguage(prompt),
-         feature: featureName,
-         provider_policy: "server-managed"
-       }
-     );
-
-     const answer =
-       result.answer ||
-       result.reply ||
-       result.response ||
-       result.text;
-
-     if(!answer){
-       throw new Error(
-         result.message ||
-         "Backend से कोई readable जवाब नहीं मिला।"
-       );
-     }
-
-     // Show the AI answer.
-     status.textContent = answer;
-
-     // Show remaining guest messages.
-     if(!token() && result.guest_mode){
-
-       const remaining = Number(
-         result.guest_messages_remaining ?? 0
-       );
-
-       const limit = Number(
-         result.guest_message_limit ?? 100
-       );
-
-       const used = Number(
-         result.guest_messages_used ?? (limit - remaining)
-       );
-
-       const counter = document.createElement("p");
-       counter.className = "muted";
-       counter.textContent =
-         `मुफ्त Guest Messages: ${used}/${limit} इस्तेमाल हुए · ${remaining} बाकी`;
-
-       status.appendChild(document.createElement("br"));
-       status.appendChild(counter);
-     }
-
-   }catch(error){
-
-     console.error("Personal AI Assistant Error:", error);
-
-     // Guest message limit reached.
-     if(error.code === "GUEST_LIMIT_REACHED"){
-
-       status.textContent =
-         "आपके 100 मुफ्त Guest Messages पूरे हो गए हैं। आगे Personal AI Assistant इस्तेमाल करने के लिए Login करें या नया Account बनाएँ।";
-
-       const loginButton = document.createElement("button");
-       loginButton.type = "button";
-       loginButton.className = "btn primary";
-       loginButton.textContent = "Login / Create Account";
-       loginButton.style.marginTop = "12px";
-       loginButton.onclick = openAuth;
-
-       status.appendChild(document.createElement("br"));
-       status.appendChild(loginButton);
-
-     }else{
-
-       status.textContent =
-         "Request failed: " + error.message;
-     }
-   }
-
-   return;
- } const route =
-   key === "image" ? ROUTES.image :
-   key === "video" ? ROUTES.video :
-   key === "checker" ? ROUTES.checker :
-   null;
-
- if(!route){
-   $("moduleStatus").textContent =
-     "इस मॉड्यूल का संबंधित Backend API अभी कनेक्ट नहीं है।";
-   return;
- }
-
- $("moduleStatus").textContent =
-   "Preparing secure request…";
-
+ const prompt=$("modulePrompt")?.value.trim()||"",file=$("moduleFile")?.files?.[0];
+ if(!prompt&&!file){$("moduleStatus").textContent="Enter a request or choose a file.";return}
+ const route=key==="image"?ROUTES.image:key==="video"?ROUTES.video:key==="checker"?ROUTES.checker:null;
+ if(!route){$("moduleStatus").textContent="The matching authenticated Worker endpoint is not yet wired in this frontend build. Do not treat this control as live.";return}
+ if(!token()){openAuth();return}
+ $("moduleStatus").textContent="Preparing secure request…";
  try{
-
-   const payload = {
-     prompt: prompt,
-     action: key,
-     aspect_ratio: $("ratio")?.value,
-     duration: $("duration")?.value
-   };
-
-   if(file){
-     payload.file_name = file.name;
-     payload.file_type = file.type;
-     payload.file_size = file.size;
-     payload.note =
-       "File bytes are not uploaded by this request.";
-   }
-
-   const result = await request(route, payload);
-
-   $("moduleStatus").textContent =
-     JSON.stringify(result, null, 2);
-
- }catch(error){
-
-   console.error("Module Error:", error);
-
-   $("moduleStatus").textContent =
-     "Request failed: " + error.message;
- }
+  const payload={prompt,action:key,aspect_ratio:$("ratio")?.value,duration:$("duration")?.value};
+  if(file){payload.file_name=file.name;payload.file_type=file.type;payload.file_size=file.size;payload.note="Upload transport is not implemented by this metadata-only request."}
+  const result=await request(route,payload);$("moduleStatus").textContent=JSON.stringify(result,null,2);
+ }catch(e){$("moduleStatus").textContent="Request failed: "+e.message}
 }
 function addMessage(text,who){const row=document.createElement("div");row.className="msg "+who;const b=document.createElement("div");b.className="bubble";b.textContent=text;row.appendChild(b);$("chat").appendChild(row);row.scrollIntoView({behavior:"smooth",block:"end"});return b}
-function detectLanguage(s){
-  if(/[ऀ-ॿ]/.test(s)) return "Hindi";
-  return "auto";
-}
+function detectLanguage(s){if(/[ऀ-ॿ]/.test(s))return "hi";return "auto"}
 async function sendChat(){
  if(busy)return;const prompt=$("prompt").value.trim();if(!prompt&&!selectedFiles.length)return;
  busy=true;aborter=new AbortController();$("sendBtn").disabled=true;$("stopBtn").disabled=false;
@@ -524,721 +429,5 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSidebar();clos
 document.addEventListener("click",e=>{if(!$("sidebar").classList.contains("open"))return;if($("sidebar").contains(e.target)||$("menuBtn").contains(e.target))return;closeSidebar()});
 window.addEventListener("resize",()=>{if(window.innerWidth>700){$("sidebar").classList.remove("open");$("backdrop").classList.remove("show");document.body.classList.remove("sidebar-lock");$("sidebar").classList.remove("collapsed")}else if(!$("sidebar").classList.contains("open")){$("sidebar").classList.remove("collapsed");document.body.classList.remove("sidebar-lock")}});
 buildSidebar("home");setSidebar(false);
-</script>
-  
-<script>
-/* =========================================================
-   NYAYVERSE AI — AUTHENTICATION OVERRIDE
-   Paste immediately before </body> in the existing index.html.
-   ========================================================= */
-(() => {
-"use strict";
-
-const AUTH_ROUTES = {
-  me: "auth/me",
-  signup: "auth/signup",
-  verifyEmail: "auth/verify-email",
-  login: "auth/login",
-  forgot: "auth/forgot-password",
-  reset: "auth/reset-password",
-  logout: "auth/logout",
-  googleStart: "auth/google/start",
-  sendMobileOtp: "auth/mobile/send-otp",
-  verifyMobileOtp: "auth/mobile/verify-otp"
-};
-
-const AUTH_TOKEN_KEY = "nyayverse_auth_token";
-
-let authProfile = null;
-let authBusy = false;
-
-const authToken = () => localStorage.getItem(AUTH_TOKEN_KEY) || "";
-
-function authHeaders() {
-  const headers = {"Content-Type":"application/json"};
-  if (authToken()) {
-    headers.Authorization = "Bearer " + authToken();
-  }
-  return headers;
-}
-
-async function authRequest(route, body, method = "POST") {
-  const response = await fetch(API_URL + route, {
-    method,
-    headers: authHeaders(),
-    ...(body === undefined ? {} : {body:JSON.stringify(body)})
-  });
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok || data.success === false) {
-    const error = new Error(
-      data.message || data.error || "Service temporarily unavailable."
-    );
-    error.status = response.status;
-    error.code = data.code || "";
-    throw error;
-  }
-
-  return data;
-}
-
-function authEscape(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[char]);
-}
-
-function authMessage(message, isError = false) {
-  const element = $("authMessage");
-  if (!element) return;
-  element.textContent = message;
-  element.style.color = isError ? "#ff9b9b" : "#f0d58b";
-}
-
-function saveAuthSession(data) {
-  const newToken = data.token || data.access_token ||
-    data.session?.access_token;
-
-  if (newToken) {
-    localStorage.setItem(AUTH_TOKEN_KEY, newToken);
-  }
-
-  authProfile =
-    data.user ||
-    data.profile ||
-    data.account ||
-    data.data?.user ||
-    authProfile;
-
-  updateAuthInterface();
-}
-
-function updateAuthInterface() {
-  const button = $("loginTop");
-
-  if (!button) return;
-
-  if (authToken()) {
-    const name =
-      authProfile?.full_name ||
-      authProfile?.name ||
-      authProfile?.display_name ||
-      authProfile?.email ||
-      "My Account";
-
-    button.textContent =
-      name.length > 20 ? "My Account" : name;
-
-    button.title = "Open My Account";
-    button.onclick = () => navigate("account");
-  } else {
-    button.textContent = "Log in";
-    button.title = "Log in to NYAYVERSE AI";
-    button.onclick = openAuth;
-  }
-}
-
-/* ---------- SESSION RESTORE ---------- */
-
-async function restoreAuthSession() {
-  const savedToken = authToken();
-
-  if (!savedToken) {
-    updateAuthInterface();
-    return;
-  }
-
-  try {
-    const data = await authRequest(AUTH_ROUTES.me, undefined, "GET");
-
-    authProfile =
-      data.user ||
-      data.profile ||
-      data.account ||
-      data.data?.user ||
-      null;
-
-    updateAuthInterface();
-
-  } catch (error) {
-    /*
-      Do not delete a valid-looking session because of a temporary
-      network error or missing endpoint. Clear only on unauthorized.
-    */
-    if (error.status === 401 || error.status === 403) {
-      localStorage.removeItem(AUTH_TOKEN_KEY);
-      authProfile = null;
-    }
-
-    updateAuthInterface();
-  }
-}
-
-/* ---------- AUTH UI EXTENSIONS ---------- */
-
-function addAuthFields() {
-  const start = $("authStart");
-  const fields = $("authFields");
-
-  if (!start || !fields) return;
-
-  if (!$("mobileLoginBtn")) {
-    const mobileButton = document.createElement("button");
-    mobileButton.type = "button";
-    mobileButton.className = "btn";
-    mobileButton.id = "mobileLoginBtn";
-    mobileButton.textContent = "Continue with Mobile";
-    mobileButton.onclick = () => authFormMode("mobile");
-    start.appendChild(mobileButton);
-  }
-
-  if (!$("mobileWrap")) {
-    const wrapper = document.createElement("div");
-    wrapper.id = "mobileWrap";
-    wrapper.className = "hidden";
-    wrapper.innerHTML = `
-      <label>Mobile Number</label>
-      <input id="mobileNumber" type="tel"
-        inputmode="tel" autocomplete="tel"
-        maxlength="15" placeholder="+91 9876543210">
-    `;
-    $("authForm").insertBefore(wrapper, $("authSubmit"));
-  }
-
-  if (!$("mobileOtpWrap")) {
-    const wrapper = document.createElement("div");
-    wrapper.id = "mobileOtpWrap";
-    wrapper.className = "hidden";
-    wrapper.innerHTML = `
-      <label>Mobile OTP</label>
-      <input id="mobileOtp" type="text"
-        inputmode="numeric" autocomplete="one-time-code"
-        maxlength="8" placeholder="Enter mobile OTP">
-    `;
-    $("authForm").insertBefore(wrapper, $("authSubmit"));
-  }
-
-  if (!$("newPasswordWrap")) {
-    const wrapper = document.createElement("div");
-    wrapper.id = "newPasswordWrap";
-    wrapper.className = "hidden";
-    wrapper.innerHTML = `
-      <label>New Password</label>
-      <input id="newPassword" type="password"
-        autocomplete="new-password" minlength="8"
-        placeholder="Enter new password">
-      <label>Reset Token</label>
-      <input id="resetToken" type="text"
-        placeholder="Enter reset token received by email">
-    `;
-    $("authForm").insertBefore(wrapper, $("authSubmit"));
-  }
-
-  if (!$("resetLink")) {
-    const link = document.createElement("button");
-    link.type = "button";
-    link.className = "btn hidden";
-    link.id = "resetLink";
-    link.textContent = "I have a reset token";
-    link.onclick = () => authFormMode("reset");
-    $("authFields").appendChild(link);
-  }
-
-  if (!$("verifyAgain")) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "btn hidden";
-    button.id = "verifyAgain";
-    button.textContent = "Resend verification code";
-    button.onclick = resendEmailVerification;
-    $("authFields").appendChild(button);
-  }
-
-  if (!$("authSwitch")) {
-    const switchText = document.createElement("p");
-    switchText.id = "authSwitch";
-    switchText.className = "muted";
-    switchText.style.textAlign = "center";
-    switchText.innerHTML =
-      'Already have an account? <a href="#" id="switchLogin" style="color:var(--gold2)">Log in</a>';
-    $("authFields").appendChild(switchText);
-
-    $("switchLogin").onclick = event => {
-      event.preventDefault();
-      authFormMode("login");
-    };
-  }
-}
-
-/* ---------- FORM MODE CONTROL ---------- */
-
-const originalOpenAuth = openAuth;
-
-openAuth = function() {
-  addAuthFields();
-  originalOpenAuth();
-  $("entryEmail").value = "";
-  authFormMode("start");
-};
-
-authFormMode = function(mode) {
-  addAuthFields();
-
-  authMode = mode;
-
-  $("authStart").classList.toggle("hidden", mode !== "start");
-  $("authFields").classList.toggle("hidden", mode === "start");
-
-  $("nameWrap").classList.toggle("hidden", mode !== "signup");
-  $("confirmWrap").classList.toggle("hidden", mode !== "signup");
-  $("consentWrap").classList.toggle("hidden", mode !== "signup");
-
-  $("passwordWrap").classList.toggle(
-    "hidden",
-    ["forgot","verify","mobile","mobile-verify","reset"].includes(mode)
-  );
-
-  $("otpWrap").classList.toggle("hidden", mode !== "verify");
-
-  $("mobileWrap").classList.toggle(
-    "hidden",
-    !["mobile","mobile-verify"].includes(mode)
-  );
-
-  $("mobileOtpWrap").classList.toggle(
-    "hidden",
-    mode !== "mobile-verify"
-  );
-
-  $("newPasswordWrap").classList.toggle(
-    "hidden",
-    mode !== "reset"
-  );
-
-  $("forgotLink").classList.toggle("hidden", mode !== "login");
-  $("resetLink").classList.toggle("hidden", mode !== "forgot");
-  $("verifyAgain").classList.toggle("hidden", mode !== "verify");
-
-  const titles = {
-    start:"Welcome to NYAYVERSE AI",
-    login:"Log in to NYAYVERSE AI",
-    signup:"Create your account",
-    verify:"Verify your email",
-    forgot:"Forgot password?",
-    reset:"Reset your password",
-    mobile:"Continue with Mobile",
-    "mobile-verify":"Verify mobile number"
-  };
-
-  const labels = {
-    login:"Log in",
-    signup:"Create account",
-    verify:"Verify Email",
-    forgot:"Send reset instructions",
-    reset:"Reset Password",
-    mobile:"Send OTP",
-    "mobile-verify":"Verify Mobile OTP"
-  };
-
-  $("authTitle").textContent = titles[mode] || titles.start;
-  $("authSubmit").textContent = labels[mode] || "Continue";
-
-  $("authMessage").textContent = "";
-
-  if (mode === "start") {
-    $("authStart").classList.remove("hidden");
-    $("authFields").classList.add("hidden");
-  } else {
-    $("authStart").classList.add("hidden");
-    $("authFields").classList.remove("hidden");
-  }
-
-  if (mode === "login" || mode === "signup" ||
-      mode === "verify" || mode === "forgot" || mode === "reset") {
-    $("authEmail").value =
-      $("entryEmail").value.trim() || $("authEmail").value;
-  }
-
-  $("authBack").onclick = () => authFormMode("start");
-};
-
-/* ---------- EMAIL VERIFICATION RESEND ---------- */
-
-async function resendEmailVerification() {
-  const email = $("authEmail").value.trim();
-
-  if (!email) {
-    authMessage("Please enter your email address.", true);
-    return;
-  }
-
-  try {
-    authMessage("Sending verification email...");
-
-    const data = await authRequest(AUTH_ROUTES.signup, {
-      action:"resend_verification",
-      email
-    });
-
-    authMessage(
-      data.message || "If supported, a new verification code has been sent."
-    );
-  } catch (error) {
-    authMessage(error.message, true);
-  }
-}
-
-/* ---------- GOOGLE LOGIN ---------- */
-
-$("googleBtn").onclick = () => {
-  const returnUrl = location.origin + location.pathname;
-
-  const url = API_URL + AUTH_ROUTES.googleStart +
-    "?return_to=" + encodeURIComponent(returnUrl);
-
-  location.href = url;
-};
-
-/* ---------- GOOGLE CALLBACK ---------- */
-
-async function processGoogleCallback() {
-  const url = new URL(location.href);
-
-  const queryToken =
-    url.searchParams.get("token") ||
-    url.searchParams.get("access_token");
-
-  const hash = new URLSearchParams(
-    location.hash.replace(/^#/, "")
-  );
-
-  const hashToken =
-    hash.get("token") ||
-    hash.get("access_token");
-
-  const callbackToken = queryToken || hashToken;
-
-  if (callbackToken) {
-    localStorage.setItem(AUTH_TOKEN_KEY, callbackToken);
-
-    /*
-      Remove token from browser address bar after storing it.
-      Prefer an HttpOnly-cookie or one-time authorization-code
-      flow on the backend for production security.
-    */
-    history.replaceState({}, document.title,
-      location.pathname + location.search.replace(/[?&](token|access_token)=[^&]*/g, "")
-    );
-  }
-
-  if (authToken()) {
-    await restoreAuthSession();
-  }
-}
-
-/* ---------- MAIN AUTH SUBMIT ---------- */
-
-$("authForm").onsubmit = async event => {
-  event.preventDefault();
-
-  if (authBusy) return;
-  authBusy = true;
-
-  const submit = $("authSubmit");
-  submit.disabled = true;
-
-  const email = $("authEmail").value.trim();
-  const password = $("password").value;
-
-  try {
-    if (authMode === "signup") {
-      const name = $("fullName").value.trim();
-      const gender = $("gender").value;
-
-      if (!name) throw new Error("Please enter your full name.");
-      if (!["Male","Female"].includes(gender)) {
-        throw new Error("Please select Male or Female.");
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        throw new Error("Please enter a valid email address.");
-      }
-      if (password.length < 8) {
-        throw new Error("Password must contain at least 8 characters.");
-      }
-      if (password !== $("confirmPassword").value) {
-        throw new Error("Passwords do not match.");
-      }
-      if (!$("consent").checked) {
-        throw new Error("Please accept the Terms and Privacy Policy.");
-      }
-
-      authMessage("Creating your account...");
-
-      const data = await authRequest(AUTH_ROUTES.signup, {
-        full_name:name,
-        gender,
-        email,
-        password,
-        consent:{
-          terms:true,
-          privacy:true
-        }
-      });
-
-      authFormMode("verify");
-      $("authEmail").value = email;
-
-      authMessage(
-        data.message ||
-        "Your account has been created. Enter the verification code sent to your email."
-      );
-
-    } else if (authMode === "verify") {
-      const otp = $("otp").value.trim();
-
-      if (!otp) throw new Error("Please enter your email verification code.");
-
-      authMessage("Verifying your email...");
-
-      const data = await authRequest(AUTH_ROUTES.verifyEmail, {
-        email,
-        otp
-      });
-
-      if (data.token || data.access_token) {
-        saveAuthSession(data);
-        closeAuth();
-      } else {
-        authFormMode("login");
-        $("authEmail").value = email;
-        authMessage(
-          data.message || "Email verified. You can now log in."
-        );
-      }
-
-    } else if (authMode === "login") {
-      if (!email || !password) {
-        throw new Error("Enter your email and password.");
-      }
-
-      authMessage("Signing you in...");
-
-      const data = await authRequest(AUTH_ROUTES.login, {
-        email,
-        password
-      });
-
-      if (!data.token && !data.access_token) {
-        throw new Error("Login service did not return a session token.");
-      }
-
-      saveAuthSession(data);
-      closeAuth();
-
-    } else if (authMode === "forgot") {
-      if (!email) throw new Error("Enter your registered email address.");
-
-      authMessage("Requesting password reset...");
-
-      const data = await authRequest(AUTH_ROUTES.forgot, {
-        email
-      });
-
-      authMessage(
-        data.message ||
-        "If this account exists, password reset instructions have been sent."
-      );
-
-      $("resetLink").classList.remove("hidden");
-
-    } else if (authMode === "reset") {
-      const newPassword = $("newPassword").value;
-      const resetToken = $("resetToken").value.trim();
-
-      if (!resetToken) throw new Error("Enter your password reset token.");
-      if (newPassword.length < 8) {
-        throw new Error("New password must contain at least 8 characters.");
-      }
-
-      authMessage("Updating your password...");
-
-      const data = await authRequest(AUTH_ROUTES.reset, {
-        email,
-        reset_token:resetToken,
-        token:resetToken,
-        new_password:newPassword,
-        password:newPassword
-      });
-
-      authFormMode("login");
-      authMessage(data.message || "Password reset successful. Please log in.");
-
-    } else if (authMode === "mobile") {
-      const mobile = $("mobileNumber").value.trim();
-
-      if (!/^\+?[0-9\s-]{8,15}$/.test(mobile)) {
-        throw new Error("Enter a valid mobile number with country code.");
-      }
-
-      authMessage("Sending mobile OTP...");
-
-      const data = await authRequest(AUTH_ROUTES.sendMobileOtp, {
-        mobile,
-        phone:mobile,
-        country_code:"+91"
-      });
-
-      authFormMode("mobile-verify");
-      $("mobileNumber").value = mobile;
-
-      authMessage(
-        data.message || "OTP sent if mobile OTP service is configured."
-      );
-
-    } else if (authMode === "mobile-verify") {
-      const mobile = $("mobileNumber").value.trim();
-      const otp = $("mobileOtp").value.trim();
-
-      if (!otp) throw new Error("Enter the mobile OTP.");
-
-      authMessage("Verifying mobile OTP...");
-
-      const data = await authRequest(AUTH_ROUTES.verifyMobileOtp, {
-        mobile,
-        phone:mobile,
-        otp
-      });
-
-      if (!data.token && !data.access_token) {
-        throw new Error("Mobile verification did not return a session token.");
-      }
-
-      saveAuthSession(data);
-      closeAuth();
-    }
-
-  } catch (error) {
-    console.error("NYAYVERSE AI Authentication:", error);
-    authMessage(error.message, true);
-  } finally {
-    authBusy = false;
-    submit.disabled = false;
-  }
-};
-
-/* ---------- MY ACCOUNT PAGE ---------- */
-
-const previousRenderPage = renderPage;
-
-renderPage = function(page) {
-  if (page !== "account") {
-    return previousRenderPage(page);
-  }
-
-  if (!authToken()) {
-    moduleShell(
-      "Account & Security",
-      "Sign in to manage your account",
-      "",
-      `<div class="panel">
-        <p>You are currently using NYAYVERSE AI as a guest.</p>
-        <button class="btn primary" id="accountLogin">Log in / Create Account</button>
-      </div>`
-    );
-
-    $("accountLogin").onclick = openAuth;
-    return;
-  }
-
-  const profile = authProfile || {};
-  const name = authEscape(
-    profile.full_name || profile.name || "NYAYVERSE AI User"
-  );
-  const email = authEscape(profile.email || "Not available");
-  const gender = authEscape(profile.gender || "Not available");
-  const customerId = authEscape(
-    profile.customer_id || profile.customerId || "Not available"
-  );
-
-  moduleShell(
-    "My Account",
-    "Your profile and account security",
-    "",
-    `<div class="panel">
-      <h2>${name}</h2>
-      <p><b>Email:</b> ${email}</p>
-      <p><b>Gender:</b> ${gender}</p>
-      <p><b>Customer ID:</b> ${customerId}</p>
-      <p class="muted">
-        Profile information is displayed from the authenticated backend response.
-      </p>
-      <button class="btn" id="refreshProfile">Refresh Profile</button>
-      <button class="btn" id="accountLogout">Sign Out</button>
-    </div>`
-  );
-
-  $("refreshProfile").onclick = async () => {
-    $("refreshProfile").disabled = true;
-
-    try {
-      const data = await authRequest(AUTH_ROUTES.me, undefined, "GET");
-      authProfile =
-        data.user || data.profile || data.account || data.data?.user || null;
-      renderPage("account");
-    } catch (error) {
-      alert("Could not refresh profile: " + error.message);
-    } finally {
-      $("refreshProfile").disabled = false;
-    }
-  };
-
-  $("accountLogout").onclick = logoutUser;
-};
-
-/* ---------- LOGOUT OVERRIDE ---------- */
-
-logoutUser = async function() {
-  try {
-    if (authToken()) {
-      await authRequest(AUTH_ROUTES.logout, {});
-    }
-  } catch (error) {
-    console.warn("Logout API:", error.message);
-  }
-
-  localStorage.removeItem(AUTH_TOKEN_KEY);
-  authProfile = null;
-
-  updateAuthInterface();
-  closeAuth();
-  navigate("home");
-};
-
-/* ---------- LOGIN BUTTON + INITIALIZATION ---------- */
-
-$("loginTop").onclick = () => {
-  if (authToken()) {
-    navigate("account");
-  } else {
-    openAuth();
-  }
-};
-
-addAuthFields();
-updateAuthInterface();
-
-processGoogleCallback()
-  .then(restoreAuthSession)
-  .catch(error => {
-    console.warn("Session restore:", error.message);
-    updateAuthInterface();
-  });
-
-})();
 </script>
 </body></html>
